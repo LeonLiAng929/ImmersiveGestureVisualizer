@@ -21,9 +21,9 @@ public class ClusterGameObject : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*baryCentreVis.localPosition = GetComponent<Transform>().localPosition;
+        baryCentreVis.localPosition = GetComponent<Transform>().localPosition;
         baryCentreVis.localScale = GetComponent<Transform>().localScale * (float)0.8;
-        if (selected) { 
+        /*if (selected) { 
             RiseUp();
         }
         else

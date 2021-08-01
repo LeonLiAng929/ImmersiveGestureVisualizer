@@ -25,7 +25,6 @@ public class GestureVisualizer : MonoBehaviour
     protected GameObject clusterVisPrefab;
 
     private Dictionary<int, GameObject> clustersObjDic = new Dictionary<int, GameObject>();
-    private List<GameObject> trajectoryObjects = new List<GameObject>();
     private int k = 0;
     private List<Color> trajectoryColorSet = new List<Color>();
     private Dictionary<int, Color> clusterColorDic = new Dictionary<int, Color>();
@@ -57,7 +56,7 @@ public class GestureVisualizer : MonoBehaviour
 
         float y = 0;
 
-        //set trajectory and tracer colors
+        //Generate trajectory and tracer colors
 
         for (int j = 0; j < gestures[0].poses[0].num_of_joints; j++)
         {
@@ -109,44 +108,6 @@ public class GestureVisualizer : MonoBehaviour
             y = y + float.Parse("1.5");
         }
 
-      
-        /*
-            for (int j = 0; j < trajectoryObjects[0].GetComponent<Trajectory>().trajectoryRenderers.Count; j++)
-        {
-            //Color c = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
-            //Color c = colorSet[j];
-            float alpha = 1.0f;
-            Gradient gradient = new Gradient();
-            gradient.SetKeys(
-                new GradientColorKey[] { new GradientColorKey(Color.Lerp(c, Color.white, 0.5f), 0.0f), new GradientColorKey(Color.Lerp(c, Color.black, 0.5f), 1.0f) },
-                new GradientAlphaKey[] { new GradientAlphaKey(alpha, 0.0f), new GradientAlphaKey(alpha, 1.0f) }
-            );
-            for (int i = 0; i < trajectoryObjects.Count; i++)
-            {
-                trajectoryObjects[i].GetComponent<Trajectory>().trajectoryRenderers[j].colorGradient = gradient;
-            }
-        }*/
-
-
-       /* //instantiate skeletonReference for trajectories
-        int k = 0;
-        foreach (GameObject trajObj in trajectoryObjects)
-        {
-            Trajectory t = trajObj.GetComponent<Trajectory>();
-            Transform trajTrans = t.GetComponent<Transform>();
-            GameObject skeleton = Instantiate(skeletonModel, trajTrans);
-            t.skeletonRef = skeleton;
-            Transform[] transforms = skeleton.GetComponentsInChildren<Transform>();
-            //Debug.Log(transforms.Length);
-            //transforms[0].localPosition = new Vector3(y, 0, x);
-            trajObj.GetComponent<Transform>().localPosition = new Vector3(k, 0, -1);
-            k += 1;
-            for (int i = 1; i < 21; i++)
-            {
-                transforms[i].localPosition = t.trajectoryRenderers[i-1].GetPosition(0);
-            }
-        }
-       */
         // set size for the clusters in the scene
         foreach (KeyValuePair<int, GameObject> p in clustersObjDic)
         {
@@ -176,12 +137,7 @@ public class GestureVisualizer : MonoBehaviour
     }
     private void Update()
     {
-        foreach (GameObject trajObj in trajectoryObjects)
-        {
-            Trajectory t = trajObj.GetComponent<Trajectory>();
-            t.UpdateTrajectoryPos();
-        }
-        //trajectories[0].UpdateTrajectoryPos();
+      
     }
 
     public void InstantiateTrajectory(GameObject gestureVis, Gesture g)
@@ -195,7 +151,6 @@ public class GestureVisualizer : MonoBehaviour
         Trajectory traj = newTrajObj.GetComponent<Trajectory>();
         traj.SetAttributes(g, newTrajObj, trajectoryRendererPrefab, tracerRef);
         traj.DrawTrajectory(trajectoryColorSet);
-        trajectoryObjects.Add(newTrajObj);
 
         //instantiate skeletonReference for trajectories
         Transform trajTrans = traj.GetComponent<Transform>();
@@ -208,7 +163,7 @@ public class GestureVisualizer : MonoBehaviour
         Transform[] transforms = skeleton.GetComponentsInChildren<Transform>();
         //Debug.Log(transforms.Length);
         //transforms[0].localPosition = new Vector3(y, 0, x);
-        newTrajObj.GetComponent<Transform>().localPosition = new Vector3(k, 0, -1);
+        //newTrajObj.GetComponent<Transform>().localPosition = new Vector3(k, 0, -1);
         k += 1;
         for (int i = 1; i < 21; i++)
         {

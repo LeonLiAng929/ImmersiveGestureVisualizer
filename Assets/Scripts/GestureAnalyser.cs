@@ -138,6 +138,7 @@ public class GestureAnalyser : MonoBehaviour
 
    public void InitializePythonResult(int x, int y)
     {
+        pythonResult.Clear();
         for (int i = 0; i < x; i++)
         {
             pythonResult.Add(new List<float>());
@@ -146,6 +147,7 @@ public class GestureAnalyser : MonoBehaviour
                 pythonResult[i].Add(j);
             }
         }
+        
     }
 
    public void LogPythonResult(int i, int j, float value)
