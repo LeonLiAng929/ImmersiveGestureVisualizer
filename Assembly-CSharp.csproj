@@ -73,6 +73,7 @@
     <Compile Include="Assets\Scripts\DrawSkeleton.cs" />
     <Compile Include="Assets\Scripts\GestureAnalyser.cs" />
     <Compile Include="Assets\Scripts\Extension.cs" />
+    <Compile Include="Assets\Scripts\TestCreateObjectsInCircle.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Resources\7\crouch-3.xml" />

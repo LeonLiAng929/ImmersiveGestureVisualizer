@@ -11,6 +11,8 @@ public class Gesture
     public int id;
     public int cluster;
 
+    private float localSimilarity; // DTW similarity score between this gesture and the average gesture of the cluster it belongs to.
+    private float globalSimilarity; // DTW similarity score between this gesture and the average gesture of the entire dataset.
     private Vector3 rescaleReference = new Vector3(1, 1, 1);
     private BoundingBox boundingBox;
     private Vector3 centroid;
@@ -240,4 +242,24 @@ public class Gesture
         }
         return series;
     }
+
+    public void SetLocalSimilarity(float s)
+    {
+        localSimilarity = s;
+    }
+
+    public float GetLocalSimilarity()
+    {
+        return localSimilarity;
+    }
+    public void SetGlobalSimilarity(float s)
+    {
+        globalSimilarity = s;
+    }
+
+    public float GetGlobalSimilarity()
+    {
+        return globalSimilarity;
+    }
+
 }

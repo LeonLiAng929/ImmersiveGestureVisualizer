@@ -21,7 +21,8 @@ public class ClusterGameObject : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        baryCentreVis.localPosition = GetComponent<Transform>().localPosition;
+        // keep bary centre visualization at the centroid of the cluster.
+        this.GetComponent<Transform>().localPosition = baryCentreVis.localPosition;
         baryCentreVis.localScale = GetComponent<Transform>().localScale * (float)0.8;
         /*if (selected) { 
             RiseUp();
@@ -35,7 +36,7 @@ public class ClusterGameObject : MonoBehaviour
         // set cluster size 
         Transform trans = GetComponent<Transform>();
         trans.localScale = scale;
-        trans.localPosition = new Vector3(scale.x*3, scale.y / 2, 0);
+        //trans.localPosition = new Vector3(scale.x*3, scale.y / 2, 0);
 
         if (interactable == null)
         {
@@ -90,4 +91,36 @@ public class ClusterGameObject : MonoBehaviour
             selected = true;
         }
     }
+
+    public void InstantiateInCircle(List<GestureGameObject> gestureObjs, Vector3 location)
+    {
+        int howMany = gestureObjs.Count;
+        float angleSection = Mathf.PI * 2f / howMany;
+        
+        for (int i = 0; i < howMany; i++)
+        {
+            float angle = i * angleSection;
+            
+            float radius = gestureObjs[i].gesture.GetGlobalSimilarity();
+            Vector3 newPos = location + new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * radius;
+            //newPos.y = yPosition;
+            //Instantiate(gestureObj, newPos, gestureObj.rotation);
+            gestureObjs[i].GetComponent<Transform>().localPosition = newPos;
+            
+        }
+    }
+
+    public void ArrangeLocationForChildren()
+    {
+        GameObject clusterGameObj = GestureVisualizer.instance.GetClusterGameObjectById(clusterID);
+        GestureGameObject averageGes = clusterGameObj.GetComponent<Transform>().Find("AverageGesture").gameObject.GetComponent<GestureGameObject>();
+
+        List<GestureGameObject> gestures = new List<GestureGameObject>(clusterGameObj.GetComponentsInChildren<GestureGameObject>());
+        gestures.Remove(averageGes);
+        Transform baryTrans = baryCentreVis.GetComponent<Transform>();
+
+        //InstantiateInCircle(gestures, baryTrans.localPosition);
+        InstantiateInCircle(gestures, new Vector3(0,0,0));
+    } 
+    
 }

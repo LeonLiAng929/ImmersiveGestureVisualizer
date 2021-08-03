@@ -25,14 +25,22 @@ public class GestureVisualizer : MonoBehaviour
     protected GameObject clusterVisPrefab;
 
     private Dictionary<int, GameObject> clustersObjDic = new Dictionary<int, GameObject>();
-    private int k = 0;
     private List<Color> trajectoryColorSet = new List<Color>();
     private Dictionary<int, Color> clusterColorDic = new Dictionary<int, Color>();
+
+    #region Singleton
+    public static GestureVisualizer instance;
+    #endregion
+
+    private void Awake()
+    {
+        instance = this;
+    }
     private void Start()
     {
         List<Gesture> gestures = GestureAnalyser.instance.GetGestures();
 
-        //instantiate Clusters
+        //instantiate Cluster visualizations
         Dictionary<int, Cluster> clusters = GestureAnalyser.instance.GetClusters();
         foreach (KeyValuePair<int, Cluster> pair in clusters)
         {
@@ -68,21 +76,9 @@ public class GestureVisualizer : MonoBehaviour
         {
             // instantiate Gesture visualizations. A gesture visualziation has a trajectory view and a small-multiples view.
             GameObject newGesVis = Instantiate(gesVisPrefab, clustersObjDic[g.cluster].GetComponent<Transform>());
-            //GameObject newGesVis = Instantiate(gesVisPrefab, GesVisContainer);
-            /*newGesVis.AddComponent(typeof(GestureGameObject));
-            newGesVis.GetComponent<GestureGameObject>().gesture = g;*/
             newGesVis.name = g.gestureType + g.id.ToString();
+            newGesVis.GetComponent<GestureGameObject>().gesture = g;
             Transform newGesVisTrans = newGesVis.GetComponent<Transform>();
-
-            /* // instantiate trajectory
-             GameObject newTrajObj = Instantiate(trajectoryPrefab, newGesVisTrans);
-             newTrajObj.name = g.gestureType + "Trajectory";
-             newTrajObj.AddComponent<Trajectory>();
-             Trajectory traj = newTrajObj.GetComponent<Trajectory>();
-             traj.SetAttributes(g, newTrajObj, trajectoryRendererPrefab, tracerRef);
-             traj.DrawTrajectory();
-             trajectoryObjects.Add(newTrajObj);
-            */
 
             InstantiateTrajectory(newGesVis, g);
 
@@ -120,15 +116,21 @@ public class GestureVisualizer : MonoBehaviour
         foreach (KeyValuePair<int, GameObject> p in clustersObjDic)
         {
             GameObject newGesVis = Instantiate(gesVisPrefab, p.Value.GetComponent<Transform>());
-            //GameObject newGesVis = Instantiate(gesVisPrefab, GesVisContainer);
-            /*newGesVis.AddComponent(typeof(GestureGameObject));
-            newGesVis.GetComponent<GestureGameObject>().gesture = g;*/
             newGesVis.name = "AverageGesture";
+            newGesVis.GetComponent<GestureGameObject>().gesture = GestureAnalyser.instance.GetClusterByID(p.Key).GetBaryCentre();
             Transform newGesVisTrans = newGesVis.GetComponent<Transform>();
             ClusterGameObject a = p.Value.GetComponentInChildren<ClusterGameObject>();
             a.baryCentreVis = newGesVisTrans;
             InstantiateTrajectory(newGesVis, GestureAnalyser.instance.GetClusterByID(a.clusterID).GetBaryCentre());
         }
+
+        // arrage initial position for gestures under each cluster
+        /*foreach (KeyValuePair<int, GameObject> pair in clustersObjDic)
+        {
+            pair.Value.GetComponentInChildren<ClusterGameObject>().ArrangeLocationForChildren();
+        }*/
+
+        ArrangeLocationForGestures();
 
         Destroy(tracerRef);
         Destroy(skeletonModel);
@@ -161,13 +163,42 @@ public class GestureVisualizer : MonoBehaviour
         }
         traj.skeletonRef = skeleton;
         Transform[] transforms = skeleton.GetComponentsInChildren<Transform>();
-        //Debug.Log(transforms.Length);
-        //transforms[0].localPosition = new Vector3(y, 0, x);
-        //newTrajObj.GetComponent<Transform>().localPosition = new Vector3(k, 0, -1);
-        k += 1;
         for (int i = 1; i < 21; i++)
         {
             transforms[i].localPosition = traj.trajectoryRenderers[i - 1].GetPosition(0);
+        }
+    }
+
+    public GameObject GetClusterGameObjectById(int id)
+    {
+        return clustersObjDic[id];
+    }
+
+    public void ArrangeLocationForGestures()
+    {
+        List<GestureGameObject> gesGameObjLi = new List<GestureGameObject>();
+        foreach(KeyValuePair<int, GameObject> pair in clustersObjDic)
+        {
+            List<GestureGameObject> temp = new List<GestureGameObject>(pair.Value.GetComponentsInChildren<GestureGameObject>());
+
+            gesGameObjLi = gesGameObjLi.Concat<GestureGameObject>(temp).ToList();
+        }
+        //InstantiateInCircle(gestures, baryTrans.localPosition);
+        InstantiateInCircle(gesGameObjLi, new Vector3(0, 0, 0));
+    }
+
+    public void InstantiateInCircle(List<GestureGameObject> gestureObjs, Vector3 location)
+    {
+        int howMany = gestureObjs.Count;
+        float angleSection = Mathf.PI * 2f / howMany;
+
+        for (int i = 0; i < howMany; i++)
+        {
+            float angle = i * angleSection;
+            float radius = gestureObjs[i].gesture.GetGlobalSimilarity();
+            Vector3 newPos = location + new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * radius;
+            //newPos.y = yPosition;
+            gestureObjs[i].GetComponent<Transform>().localPosition = newPos;
         }
     }
 }

@@ -1,20 +1,19 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEditor.Scripting.Python;
 using UnityEngine;
 
 public class GestureAnalyser : MonoBehaviour
 {
     [SerializeField]
-    public int k;
+    public int k;  // k for k-means clustering
 
     public List<List<List<float>>> pythonArguments = new List<List<List<float>>>();
     public List<List<float>> pythonResult = new List<List<float>>();
-    
+    public float similarityScore = 0;
     private List<Gesture> gestures = new List<Gesture>();
     private Dictionary<int,Cluster> clusters = new Dictionary<int,Cluster>();
-    
+    private Gesture averageGesture; //average gesture of the entire dataset
+    private float globalConsensus;
     #region Singleton
     public static GestureAnalyser instance;
     #endregion
@@ -39,13 +38,17 @@ public class GestureAnalyser : MonoBehaviour
         PythonRunner.RunFile("Assets/Scripts/K_MeanClustering.py");
 
         //Calculate the barycentre for the dataset
-        //PythonRunner.RunFile("Assets/Scripts/BaryCentre.py");
+        CSharp2Python(gestures);
+        PythonRunner.RunFile("Assets/Scripts/BaryCentre.py");
+        averageGesture = Python2CSharp();
+        averageGesture.SetBoundingBox();
+        averageGesture.SetCentroid();
 
         // initialize clusters
         foreach (Gesture g in gestures)
         {
-            Cluster temp = GetCluster(g.cluster);
-            temp.AddGesture(g);
+            Cluster temp = TryGetCluster(g.cluster);
+            temp.AddGesture(g, true);
         }
 
         // calculate barycenter for each cluster
@@ -53,16 +56,20 @@ public class GestureAnalyser : MonoBehaviour
         foreach (KeyValuePair<int, Cluster> pair in clusters)
         {
             if (pair.Value.GestureCount() > 1){
-                CalculateBaryCentre(pair.Value.GetGestures());
-                pair.Value.SetBaryCentre(Python2CSharp()); }
+                //CalculateBaryCentre(pair.Value.GetGestures());
+                //pair.Value.SetBaryCentre(Python2CSharp());
+                pair.Value.UpdateBarycentre();
+                pair.Value.UpdateConsensus();
+            }
             else
             {
                 pair.Value.SetBaryCentre(pair.Value.GetGestures()[0]);
+                pair.Value.UpdateConsensus();
             }
         }
-      
+        CalculateGlobalConsensus();
     }
-    Cluster GetCluster(int id)
+    public Cluster TryGetCluster(int id)
     {
         if (clusters.ContainsKey(id))
             return clusters[id];
@@ -112,7 +119,7 @@ public class GestureAnalyser : MonoBehaviour
         PythonRunner.RunFile("Assets/Scripts/BaryCentre.py");
     }
 
-    Gesture Python2CSharp()
+    public Gesture Python2CSharp()
     {
         Gesture temp = new Gesture();
         temp.num_of_poses = pythonResult.Count;
@@ -153,5 +160,56 @@ public class GestureAnalyser : MonoBehaviour
    public void LogPythonResult(int i, int j, float value)
     {
         pythonResult[i][j] = value;
+    }
+
+    /// <summary>
+    /// calculates the pairwise similairity between any two gestures
+    /// </summary>
+    /// <param name="g1"></param>
+    /// <param name="g2"></param>
+    /// <returns></returns>
+   public float DTW_GestureWise(Gesture g1, Gesture g2)
+    {
+        List<Gesture> temp = new List<Gesture> { g1, g2 };
+        CSharp2Python(temp);
+
+        PythonRunner.RunFile("Assets/Scripts/DTW_GestureWise.py");
+        return similarityScore;
+    }
+
+    public void CalculateGlobalConsensus()
+    {
+        float sum = 0;
+        foreach (Gesture g in gestures)
+        {
+            float newSimilarity = DTW_GestureWise(g, averageGesture);
+            g.SetGlobalSimilarity(newSimilarity);
+            sum += Mathf.Pow(newSimilarity, 2);
+        }
+        globalConsensus = sum / gestures.Count;
+    }
+
+    public void CalculateClusterSimilarity()
+    {
+        //float sum = 0;
+        foreach (KeyValuePair<int, Cluster> pair in clusters)
+        {
+            pair.Value.SetSimilarity(
+            DTW_GestureWise(
+            pair.Value.GetBaryCentre(),
+            averageGesture));
+            //sum += Mathf.Pow(pair.Value.GetSimilarity(),2);
+        }
+        //Debug.Log(sum / gestures.Count);
+    }
+
+    public Gesture GetGlobalAverageGesture()
+    {
+        return averageGesture;
+    }
+
+    public float GetGlobalConsensus()
+    {
+        return globalConsensus;
     }
 }
