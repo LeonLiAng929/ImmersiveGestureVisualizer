@@ -147,7 +147,7 @@ public class GestureVisualizer : MonoBehaviour
 
         // instantiate trajectory
         GameObject newTrajObj = Instantiate(trajectoryPrefab, newGesVisTrans);
-        newTrajObj.name = g.gestureType + "Trajectory";
+        newTrajObj.name = "Trajectory";
         newTrajObj.AddComponent<Trajectory>();
         Trajectory traj = newTrajObj.GetComponent<Trajectory>();
         traj.SetAttributes(g, newTrajObj, trajectoryRendererPrefab, tracerRef);

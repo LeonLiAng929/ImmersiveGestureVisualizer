@@ -54,7 +54,7 @@ public class GestureGameObject : MonoBehaviour
     }
     public void ShowTracer()
     {
-        GameObject tracers = GetComponent<Transform>().Find("Tracers").gameObject;
+        GameObject tracers = GetComponent<Transform>().Find("Trajectory").Find("Tracers").gameObject;
         bool isActive = !tracers.activeSelf;
         tracers.SetActive(isActive);
     }
