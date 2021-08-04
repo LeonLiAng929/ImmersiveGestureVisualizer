@@ -7,7 +7,7 @@ public class DrawSkeleton : MonoBehaviour
     [SerializeField]
     protected GameObject lr;
     [SerializeField]
-    protected Transform skeletonRendererContainer;
+    //protected Transform skeletonRendererContainer;
 
     protected Transform trans;
     protected List<LineRenderer> lineRenderers = new List<LineRenderer>();
@@ -29,7 +29,7 @@ public class DrawSkeleton : MonoBehaviour
 
     LineRenderer Draw(Vector3[] points)
     {
-        GameObject newLineGen = Instantiate(lr, skeletonRendererContainer);
+        GameObject newLineGen = Instantiate(lr, trans.Find("LineRenderers"));
         // Get reference to newLineGen's LineRenderer.
         LineRenderer lRend = newLineGen.GetComponent<LineRenderer>();
 

@@ -59,10 +59,15 @@
     <Compile Include="Assets\Scripts\Obsolete\HandPrescence.cs" />
     <Compile Include="Assets\Scripts\Obsolete\Extensions.cs" />
     <Compile Include="Assets\Scripts\ClusterGameObject.cs" />
+    <Compile Include="Assets\Scripts\TesttingScript\ChangeColor.cs" />
     <Compile Include="Assets\Scripts\GestureVisualizer.cs" />
+    <Compile Include="Assets\Scripts\SummonMenu.cs" />
     <Compile Include="Assets\Scripts\Obsolete\K_Mean.cs" />
+    <Compile Include="Assets\Scripts\Actions.cs" />
+    <Compile Include="Assets\Scripts\TestCreateObjectsInCircle.cs" />
     <Compile Include="Assets\Scripts\GestureGameObject.cs" />
     <Compile Include="Assets\Scripts\Obsolete\DBA.cs" />
+    <Compile Include="Assets\Scripts\ActionSwitcher.cs" />
     <Compile Include="Assets\VR Beginner\Scripts\Gameplay\HandPrefab.cs" />
     <Compile Include="Assets\Scripts\VatavuDataWrangling\Joint.cs" />
     <Compile Include="Assets\Scripts\EventReactor.cs" />
@@ -73,7 +78,7 @@
     <Compile Include="Assets\Scripts\DrawSkeleton.cs" />
     <Compile Include="Assets\Scripts\GestureAnalyser.cs" />
     <Compile Include="Assets\Scripts\Extension.cs" />
-    <Compile Include="Assets\Scripts\TestCreateObjectsInCircle.cs" />
+    <Compile Include="Assets\Scripts\TesttingScript\pressed.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Resources\7\crouch-3.xml" />
@@ -111,6 +116,7 @@
     <None Include="Assets\Resources\19\slice carrots-1.xml" />
     <None Include="Assets\Resources\2\slice carrots-1.xml" />
     <None Include="Assets\Resources\19\throw ball-2.xml" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
     <None Include="Assets\Resources\15\hands up-3.xml" />
     <None Include="Assets\Resources\26\fly like a bird-2.xml" />
     <None Include="Assets\Resources\10\draw circle-1.xml" />
@@ -138,6 +144,7 @@
     <None Include="Assets\Resources\9\stand on one leg-1.xml" />
     <None Include="Assets\Resources\8\scratch like a cat-2.xml" />
     <None Include="Assets\Resources\8\fly like a bird-2.xml" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
     <None Include="Assets\Resources\6\turn around-2.xml" />
     <None Include="Assets\Resources\17\climb ladder-2.xml" />
     <None Include="Assets\Resources\3\climb ladder-5.xml" />
@@ -266,6 +273,7 @@
     <None Include="Assets\Resources\21\turn around-2.xml" />
     <None Include="Assets\Resources\13\draw flower-3.xml" />
     <None Include="Assets\Resources\8\draw square-3.xml" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
     <None Include="Assets\Resources\29\crouch-1.xml" />
     <None Include="Assets\Resources\22\fly like a bird-3.xml" />
     <None Include="Assets\Resources\6\draw flower-2.xml" />
@@ -382,6 +390,7 @@
     <None Include="Assets\Resources\1\draw square-3.xml" />
     <None Include="Assets\Resources\24\hands up-2.xml" />
     <None Include="Assets\Resources\18\draw square-1.xml" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc" />
     <None Include="Assets\Resources\14\hands up-1.xml" />
     <None Include="Assets\Resources\21\crouch-2.xml" />
     <None Include="Assets\Resources\19\draw flower-2.xml" />
@@ -404,6 +413,7 @@
     <None Include="Assets\Resources\18\stand on one leg-3.xml" />
     <None Include="Assets\Resources\7\scratch like a cat-1.xml" />
     <None Include="Assets\Resources\5\fly like a bird-1.xml" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader" />
     <None Include="Assets\Resources\22\fly like a bird-1.xml" />
     <None Include="Assets\Resources\11\scratch like a cat-3.xml" />
     <None Include="Assets\Resources\28\hands up-1.xml" />
@@ -508,6 +518,7 @@
     <None Include="Assets\Resources\15\fly like a bird-1.xml" />
     <None Include="Assets\Resources\1\angry like a bear-3.xml" />
     <None Include="Assets\Resources\26\crouch-2.xml" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />
     <None Include="Assets\Resources\5\scratch like a cat-2.xml" />
     <None Include="Assets\Resources\12\stand on one leg-2.xml" />
     <None Include="Assets\Resources\4\draw circle-2.xml" />
@@ -709,6 +720,7 @@
     <None Include="Assets\Resources\17\applaud-1.xml" />
     <None Include="Assets\Resources\20\throw ball-1.xml" />
     <None Include="Assets\Resources\23\turn around-3.xml" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />
     <None Include="Assets\Resources\6\climb ladder-1.xml" />
     <None Include="Assets\Resources\11\draw circle-1.xml" />
     <None Include="Assets\Resources\17\fly like a bird-2.xml" />
@@ -731,11 +743,13 @@
     <None Include="Assets\Resources\28\turn around-1.xml" />
     <None Include="Assets\Resources\23\hands up-3.xml" />
     <None Include="Assets\Resources\29\draw flower-3.xml" />
+    <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
     <None Include="Assets\Resources\29\stand on one leg-2.xml" />
     <None Include="Assets\Resources\1\draw square-1.xml" />
     <None Include="Assets\Resources\2\angry like a bear-1.xml" />
     <None Include="Assets\Resources\4\hands up-3.xml" />
     <None Include="Assets\Resources\22\slice carrots-3.xml" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
     <None Include="Assets\Resources\14\crouch-1.xml" />
     <None Include="Assets\Resources\25\throw ball-2.xml" />
     <None Include="Assets\Resources\12\turn around-2.xml" />
@@ -745,6 +759,7 @@
     <None Include="Assets\Resources\25\jump-1.xml" />
     <None Include="Assets\Resources\15\hands up-1.xml" />
     <None Include="Assets\Resources\2\hands up-2.xml" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF.shader" />
     <None Include="Assets\Resources\1\jump-2.xml" />
     <None Include="Assets\Resources\28\stand on one leg-3.xml" />
     <None Include="Assets\Resources\6\scratch like a cat-2.xml" />
@@ -778,6 +793,7 @@
     <None Include="Assets\Resources\22\fly like a bird-4.xml" />
     <None Include="Assets\Resources\18\hands up-2.xml" />
     <None Include="Assets\Resources\30\scratch like a cat-3.xml" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile SSD.shader" />
     <None Include="Assets\Resources\19\slice carrots-3.xml" />
     <None Include="Assets\Resources\11\hands up-2.xml" />
     <None Include="Assets\Resources\14\slice carrots-1.xml" />
@@ -785,6 +801,7 @@
     <None Include="Assets\Resources\16\draw flower-1.xml" />
     <None Include="Assets\Resources\2\slice carrots-2.xml" />
     <None Include="Assets\Resources\13\crouch-3.xml" />
+    <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
     <None Include="Assets\Resources\4\angry like a bear-1.xml" />
     <None Include="Assets\Resources\16\jump-2.xml" />
     <None Include="Assets\Resources\21\throw ball-1.xml" />
@@ -816,6 +833,7 @@
     <None Include="Assets\Resources\20\stand on one leg-2.xml" />
     <None Include="Assets\Resources\24\crouch-3.xml" />
     <None Include="Assets\Resources\21\stand on one leg-2.xml" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc" />
     <None Include="Assets\Resources\28\crouch-2.xml" />
     <None Include="Assets\Resources\20\applaud-1.xml" />
     <None Include="Assets\Resources\23\climb ladder-1.xml" />
@@ -870,6 +888,7 @@
     <None Include="Assets\Resources\1\applaud-2.xml" />
     <None Include="Assets\Resources\30\draw flower-3.xml" />
     <None Include="Assets\Resources\20\draw square-1.xml" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc" />
     <None Include="Assets\Resources\28\stand on one leg-1.xml" />
     <None Include="Assets\Resources\29\draw square-1.xml" />
     <None Include="Assets\Resources\10\draw flower-2.xml" />
@@ -957,6 +976,7 @@
     <None Include="Assets\Resources\11\applaud-3.xml" />
     <None Include="Assets\Resources\27\draw circle-3.xml" />
     <None Include="Assets\Resources\8\turn around-3.xml" />
+    <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
     <None Include="Assets\Resources\3\draw flower-3.xml" />
     <None Include="Assets\Resources\11\turn around-3.xml" />
     <None Include="Assets\Resources\18\stand on one leg-2.xml" />
@@ -1110,6 +1130,7 @@
     <None Include="Assets\Resources\13\turn around-1.xml" />
     <None Include="Assets\Resources\15\jump-1.xml" />
     <None Include="Assets\Resources\15\draw flower-1.xml" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />
     <None Include="Assets\Resources\21\fly like a bird-2.xml" />
     <None Include="Assets\Resources\3\slice carrots-1.xml" />
     <None Include="Assets\Resources\16\stand on one leg-1.xml" />
@@ -1213,6 +1234,7 @@
     <None Include="Assets\Resources\1\slice carrots-2.xml" />
     <None Include="Assets\Resources\5\draw circle-1.xml" />
     <None Include="Assets\Resources\25\draw square-3.xml" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
     <None Include="Assets\Resources\10\jump-3.xml" />
     <None Include="Assets\Resources\19\hands up-1.xml" />
     <None Include="Assets\Resources\19\stand on one leg-3.xml" />
@@ -1235,6 +1257,7 @@
     <None Include="Assets\Resources\22\crouch-3.xml" />
     <None Include="Assets\Resources\6\draw circle-1.xml" />
     <None Include="Assets\Resources\25\draw flower-2.xml" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />
     <None Include="Assets\Resources\8\jump-2.xml" />
     <None Include="Assets\Resources\28\angry like a bear-1.xml" />
     <None Include="Assets\Resources\7\jump-3.xml" />
@@ -1262,6 +1285,7 @@
     <None Include="Assets\Oculus\SampleFramework\Core\CustomHands\Materials\Hands_Transparent.shader" />
     <None Include="Assets\Resources\16\crouch-1.xml" />
     <None Include="Assets\Resources\18\climb ladder-2.xml" />
+    <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
     <None Include="Assets\Resources\18\draw square-2.xml" />
     <None Include="Assets\Resources\21\draw square-1.xml" />
     <None Include="Assets\Resources\9\draw square-2.xml" />
@@ -1303,6 +1327,7 @@
     <None Include="Assets\Resources\6\applaud-2.xml" />
     <None Include="Assets\Resources\17\applaud-3.xml" />
     <None Include="Assets\Resources\21\jump-2.xml" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader" />
     <None Include="Assets\Resources\17\draw circle-2.xml" />
     <None Include="Assets\Resources\17\turn around-3.xml" />
     <None Include="Assets\Resources\12\draw circle-2.xml" />
@@ -1385,6 +1410,7 @@
     <None Include="Assets\Resources\19\applaud-2.xml" />
     <None Include="Assets\Resources\14\stand on one leg-2.xml" />
     <None Include="Assets\Resources\22\jump-1.xml" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_Sprite.shader" />
     <None Include="Assets\Resources\4\applaud-1.xml" />
     <None Include="Assets\Resources\25\angry like a bear-3.xml" />
     <None Include="Assets\Resources\25\scratch like a cat-2.xml" />

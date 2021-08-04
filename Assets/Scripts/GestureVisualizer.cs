@@ -18,8 +18,6 @@ public class GestureVisualizer : MonoBehaviour
     [SerializeField]
     protected GameObject gesVisPrefab;
     [SerializeField]
-    protected Transform GesVisContainer;
-    [SerializeField]
     protected GameObject skeletonModel;
     [SerializeField]
     protected GameObject clusterVisPrefab;
@@ -78,6 +76,7 @@ public class GestureVisualizer : MonoBehaviour
             GameObject newGesVis = Instantiate(gesVisPrefab, clustersObjDic[g.cluster].GetComponent<Transform>());
             newGesVis.name = g.gestureType + g.id.ToString();
             newGesVis.GetComponent<GestureGameObject>().gesture = g;
+            newGesVis.GetComponent<GestureGameObject>().Initialize();
             Transform newGesVisTrans = newGesVis.GetComponent<Transform>();
 
             InstantiateTrajectory(newGesVis, g);
