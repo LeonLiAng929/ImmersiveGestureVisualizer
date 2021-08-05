@@ -26,6 +26,8 @@ public class GestureVisualizer : MonoBehaviour
     private List<Color> trajectoryColorSet = new List<Color>();
     private Dictionary<int, Color> clusterColorDic = new Dictionary<int, Color>();
 
+    public List<GameObject> stackedObjects = new List<GameObject>();
+
     #region Singleton
     public static GestureVisualizer instance;
     #endregion
@@ -60,7 +62,7 @@ public class GestureVisualizer : MonoBehaviour
             clustersObjDic.Add(pair.Key, newClusterObj);
         }
 
-        float y = 0;
+        //float y = 0;
 
         //Generate trajectory and tracer colors
 
@@ -83,7 +85,7 @@ public class GestureVisualizer : MonoBehaviour
 
             // instantiate small-multiples 
             List<Pose> sampled = g.Resample(5);
-            float x = 0;
+            float x = 1;
             int samplePoseIndex = 1;
             foreach (Pose p in sampled)
             {
@@ -93,14 +95,15 @@ public class GestureVisualizer : MonoBehaviour
                 samplePoseIndex++;
                 Transform[] transforms = skeleton.GetComponentsInChildren<Transform>();
                 //Debug.Log(transforms.Length);
-                transforms[0].localPosition = new Vector3(y, g.cluster, x);
+                transforms[0].localPosition = new Vector3(0, 0, x);
                 x += 1;
                 for (int i = 1; i < 21; i++)
                 {
                     transforms[i].localPosition = p.joints[i-1].ToVector();
                 }
             }
-            y = y + float.Parse("1.5");
+            newGesVisTrans.GetComponent<Transform>().Find("SmallMultiples").gameObject.SetActive(false);
+            //y = y + float.Parse("1.5");
         }
 
         // set size for the clusters in the scene
@@ -124,10 +127,14 @@ public class GestureVisualizer : MonoBehaviour
         }
 
         // arrage initial position for gestures under each cluster
-        /*foreach (KeyValuePair<int, GameObject> pair in clustersObjDic)
+        foreach (KeyValuePair<int, GameObject> pair in clustersObjDic)
         {
-            pair.Value.GetComponentInChildren<ClusterGameObject>().ArrangeLocationForChildren();
-        }*/
+            pair.Value.SetActive(true);
+            foreach(GestureGameObject gGO in pair.Value.GetComponentsInChildren<GestureGameObject>())
+            {
+                gGO.ShowTracer();
+            }
+        }
 
         ArrangeLocationForGestures();
 
@@ -138,7 +145,29 @@ public class GestureVisualizer : MonoBehaviour
     }
     private void Update()
     {
-      
+      if (ActionSwitcher.instance.GetCurrentAction() != Actions.StackGestures)
+        {
+            foreach (GameObject obj in stackedObjects)
+            {
+                obj.GetComponent<GestureGameObject>().ResumePosition();
+                MeshRenderer[] mr = obj.GetComponent<Transform>().Find("Trajectory").Find("Skeleton").GetComponentsInChildren<MeshRenderer>();
+                foreach (MeshRenderer m in mr)
+                {
+                    Color temp = m.material.color;
+                    temp.a = 1;
+                    m.material.color = temp;
+                }
+
+                LineRenderer[] traj = obj.GetComponent<Transform>().Find("Trajectory").Find("LineRanderers").GetComponentsInChildren<LineRenderer>();
+                foreach (LineRenderer lr in traj)
+                {
+                    Color temp = lr.endColor;
+                    temp.a = 1;
+                    lr.startColor = temp;
+                    lr.endColor = temp;
+                }
+            }
+        }
     }
 
     public void InstantiateTrajectory(GameObject gestureVis, Gesture g)
@@ -198,7 +227,34 @@ public class GestureVisualizer : MonoBehaviour
             float radius = gestureObjs[i].gesture.GetGlobalSimilarity();
             Vector3 newPos = location + new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * radius;
             //newPos.y = yPosition;
+            gestureObjs[i].allocatedPos = newPos;
             gestureObjs[i].GetComponent<Transform>().localPosition = newPos;
+        }
+    }
+
+    public void PrepareStack()
+    {
+        float a = 2.0f;
+        a = a / stackedObjects.Count;
+
+        foreach(GameObject obj in stackedObjects)
+        {
+            MeshRenderer[] mr = obj.GetComponent<Transform>().Find("Trajectory").Find("Skeleton").GetComponentsInChildren<MeshRenderer>();
+            foreach (MeshRenderer m in mr)
+            {
+                Color temp = m.material.color;
+                temp.a = a;
+                m.material.color = temp;
+            }
+
+            LineRenderer[] traj = obj.GetComponent<Transform>().Find("Trajectory").Find("LineRanderers").GetComponentsInChildren<LineRenderer>();
+            foreach (LineRenderer lr in traj)
+            {
+                Color temp = lr.endColor;
+                temp.a = a;
+                lr.startColor = temp;
+                lr.endColor = temp;
+            }
         }
     }
 }

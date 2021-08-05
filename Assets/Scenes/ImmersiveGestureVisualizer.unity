@@ -489,7 +489,7 @@ Transform:
   m_GameObject: {fileID: 91274727}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.5, y: 1, z: 0.5}
   m_Children: []
   m_Father: {fileID: 1261460697}
   m_RootOrder: 1
@@ -5163,6 +5163,7 @@ MonoBehaviour:
   gesVisPrefab: {fileID: 1261460696}
   skeletonModel: {fileID: 36504450}
   clusterVisPrefab: {fileID: 91992558}
+  stackedObjects: []
 --- !u!1 &1608542105
 GameObject:
   m_ObjectHideFlags: 0

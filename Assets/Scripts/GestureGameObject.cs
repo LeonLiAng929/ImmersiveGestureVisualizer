@@ -17,6 +17,8 @@ public class GestureGameObject : MonoBehaviour
     private float currTime = 0;
     private int counter = 0;
     private float prevTimestamp;
+    private GameObject stackedObj;
+    public Vector3 allocatedPos;
     // Update is called once per frame
     void Update()
     {
@@ -37,6 +39,7 @@ public class GestureGameObject : MonoBehaviour
     {
         xRSimpleInteractable = GetComponent<XRSimpleInteractable>();
         xRSimpleInteractable.activated.AddListener(PerformAction);
+        
     }
 
     private void OnDestroy()
@@ -47,10 +50,10 @@ public class GestureGameObject : MonoBehaviour
     public void PerformAction(ActivateEventArgs arg)
     {
         Actions curr = ActionSwitcher.instance.GetCurrentAction();
-        if (curr == Actions.Animate){ ActivateAnimate(); }
-        else if(curr == Actions.ChangeCluster){ ChangeCluster(); }
-        else if(curr == Actions.ShowSmallMultiples) { ShowSmallMultiples();}
-        else if(curr == Actions.ShowTracer) { ShowTracer();}
+        if (curr == Actions.Animate){ ActivateAnimate();  }
+        else if(curr == Actions.ChangeCluster){ ChangeCluster();  }
+        else if(curr == Actions.ShowSmallMultiples) { ShowSmallMultiples();  }
+        else if(curr == Actions.ShowTracer) { ShowTracer();  }
         else if(curr == Actions.StackGestures) { StackGestures();}
     }
     
@@ -139,8 +142,27 @@ public class GestureGameObject : MonoBehaviour
     }
     public void StackGestures()
     {
-
+        /*if (stackedObj != null)
+            Destroy(stackedObj);
+        
+        GameObject clone = Instantiate(GetComponent<Transform>().gameObject);
+        clone.GetComponent<Transform>().Find("Trajectory").localPosition = new Vector3(0, 0, 0);
+        stackedObj = clone;
+        stackedObj.name = "StackedObject" + gesture.id.ToString();
+        List<GameObject> stackedList = GestureVisualizer.instance.stackedObjects;
+        if (!stackedList.Contains(stackedObj))
+            stackedList.Add(stackedObj);
+        GestureVisualizer.instance.PrepareStack();*/
+        List<GameObject> stackedList = GestureVisualizer.instance.stackedObjects;
+        if (!stackedList.Contains(gameObject))
+            gameObject.transform.localPosition = new Vector3(0, 0, 0);
+            stackedList.Add(gameObject);
+        GestureVisualizer.instance.PrepareStack();
     }
 
+    public void ResumePosition()
+    {
+        gameObject.transform.localPosition = allocatedPos;
+    }
 }
   
