@@ -156,6 +156,7 @@ public class GestureVisualizer : MonoBehaviour
         //instantiate skeletonReference for trajectories
         Transform trajTrans = traj.GetComponent<Transform>();
         GameObject skeleton = Instantiate(skeletonModel, trajTrans);
+        skeleton.name = "Skeleton";
         foreach (MeshRenderer mr in skeleton.GetComponentsInChildren<MeshRenderer>())
         {
             mr.material.color = clusterColorDic[g.cluster];
