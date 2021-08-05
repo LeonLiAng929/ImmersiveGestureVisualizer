@@ -10,6 +10,7 @@ public class SummonMenu : MonoBehaviour
     private void Awake()
     {
         buttonPressedRef.action.started += Summon;
+        gameObject.SetActive(false);
     }
 
     // Update is called once per frame
