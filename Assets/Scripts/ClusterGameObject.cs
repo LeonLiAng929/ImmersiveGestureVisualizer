@@ -8,9 +8,7 @@ public class ClusterGameObject : MonoBehaviour
     public int clusterID;
     public Transform baryCentreVis;
     private Vector3 initialPos;
-    private bool selected = false;
-    private float riseUpHeightConstant = 3;
-    private XRGrabInteractable interactable = null;
+    private XRSimpleInteractable interactable = null;
     
     // Start is called before the first frame update
     void Start()
@@ -29,19 +27,27 @@ public class ClusterGameObject : MonoBehaviour
         }
     }
 
-    public void InitializeClusterVisualization(Vector3 scale)
+    public void UpdateClusterVisualization(Vector3 scale)
     {
         // set cluster size 
         Transform trans = GetComponent<Transform>();
         trans.localScale = scale;
-        //trans.localPosition = new Vector3(scale.x*3, scale.y / 2, 0);
 
         /*if (interactable == null)
         {
-            interactable = GetComponent<XRGrabInteractable>();
+            interactable = GetComponent<XRSimpleInteractable>();
             interactable.activated.AddListener(GetSelected);
         }*/
 
+        if (scale.y > 1)
+        {
+            Vector3 size = baryCentreVis.GetComponent<GestureGameObject>().gesture.GetBoundingBoxSize();
+            float initHeight = size.y;
+            float currHeight = size.y * scale.y;
+            Vector3 temp = baryCentreVis.transform.localPosition;
+            temp.y += (currHeight - initHeight)/2;
+            baryCentreVis.transform.localPosition = temp;
+        }
         // register initial position
         initialPos = trans.localPosition;
 

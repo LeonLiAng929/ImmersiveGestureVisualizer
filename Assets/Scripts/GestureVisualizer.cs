@@ -106,14 +106,7 @@ public class GestureVisualizer : MonoBehaviour
             //y = y + float.Parse("1.5");
         }
 
-        // set size for the clusters in the scene
-        foreach (KeyValuePair<int, GameObject> p in clustersObjDic)
-        {
-            ClusterGameObject a = p.Value.GetComponentInChildren<ClusterGameObject>();
-            float count = Mathf.Sqrt(clusters[p.Key].GestureCount());
-            a.InitializeClusterVisualization(new Vector3(count, count, count));
-        }
-
+  
         // instantiate barycentre visualization for each cluster
         foreach (KeyValuePair<int, GameObject> p in clustersObjDic)
         {
@@ -138,6 +131,14 @@ public class GestureVisualizer : MonoBehaviour
         }
 
         ArrangeLocationForGestures();
+
+        // set size for the clusters in the scene
+        foreach (KeyValuePair<int, GameObject> p in clustersObjDic)
+        {
+            ClusterGameObject a = p.Value.GetComponentInChildren<ClusterGameObject>();
+            float count = Mathf.Sqrt(clusters[p.Key].GestureCount());
+            a.UpdateClusterVisualization(new Vector3(count, count, count));
+        }
 
         Destroy(tracerRef);
         Destroy(skeletonModel);
@@ -227,7 +228,7 @@ public class GestureVisualizer : MonoBehaviour
         {
             float angle = i * angleSection;
             float radius = gestureObjs[i].gesture.GetGlobalSimilarity();
-            Vector3 newPos = location + new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * radius;
+            Vector3 newPos = location + new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * radius * 2;
             //newPos.y = yPosition;
             gestureObjs[i].allocatedPos = newPos;
             gestureObjs[i].GetComponent<Transform>().localPosition = newPos;
