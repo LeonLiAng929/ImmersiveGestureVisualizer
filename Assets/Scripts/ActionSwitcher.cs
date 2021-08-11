@@ -11,7 +11,6 @@ public class ActionSwitcher : MonoBehaviour
     #endregion
     //public Dictionary<string, bool> actions = new Dictionary<string, bool>();
 
-    //public enum Actions { Animate=0, ChangeCluster=1, ShowTracer=2,StackGestures=3,UnfoldCluster=4,ShowSmallMultiples=5 };
     private static Actions currentlyActive;
     public int actionID;
     

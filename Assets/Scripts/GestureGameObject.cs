@@ -17,8 +17,9 @@ public class GestureGameObject : MonoBehaviour
     private float currTime = 0;
     private int counter = 0;
     private float prevTimestamp;
-    private GameObject stackedObj;
     public Vector3 allocatedPos;
+    public Vector3 sizeB4Stack;
+    private bool stacked;
     // Update is called once per frame
     void Update()
     {
@@ -142,27 +143,33 @@ public class GestureGameObject : MonoBehaviour
     }
     public void StackGestures()
     {
-        /*if (stackedObj != null)
-            Destroy(stackedObj);
-        
-        GameObject clone = Instantiate(GetComponent<Transform>().gameObject);
-        clone.GetComponent<Transform>().Find("Trajectory").localPosition = new Vector3(0, 0, 0);
-        stackedObj = clone;
-        stackedObj.name = "StackedObject" + gesture.id.ToString();
-        List<GameObject> stackedList = GestureVisualizer.instance.stackedObjects;
-        if (!stackedList.Contains(stackedObj))
-            stackedList.Add(stackedObj);
-        GestureVisualizer.instance.PrepareStack();*/
+        stacked = true;
         List<GameObject> stackedList = GestureVisualizer.instance.stackedObjects;
         if (!stackedList.Contains(gameObject))
             gameObject.transform.localPosition = new Vector3(0, 0, 0);
+
+        if (gameObject.name == "AverageGesture")
+        {
+            sizeB4Stack = gameObject.transform.localScale;
+            gameObject.transform.localScale = new Vector3(1, 1, 1);
+        }
             stackedList.Add(gameObject);
         GestureVisualizer.instance.PrepareStack();
     }
 
-    public void ResumePosition()
+    public bool IsStacked()
     {
+        return stacked;
+    }
+
+    public void RevertStacking()
+    {
+        stacked = false;
         gameObject.transform.localPosition = allocatedPos;
+        if (gameObject.name == "AverageGesture")
+        {
+            gameObject.transform.localScale = sizeB4Stack;
+        }
     }
 }
   

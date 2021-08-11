@@ -21,14 +21,12 @@ public class ClusterGameObject : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // keep bary centre visualization at the centroid of the cluster.
-        this.GetComponent<Transform>().localPosition = baryCentreVis.localPosition;
-        baryCentreVis.localScale = GetComponent<Transform>().localScale * (float)0.8;
-        /*if (selected) { 
-            RiseUp();
+        if (!baryCentreVis.GetComponent<GestureGameObject>().IsStacked())
+        {
+            // keep bary centre visualization at the centroid of the cluster.
+            this.GetComponent<Transform>().localPosition = baryCentreVis.localPosition;
+            baryCentreVis.localScale = GetComponent<Transform>().localScale * (float)0.8;
         }
-        else
-        FallDown();*/
     }
 
     public void InitializeClusterVisualization(Vector3 scale)
@@ -38,58 +36,15 @@ public class ClusterGameObject : MonoBehaviour
         trans.localScale = scale;
         //trans.localPosition = new Vector3(scale.x*3, scale.y / 2, 0);
 
-        if (interactable == null)
+        /*if (interactable == null)
         {
             interactable = GetComponent<XRGrabInteractable>();
             interactable.activated.AddListener(GetSelected);
-        }
+        }*/
 
         // register initial position
         initialPos = trans.localPosition;
 
-    }
-
-    public void RiseUp()
-    {
-        Transform trans = GetComponent<Transform>();
-        Vector3 start_pos = trans.localPosition;
-        Vector3 end_pos = new Vector3(initialPos.x, initialPos.y + riseUpHeightConstant, initialPos.z);
-        if (!Reached(start_pos, end_pos))
-        {
-            //Debug.Log("start: "+start_pos.ToString());
-            //Debug.Log("end:" + end_pos.ToString());
-         
-            trans.localPosition += Vector3.up * Time.deltaTime;
-        }
-    }
-
-    public void FallDown()
-    {
-        Transform trans = GetComponent<Transform>();
-        Vector3 start_pos = trans.localPosition;
-        Vector3 end_pos = initialPos;
-        if (!Reached(end_pos, start_pos))
-        {
-            trans.localPosition += Vector3.down * Time.deltaTime;
-        }
-    }
-
- 
-   
-    public bool Reached(Vector3 curr, Vector3 destination)
-    {
-        return curr == destination;
-    }
-    public void GetSelected(ActivateEventArgs interactor)
-    {
-        if (selected)
-        {
-            selected = false;
-        }
-        else
-        {
-            selected = true;
-        }
     }
 
     public void InstantiateInCircle(List<GestureGameObject> gestureObjs, Vector3 location)

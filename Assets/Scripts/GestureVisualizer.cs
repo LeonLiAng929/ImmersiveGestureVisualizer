@@ -124,6 +124,7 @@ public class GestureVisualizer : MonoBehaviour
             ClusterGameObject a = p.Value.GetComponentInChildren<ClusterGameObject>();
             a.baryCentreVis = newGesVisTrans;
             InstantiateTrajectory(newGesVis, GestureAnalyser.instance.GetClusterByID(a.clusterID).GetBaryCentre());
+            newGesVis.GetComponent<GestureGameObject>().Initialize();
         }
 
         // arrage initial position for gestures under each cluster
@@ -145,11 +146,11 @@ public class GestureVisualizer : MonoBehaviour
     }
     private void Update()
     {
-      if (ActionSwitcher.instance.GetCurrentAction() != Actions.StackGestures)
+      if (ActionSwitcher.instance.GetCurrentAction() == Actions.ResumeStackedGestures)
         {
             foreach (GameObject obj in stackedObjects)
             {
-                obj.GetComponent<GestureGameObject>().ResumePosition();
+                obj.GetComponent<GestureGameObject>().RevertStacking();
                 MeshRenderer[] mr = obj.GetComponent<Transform>().Find("Trajectory").Find("Skeleton").GetComponentsInChildren<MeshRenderer>();
                 foreach (MeshRenderer m in mr)
                 {
@@ -167,6 +168,7 @@ public class GestureVisualizer : MonoBehaviour
                     lr.endColor = temp;
                 }
             }
+            stackedObjects.Clear();
         }
     }
 
