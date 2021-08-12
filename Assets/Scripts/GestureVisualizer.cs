@@ -132,13 +132,17 @@ public class GestureVisualizer : MonoBehaviour
             newGesVis.GetComponent<GestureGameObject>().Initialize();
         }
 
-        // arrage initial position for gestures under each cluster
+        // arrange initial position for gestures under each cluster
         foreach (KeyValuePair<int, GameObject> pair in clustersObjDic)
         {
             pair.Value.SetActive(true);
             foreach(GestureGameObject gGO in pair.Value.GetComponentsInChildren<GestureGameObject>())
             {
                 gGO.ShowTracer();
+                if (gGO.gameObject.name != "AverageGesture")
+                {
+                    gGO.gameObject.SetActive(false);
+                }
             }
         }
 
@@ -223,7 +227,7 @@ public class GestureVisualizer : MonoBehaviour
         List<GestureGameObject> gesGameObjLi = new List<GestureGameObject>();
         foreach(KeyValuePair<int, GameObject> pair in clustersObjDic)
         {
-            List<GestureGameObject> temp = new List<GestureGameObject>(pair.Value.GetComponentsInChildren<GestureGameObject>());
+            List<GestureGameObject> temp = new List<GestureGameObject>(pair.Value.GetComponentsInChildren<GestureGameObject>(true));
 
             gesGameObjLi = gesGameObjLi.Concat<GestureGameObject>(temp).ToList();
         }

@@ -71,7 +71,7 @@ public class GestureGameObject : MonoBehaviour
         //else if(curr == Actions.Slidimation) { ShowTracer();  }
         else if (curr == Actions.Slidimation) { ActivateSwinging(); 
             GestureVisualizer.instance.rightController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.deviceRotation, out lastQuat); }
-        else if(curr == Actions.StackGestures) { StackGestures();}
+        else if(curr == Actions.StackGestures) { StackGesture();}
     }
 
 
@@ -224,7 +224,7 @@ public class GestureGameObject : MonoBehaviour
         bool isActive = !tracers.activeSelf;
         tracers.SetActive(isActive);
     }
-    public void StackGestures()
+    public void StackGesture()
     {
         stacked = true;
         List<GameObject> stackedList = GestureVisualizer.instance.stackedObjects;

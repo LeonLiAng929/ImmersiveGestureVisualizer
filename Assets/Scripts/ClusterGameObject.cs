@@ -7,7 +7,6 @@ public class ClusterGameObject : MonoBehaviour
 {
     public int clusterID;
     public Transform baryCentreVis;
-    private Vector3 initialPos;
     private XRSimpleInteractable interactable = null;
     
     // Start is called before the first frame update
@@ -33,11 +32,11 @@ public class ClusterGameObject : MonoBehaviour
         Transform trans = GetComponent<Transform>();
         trans.localScale = scale;
 
-        /*if (interactable == null)
+        if (interactable == null)
         {
             interactable = GetComponent<XRSimpleInteractable>();
-            interactable.activated.AddListener(GetSelected);
-        }*/
+            interactable.activated.AddListener(PerformAction);
+        }
 
         if (scale.y > 1)
         {
@@ -47,10 +46,35 @@ public class ClusterGameObject : MonoBehaviour
             Vector3 temp = baryCentreVis.transform.localPosition;
             temp.y += (currHeight - initHeight)/2;
             baryCentreVis.transform.localPosition = temp;
+            baryCentreVis.GetComponent<GestureGameObject>().allocatedPos = temp;
         }
-        // register initial position
-        initialPos = trans.localPosition;
+    }
 
+    public void PerformAction(ActivateEventArgs arg)
+    {
+        Actions curr = ActionSwitcher.instance.GetCurrentAction();
+        if (curr == Actions.StackAll) { StackAll(); }
+        else if (curr == Actions.UnfoldCluster) { UnfoldCluster(); }
+    }
+
+    public void StackAll()
+    {
+        foreach (GestureGameObject gGO in gameObject.transform.parent.gameObject.GetComponentsInChildren<GestureGameObject>(true))
+        {
+            gGO.StackGesture();
+        }
+    }
+
+    public void UnfoldCluster()
+    {
+        foreach (GestureGameObject gGO in gameObject.transform.parent.gameObject.GetComponentsInChildren<GestureGameObject>(true))
+        {
+            bool unfold = !gGO.gameObject.activeSelf;
+            if (gGO.gameObject.name != "AverageGesture")
+            {
+                gGO.gameObject.SetActive(unfold);
+            }
+        }
     }
 
     public void InstantiateInCircle(List<GestureGameObject> gestureObjs, Vector3 location)
