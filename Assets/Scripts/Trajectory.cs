@@ -20,7 +20,7 @@ public class Trajectory : MonoBehaviour
     {
         gesture = ges;
         lr = renderer;
-        lr.GetComponent<LineRenderer>().SetWidth(0.01f, 0.01f);
+        lr.GetComponent<LineRenderer>().SetWidth(0.04f, 0.04f);
         trajecotryGameObject = trajRef;
         //TrajectoryRendererContainer = container;
         currPos = ges.GetCentroid();
@@ -46,8 +46,8 @@ public class Trajectory : MonoBehaviour
         float alpha = 1.0f;
         Gradient gradient = new Gradient();
         gradient.SetKeys(
-            new GradientColorKey[] { new GradientColorKey(Color.Lerp(c, Color.white, 0.5f), 0.0f), new GradientColorKey(Color.Lerp(c, Color.black, 0.5f), 1.0f) },
-            new GradientAlphaKey[] { new GradientAlphaKey(alpha, 0.0f), new GradientAlphaKey(alpha, 1.0f) }
+            new GradientColorKey[] { new GradientColorKey(c, 0.0f), new GradientColorKey(c, 1.0f) },
+            new GradientAlphaKey[] { new GradientAlphaKey(alpha, 0f), new GradientAlphaKey(alpha, 1.0f) }
         );
           
         lRend.colorGradient = gradient;
@@ -72,7 +72,7 @@ public class Trajectory : MonoBehaviour
                 newTracer.GetComponent<MeshRenderer>().material.color = colorSet[j];
                 Transform tracerTrans = newTracer.GetComponent<Transform>();
                 tracerTrans.localPosition = gesture.poses[i].joints[j].ToVector();
-                newTracer.GetComponent<TrajectoryTracer>().SetAttributes(i, this);
+                newTracer.GetComponent<TrajectoryTracer>().SetAttributes(this);
 
                 //Debug.Log(points.ToArray());
             }
@@ -82,10 +82,20 @@ public class Trajectory : MonoBehaviour
             //trajectoryData.Add(points.ToArray());
         }
     }
-
-    public void UpdateCurrPoseIndex(int x)
+/*
+    public void IncrementCurrPoseIndex()
     {
-        currPoseIndex = x;
+        currPoseIndex += 1;
+    }
+
+    public void DecrementCurrPoseIndex()
+    {
+        currPoseIndex -= 1;
+    }
+
+    public int GetCurrPoseIndex()
+    {
+        return currPoseIndex;
     }
     public void UpdateSkeletonPos()
     {
@@ -94,25 +104,10 @@ public class Trajectory : MonoBehaviour
         {
             transforms[i].localPosition = gesture.poses[currPoseIndex].joints[i-1].ToVector();
         }
-    }
+    }*/
 
     public void UpdateTrajectoryPos()
     {
-        /*Transform t = trajecotryGameObject.GetComponent<Transform>();
-        if (currPos != t.position)
-        {
-            Vector3 pos = currPos - t.position;
-            currPos = t.position;
-            for (int i = 0; i < trajectoryRenderers.Count; i++)
-            {
-                Vector3[] newpos = trajectoryData[i];
-                for (int j = 0; j < newpos.Length; j++)
-                {
-                    newpos[j] -= pos;
-                }
-                trajectoryRenderers[i].SetPositions(newpos);
-            }
-        }*/
         Transform t = trajecotryGameObject.GetComponent<Transform>();
         if (currPos != t.position)
         {

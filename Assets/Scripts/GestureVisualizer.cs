@@ -3,6 +3,7 @@ using System.Collections;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.XR;
 
 
 
@@ -25,7 +26,7 @@ public class GestureVisualizer : MonoBehaviour
     private Dictionary<int, GameObject> clustersObjDic = new Dictionary<int, GameObject>();
     private List<Color> trajectoryColorSet = new List<Color>();
     private Dictionary<int, Color> clusterColorDic = new Dictionary<int, Color>();
-
+    public InputDevice rightController;
     public List<GameObject> stackedObjects = new List<GameObject>();
 
     #region Singleton
@@ -38,6 +39,17 @@ public class GestureVisualizer : MonoBehaviour
     }
     private void Start()
     {
+        var rightHandDevices = new List<UnityEngine.XR.InputDevice>();
+        UnityEngine.XR.InputDevices.GetDevicesAtXRNode(UnityEngine.XR.XRNode.RightHand, rightHandDevices);
+
+        if (rightHandDevices.Count == 1)
+        {
+            rightController = rightHandDevices[0];
+        }
+        else
+        {
+            Debug.LogError("You have more than one right controller connected!");
+        }
         List<Gesture> gestures = GestureAnalyser.instance.GetGestures();
 
         //instantiate Cluster visualizations
@@ -252,6 +264,14 @@ public class GestureVisualizer : MonoBehaviour
 
             LineRenderer[] traj = obj.GetComponent<Transform>().Find("Trajectory").Find("LineRanderers").GetComponentsInChildren<LineRenderer>();
             foreach (LineRenderer lr in traj)
+            {
+                Color temp = lr.endColor;
+                temp.a = a;
+                lr.startColor = temp;
+                lr.endColor = temp;
+            }
+            LineRenderer[] skeltonRd = obj.GetComponent<Transform>().Find("Trajectory").Find("Skeleton").Find("LineRenderers").GetComponentsInChildren<LineRenderer>();
+            foreach (LineRenderer lr in skeltonRd)
             {
                 Color temp = lr.endColor;
                 temp.a = a;

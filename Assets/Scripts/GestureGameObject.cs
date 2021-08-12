@@ -14,12 +14,16 @@ public class GestureGameObject : MonoBehaviour
     private float timer = 0.0f; // the time since start() in seconds.
     private int init = 1;
     private bool animate = false;
+    private bool swing = false;
     private float currTime = 0;
     private int counter = 0;
     private float prevTimestamp;
     public Vector3 allocatedPos;
     public Vector3 sizeB4Stack;
     private bool stacked;
+    private Quaternion lastQuat;
+    int rotate = 0;
+    int currPoseIndex = 0;
     // Update is called once per frame
     void Update()
     {
@@ -27,6 +31,11 @@ public class GestureGameObject : MonoBehaviour
         {
             AnimationConditionUpdate();
         }
+        if (swing)
+        {
+            SwingConditionUpdate();
+        }
+
     }
 
    void FixedUpdate()
@@ -34,6 +43,11 @@ public class GestureGameObject : MonoBehaviour
         if (animate)
         {
             Animate();
+        }
+
+        if (swing)
+        {
+            Swing();
         }
     }
     public void Initialize()
@@ -54,16 +68,19 @@ public class GestureGameObject : MonoBehaviour
         if (curr == Actions.Animate){ ActivateAnimate();  }
         else if(curr == Actions.ChangeCluster){ ChangeCluster();  }
         else if(curr == Actions.ShowSmallMultiples) { ShowSmallMultiples();  }
-        else if(curr == Actions.ShowTracer) { ShowTracer();  }
+        //else if(curr == Actions.Slidimation) { ShowTracer();  }
+        else if (curr == Actions.Slidimation) { ActivateSwinging(); 
+            GestureVisualizer.instance.rightController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.deviceRotation, out lastQuat); }
         else if(curr == Actions.StackGestures) { StackGestures();}
     }
-    
+
+
     public void AnimationConditionUpdate()
     {
         float lastTimeStamp = (float)gesture.poses[gesture.poses.Count-1].timestamp;
         if (Extension.SecondsToMs(timer) > lastTimeStamp)
         {
-            Reset();
+            AnimationModeReset();
         }
         if (Extension.SecondsToMs(timer) > currTime)
         {
@@ -77,7 +94,7 @@ public class GestureGameObject : MonoBehaviour
     {
         counter += 1;
     }
-    public void Reset()
+    public void AnimationModeReset()
     {
         Transform[] transforms = GetComponent<Transform>().Find("Trajectory").Find("Skeleton").GetComponentsInChildren<Transform>();
 
@@ -124,6 +141,72 @@ public class GestureGameObject : MonoBehaviour
             animate = false;
         else
             animate = true;
+    }
+
+    public void Swing()
+    {
+        GameObject skeleton = gameObject.GetComponentInChildren<Trajectory>().skeletonRef;
+        Transform[] transforms = skeleton.GetComponentsInChildren<Transform>();
+        for (int i = 1; i < 21; i++)
+        {
+            transforms[i].localPosition = gesture.poses[currPoseIndex].joints[i - 1].ToVector();
+        }
+    }
+
+    void GetRotateDirection(Quaternion from, Quaternion to)
+    {
+        float fromY = from.eulerAngles.y;
+        float toY = to.eulerAngles.y;
+        float clockWise = 0f;
+        float counterClockWise = 0f;
+
+        if (fromY <= toY)
+        {
+            clockWise = toY - fromY;
+            counterClockWise = fromY + (360 - toY);
+        }
+        else
+        {
+            clockWise = (360 - fromY) + toY;
+            counterClockWise = fromY - toY;
+        }
+        if (clockWise <= counterClockWise)
+            rotate = -1;
+        else
+            rotate = 1;
+        if (Math.Abs(fromY-toY) < 60/gesture.num_of_poses)
+        {
+            rotate = 0;
+        }
+    }
+
+    public void SwingConditionUpdate() {
+        Quaternion currQuat;
+        GestureVisualizer.instance.rightController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.deviceRotation, out currQuat);
+        GetRotateDirection(lastQuat, currQuat);
+        if (rotate != 0)
+        {
+            if(rotate == 1)
+            {
+                if(currPoseIndex < gesture.num_of_poses - 1)
+                currPoseIndex += 1;
+            }
+            else
+            {
+                if (currPoseIndex > 0)
+                {
+                    currPoseIndex -= 1;
+                }
+            }
+        }
+        lastQuat = currQuat;
+    }
+    public void ActivateSwinging()
+    {
+        if (swing)
+            swing = false;
+        else
+            swing = true;
     }
     public void ChangeCluster()
     {

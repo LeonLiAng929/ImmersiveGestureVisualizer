@@ -79,6 +79,7 @@
     <Compile Include="Assets\Scripts\GestureAnalyser.cs" />
     <Compile Include="Assets\Scripts\Extension.cs" />
     <Compile Include="Assets\Scripts\TesttingScript\pressed.cs" />
+    <Compile Include="Assets\test2.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Resources\7\crouch-3.xml" />
