@@ -73,8 +73,6 @@ public class Trajectory : MonoBehaviour
                 Transform tracerTrans = newTracer.GetComponent<Transform>();
                 tracerTrans.localPosition = gesture.poses[i].joints[j].ToVector();
                 newTracer.GetComponent<TrajectoryTracer>().SetAttributes(this);
-
-                //Debug.Log(points.ToArray());
             }
 
             trajectoryRenderers.Add(DrawTrajectoryByJointType(points.ToArray(), gesture.poses[0].joints[j].jointType, colorSet[j]));

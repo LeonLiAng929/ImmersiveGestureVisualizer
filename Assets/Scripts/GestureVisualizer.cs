@@ -28,6 +28,7 @@ public class GestureVisualizer : MonoBehaviour
     private Dictionary<int, Color> clusterColorDic = new Dictionary<int, Color>();
     public InputDevice rightController;
     public List<GameObject> stackedObjects = new List<GameObject>();
+    public List<GameObject> selectedGestures = new List<GameObject>();
 
     #region Singleton
     public static GestureVisualizer instance;
@@ -257,7 +258,7 @@ public class GestureVisualizer : MonoBehaviour
     public void PrepareStack()
     {
         float a = 1.0f;
-        a = a / stackedObjects.Count + 0.2f;
+        a = a / stackedObjects.Count;
 
         foreach(GameObject obj in stackedObjects)
         {

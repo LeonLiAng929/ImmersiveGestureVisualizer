@@ -15,12 +15,13 @@ public class GestureGameObject : MonoBehaviour
     private int init = 1;
     private bool animate = false;
     private bool swing = false;
+    private bool stacked = false;
+    private bool selected = false;
     private float currTime = 0;
     private int counter = 0;
     private float prevTimestamp;
     public Vector3 allocatedPos;
     public Vector3 sizeB4Stack;
-    private bool stacked;
     private Quaternion lastQuat;
     int rotate = 0;
     int currPoseIndex = 0;
@@ -210,7 +211,29 @@ public class GestureGameObject : MonoBehaviour
     }
     public void ChangeCluster()
     {
+        List<GameObject> selectedList = GestureVisualizer.instance.selectedGestures;
+        if (selected)
+        {
+            selected = false;
+            GestureVisualizer.instance.UpdateGlowingFieldColour(gameObject) ;
+            
+        }
+        else
+        {
+            selected = true;
+            gameObject.transform.Find("GlowingField").GetComponent<MeshRenderer>().material.color = Color.white;
+            
+            if (!selectedList.Contains(gameObject))
+                gameObject.transform.localPosition = new Vector3(0, 0, 0);
 
+            if (gameObject.name == "AverageGesture")
+            {
+                sizeB4Stack = gameObject.transform.localScale;
+                gameObject.transform.localScale = new Vector3(1, 1, 1);
+            }
+            selectedList.Add(gameObject);
+
+        }
     }
     public void ShowSmallMultiples()
     {
@@ -229,18 +252,24 @@ public class GestureGameObject : MonoBehaviour
         stacked = true;
         List<GameObject> stackedList = GestureVisualizer.instance.stackedObjects;
         if (!stackedList.Contains(gameObject))
-            gameObject.transform.localPosition = new Vector3(0, 0, 0);
-
-        if (gameObject.name == "AverageGesture")
         {
-            sizeB4Stack = gameObject.transform.localScale;
-            gameObject.transform.localScale = new Vector3(1, 1, 1);
-        }
+            gameObject.transform.localPosition = new Vector3(0, 0, 0);
             stackedList.Add(gameObject);
+            if (gameObject.name == "AverageGesture")
+            {
+                sizeB4Stack = gameObject.transform.localScale;
+                gameObject.transform.localScale = new Vector3(1, 1, 1);
+            }
+        }
         GestureVisualizer.instance.PrepareStack();
     }
 
     public bool IsStacked()
+    {
+        return stacked;
+    }
+
+    public bool IsSelected()
     {
         return stacked;
     }
