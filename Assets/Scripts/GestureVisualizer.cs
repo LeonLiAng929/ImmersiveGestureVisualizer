@@ -128,6 +128,7 @@ public class GestureVisualizer : MonoBehaviour
             Transform newGesVisTrans = newGesVis.GetComponent<Transform>();
             ClusterGameObject a = p.Value.GetComponentInChildren<ClusterGameObject>();
             a.baryCentreVis = newGesVisTrans;
+
             InstantiateTrajectory(newGesVis, GestureAnalyser.instance.GetClusterByID(a.clusterID).GetBaryCentre());
             newGesVis.GetComponent<GestureGameObject>().Initialize();
         }

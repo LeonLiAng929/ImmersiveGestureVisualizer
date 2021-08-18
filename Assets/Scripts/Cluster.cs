@@ -42,6 +42,7 @@ public class Cluster
         gestureAnalyser.CalculateBaryCentre(gestures);
         baryCentre = gestureAnalyser.Python2CSharp();
         baryCentre.SetBoundingBox();
+        baryCentre.cluster = clusterID;
         baryCentre.SetGlobalSimilarity(gestureAnalyser.DTW_GestureWise(baryCentre, gestureAnalyser.GetGlobalAverageGesture()));
     }
 
