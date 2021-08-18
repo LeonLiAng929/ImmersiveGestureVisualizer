@@ -216,23 +216,55 @@ public class GestureGameObject : MonoBehaviour
         {
             selected = false;
             GestureVisualizer.instance.UpdateGlowingFieldColour(gameObject) ;
-            
+            if (gameObject.name == "AverageGesture")
+            {
+                GestureGameObject[] children = gameObject.transform.parent.GetComponentsInChildren<GestureGameObject>(true);
+                foreach (GestureGameObject gGO in children)
+                {
+                    if (gGO.gameObject.name != "AverageGesture")
+                    {
+                        if (selectedList.Contains(gGO.gameObject))
+                        {
+                            GestureVisualizer.instance.UpdateGlowingFieldColour(gGO.gameObject);
+                            selectedList.Remove(gGO.gameObject);
+                            gGO.selected = false;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (selectedList.Contains(gameObject))
+                    selectedList.Remove(gameObject);
+            }
+
         }
         else
         {
             selected = true;
-            gameObject.transform.Find("GlowingField").GetComponent<MeshRenderer>().material.color = Color.white;
-            
-            if (!selectedList.Contains(gameObject))
-                gameObject.transform.localPosition = new Vector3(0, 0, 0);
+            gameObject.transform.Find("GlowingField").GetComponent<MeshRenderer>().material.color = Color.white;    
 
             if (gameObject.name == "AverageGesture")
             {
-                sizeB4Stack = gameObject.transform.localScale;
-                gameObject.transform.localScale = new Vector3(1, 1, 1);
+                GestureGameObject[] children = gameObject.transform.parent.GetComponentsInChildren<GestureGameObject>(true);
+                foreach(GestureGameObject gGO in children)
+                {
+                    if (gGO.gameObject.name != "AverageGesture")
+                    {
+                        if (!selectedList.Contains(gGO.gameObject))
+                        {
+                            gGO.gameObject.transform.Find("GlowingField").GetComponent<MeshRenderer>().material.color = Color.white;
+                            gGO.selected = true;
+                            selectedList.Add(gGO.gameObject);
+                        }
+                    }
+                }
             }
-            selectedList.Add(gameObject);
-
+            else
+            {
+                if (!selectedList.Contains(gameObject))
+                    selectedList.Add(gameObject);
+            }
         }
     }
     public void ShowSmallMultiples()
