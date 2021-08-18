@@ -56,6 +56,7 @@
     <Compile Include="Assets\Scripts\K_MeanClustering.cs" />
     <Compile Include="Assets\Scripts\IO.cs" />
     <Compile Include="Assets\Scripts\VatavuDataWrangling\Pose.cs" />
+    <Compile Include="Assets\test2.cs" />
     <Compile Include="Assets\Scripts\Obsolete\HandPrescence.cs" />
     <Compile Include="Assets\Scripts\Obsolete\Extensions.cs" />
     <Compile Include="Assets\Scripts\ClusterGameObject.cs" />
@@ -79,7 +80,8 @@
     <Compile Include="Assets\Scripts\GestureAnalyser.cs" />
     <Compile Include="Assets\Scripts\Extension.cs" />
     <Compile Include="Assets\Scripts\TesttingScript\pressed.cs" />
-    <Compile Include="Assets\test2.cs" />
+    <Compile Include="Assets\changeColorGlow.cs" />
+    <Compile Include="Assets\Scripts\GlowingField.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Resources\7\crouch-3.xml" />

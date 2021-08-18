@@ -94,6 +94,7 @@ public class GestureVisualizer : MonoBehaviour
             Transform newGesVisTrans = newGesVis.GetComponent<Transform>();
 
             InstantiateTrajectory(newGesVis, g);
+            UpdateGlowingFieldColour(newGesVis);
 
             // instantiate small-multiples 
             List<Pose> sampled = g.Resample(5);
@@ -130,6 +131,7 @@ public class GestureVisualizer : MonoBehaviour
             a.baryCentreVis = newGesVisTrans;
 
             InstantiateTrajectory(newGesVis, GestureAnalyser.instance.GetClusterByID(a.clusterID).GetBaryCentre());
+            UpdateGlowingFieldColour(newGesVis);
             newGesVis.GetComponent<GestureGameObject>().Initialize();
         }
 
@@ -254,8 +256,8 @@ public class GestureVisualizer : MonoBehaviour
 
     public void PrepareStack()
     {
-        float a = 2.0f;
-        a = a / stackedObjects.Count;
+        float a = 1.0f;
+        a = a / stackedObjects.Count + 0.2f;
 
         foreach(GameObject obj in stackedObjects)
         {
@@ -284,5 +286,11 @@ public class GestureVisualizer : MonoBehaviour
                 lr.endColor = temp;
             }
         }
+    }
+
+    public void UpdateGlowingFieldColour(GameObject gesVis)
+    {
+        int id = gesVis.GetComponent<GestureGameObject>().gesture.cluster;
+        gesVis.transform.Find("GlowingField").GetComponent<MeshRenderer>().material.color = clusterColorDic[id];
     }
 }
