@@ -69,7 +69,7 @@ public class Trajectory : MonoBehaviour
                 
                 // instantiate tracer
                 GameObject newTracer = Instantiate(tracerPrefab, trajecotryGameObject.GetComponent<Transform>().Find("Tracers").GetComponent<Transform>().Find(gesture.poses[0].joints[j].jointType));
-                newTracer.GetComponent<MeshRenderer>().material.color = colorSet[j];
+                //newTracer.GetComponent<MeshRenderer>().material.color = colorSet[j];
                 Transform tracerTrans = newTracer.GetComponent<Transform>();
                 tracerTrans.localPosition = gesture.poses[i].joints[j].ToVector();
                 newTracer.GetComponent<TrajectoryTracer>().SetAttributes(this);
