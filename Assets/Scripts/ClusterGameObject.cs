@@ -25,8 +25,12 @@ public class ClusterGameObject : MonoBehaviour
             baryCentreVis.localScale = GetComponent<Transform>().localScale * (float)0.8;
         }
     }
+    private void OnDestroy()
+    {
+        interactable.activated.RemoveAllListeners();
+    }
 
-    public void UpdateClusterVisualization(Vector3 scale)
+    public void InitializeClusterVisualizationScale(Vector3 scale)
     {
         // set cluster size 
         Transform trans = GetComponent<Transform>();
@@ -50,13 +54,65 @@ public class ClusterGameObject : MonoBehaviour
         }
     }
 
+    public void UpdateClusterVisualizationScale()
+    {
+        float count = Mathf.Sqrt(GestureAnalyser.instance.GetClusterByID(clusterID).GestureCount());
+        InitializeClusterVisualizationScale(new Vector3(count, count, count));
+    }
+
     public void PerformAction(ActivateEventArgs arg)
     {
         Actions curr = ActionSwitcher.instance.GetCurrentAction();
         if (curr == Actions.StackAll) { StackAll(); }
         else if (curr == Actions.UnfoldCluster) { UnfoldCluster(); }
+        else if (curr == Actions.ChangeCluster) { ChangeCluster(); }
     }
 
+    public void ChangeCluster()
+    {
+        Cluster c = GestureAnalyser.instance.GetClusterByID(clusterID);
+        List<GameObject> selectedGestures = GestureVisualizer.instance.selectedGestures;
+        List<GameObject> originalClusterObjs = new List<GameObject>();
+        foreach(GameObject gGO in selectedGestures)
+        {
+            Cluster original = GestureAnalyser.instance.GetClusterByID(gGO.GetComponent<GestureGameObject>().gesture.cluster);
+            if (original.clusterID == clusterID)
+            { 
+                Debug.LogError("You can't assign the gesture to the same cluster it is in currently!");
+            }
+                GameObject obj = GestureVisualizer.instance.GetClusterGameObjectById(original.clusterID);
+                gGO.transform.parent = gameObject.transform.parent;
+                original.RemoveGesture(gGO.GetComponent<GestureGameObject>().gesture);
+                c.AddGesture(gGO.GetComponent<GestureGameObject>().gesture);
+                if (!originalClusterObjs.Contains(obj))
+                {
+                    originalClusterObjs.Add(obj);
+                }
+        }
+        foreach(GameObject g in originalClusterObjs)
+        {
+            if (g != null)
+            {
+                ClusterGameObject clusterObj = g.GetComponentInChildren<ClusterGameObject>();
+                Destroy(clusterObj.baryCentreVis.gameObject);
+                GestureVisualizer.instance.InstantiateAverageGestureVis(g, clusterObj.clusterID);
+                clusterObj.UpdateClusterVisualizationScale();
+            }
+        }
+        Destroy(baryCentreVis.gameObject);
+        GestureVisualizer.instance.InstantiateAverageGestureVis(gameObject.transform.parent.gameObject, clusterID);
+        GestureVisualizer.instance.ArrangeLocationForGestures();
+        foreach (GameObject g in originalClusterObjs)
+        {
+            if (g != null)
+            {
+                ClusterGameObject clusterObj = g.GetComponentInChildren<ClusterGameObject>();
+                clusterObj.UpdateClusterVisualizationScale();
+            }
+        }
+        UpdateClusterVisualizationScale();
+        GestureVisualizer.instance.EmptySelected();
+    }
     public void StackAll()
     {
         foreach (GestureGameObject gGO in gameObject.transform.parent.gameObject.GetComponentsInChildren<GestureGameObject>(true))

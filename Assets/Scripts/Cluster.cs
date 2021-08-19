@@ -1,12 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 public class Cluster
 {
     private Gesture baryCentre;
-    private int num_of_items;
 
     private float consensus; // consensus of gestures in this cluster
     private float similarity; // similarity of avg gesture of this cluster to the avg gesture of the entire dataset. 
@@ -17,6 +15,7 @@ public class Cluster
     {
         if (!gestures.Contains(g))
         {
+            g.cluster = clusterID;
             gestures.Add(g);
             if (!init)
             {
@@ -31,8 +30,23 @@ public class Cluster
         if (gestures.Contains(g))
         {
             gestures.Remove(g);
-            UpdateBarycentre();
-            UpdateConsensus();
+            if (gestures.Count > 1)
+            {
+                UpdateBarycentre();
+                UpdateConsensus();
+            }
+            else if(gestures.Count == 1)
+            {
+                SetBaryCentre(GetGestures()[0]);
+                UpdateConsensus();
+            }
+            else
+            {
+                // destroy the cluster
+                GestureVisualizer.instance.freeId.Add(clusterID);
+                GestureVisualizer.instance.DestroyClusterObjectById(clusterID);
+                
+            }
         }
     }
 
@@ -111,4 +125,5 @@ public class Cluster
     {
         return similarity;
     }
+
 }

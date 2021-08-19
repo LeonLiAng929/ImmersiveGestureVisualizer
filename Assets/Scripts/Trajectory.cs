@@ -51,7 +51,7 @@ public class Trajectory : MonoBehaviour
         );
           
         lRend.colorGradient = gradient;
-          
+        //lRend.useWorldSpace = false;
         return lRend;
     }
 
@@ -117,6 +117,7 @@ public class Trajectory : MonoBehaviour
                 for (int i = 1; i < tracersTrans.Length; i++)
                 {
                     newPos.Add(tracersTrans[i].position);
+                    
                 }
                 trajectoryRenderers[j].SetPositions(newPos.ToArray());
             }

@@ -16,7 +16,7 @@ public class GestureGameObject : MonoBehaviour
     private bool animate = false;
     private bool swing = false;
     private bool stacked = false;
-    private bool selected = false;
+    public bool selected = false;
     private float currTime = 0;
     private int counter = 0;
     private float prevTimestamp;

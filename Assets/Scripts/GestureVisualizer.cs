@@ -29,6 +29,7 @@ public class GestureVisualizer : MonoBehaviour
     public InputDevice rightController;
     public List<GameObject> stackedObjects = new List<GameObject>();
     public List<GameObject> selectedGestures = new List<GameObject>();
+    public List<int> freeId = new List<int>();
 
     #region Singleton
     public static GestureVisualizer instance;
@@ -124,16 +125,7 @@ public class GestureVisualizer : MonoBehaviour
         // instantiate barycentre visualization for each cluster
         foreach (KeyValuePair<int, GameObject> p in clustersObjDic)
         {
-            GameObject newGesVis = Instantiate(gesVisPrefab, p.Value.GetComponent<Transform>());
-            newGesVis.name = "AverageGesture";
-            newGesVis.GetComponent<GestureGameObject>().gesture = GestureAnalyser.instance.GetClusterByID(p.Key).GetBaryCentre();
-            Transform newGesVisTrans = newGesVis.GetComponent<Transform>();
-            ClusterGameObject a = p.Value.GetComponentInChildren<ClusterGameObject>();
-            a.baryCentreVis = newGesVisTrans;
-
-            InstantiateTrajectory(newGesVis, GestureAnalyser.instance.GetClusterByID(a.clusterID).GetBaryCentre());
-            UpdateGlowingFieldColour(newGesVis);
-            newGesVis.GetComponent<GestureGameObject>().Initialize();
+            InstantiateAverageGestureVis(p.Value, p.Key);
         }
 
         // arrange initial position for gestures under each cluster
@@ -157,13 +149,23 @@ public class GestureVisualizer : MonoBehaviour
         {
             ClusterGameObject a = p.Value.GetComponentInChildren<ClusterGameObject>();
             float count = Mathf.Sqrt(clusters[p.Key].GestureCount());
-            a.UpdateClusterVisualization(new Vector3(count, count, count));
+            a.InitializeClusterVisualizationScale(new Vector3(count, count, count));
         }
 
-        Destroy(tracerRef);
-        Destroy(skeletonModel);
-        Destroy(trajectoryPrefab);
-        Destroy(gesVisPrefab);
+        //Destroy(tracerRef);
+        //Destroy(skeletonModel);
+        //Destroy(trajectoryPrefab);
+        //Destroy(gesVisPrefab);
+        skeletonModel.SetActive(false);
+        tracerRef.SetActive(false);
+        trajectoryPrefab.SetActive(false);
+        gesVisPrefab.SetActive(false);
+       
+    }
+
+    public void DestroyClusterObjectById(int id)
+    {
+        Destroy(clustersObjDic[id]);
     }
     private void Update()
     {
@@ -193,12 +195,27 @@ public class GestureVisualizer : MonoBehaviour
         }
     }
 
+    public void InstantiateAverageGestureVis(GameObject clusterObj, int clusterId)
+    {
+        GameObject newGesVis = Instantiate(gesVisPrefab, clusterObj.GetComponent<Transform>());
+        newGesVis.SetActive(true);
+        newGesVis.name = "AverageGesture";
+        newGesVis.GetComponent<GestureGameObject>().gesture = GestureAnalyser.instance.GetClusterByID(clusterId).GetBaryCentre();
+        Transform newGesVisTrans = newGesVis.GetComponent<Transform>();
+        ClusterGameObject a = clusterObj.GetComponentInChildren<ClusterGameObject>();
+        a.baryCentreVis = newGesVisTrans;
+
+        InstantiateTrajectory(newGesVis, GestureAnalyser.instance.GetClusterByID(a.clusterID).GetBaryCentre());
+        UpdateGlowingFieldColour(newGesVis);
+        newGesVis.GetComponent<GestureGameObject>().Initialize();
+    }
     public void InstantiateTrajectory(GameObject gestureVis, Gesture g)
     {
         Transform newGesVisTrans = gestureVis.GetComponent<Transform>();
 
         // instantiate trajectory
         GameObject newTrajObj = Instantiate(trajectoryPrefab, newGesVisTrans);
+        newTrajObj.SetActive(true);
         newTrajObj.name = "Trajectory";
         newTrajObj.AddComponent<Trajectory>();
         Trajectory traj = newTrajObj.GetComponent<Trajectory>();
@@ -208,6 +225,7 @@ public class GestureVisualizer : MonoBehaviour
         //instantiate skeletonReference for trajectories
         Transform trajTrans = traj.GetComponent<Transform>();
         GameObject skeleton = Instantiate(skeletonModel, trajTrans);
+        skeleton.SetActive(true);
         skeleton.name = "Skeleton";
         foreach (MeshRenderer mr in skeleton.GetComponentsInChildren<MeshRenderer>())
         {
@@ -232,8 +250,8 @@ public class GestureVisualizer : MonoBehaviour
         foreach(KeyValuePair<int, GameObject> pair in clustersObjDic)
         {
             List<GestureGameObject> temp = new List<GestureGameObject>(pair.Value.GetComponentsInChildren<GestureGameObject>(true));
-
-            gesGameObjLi = gesGameObjLi.Concat<GestureGameObject>(temp).ToList();
+            if(pair.Value.gameObject != null)
+                gesGameObjLi = gesGameObjLi.Concat<GestureGameObject>(temp).ToList();
         }
         //InstantiateInCircle(gestures, baryTrans.localPosition);
         InstantiateInCircle(gesGameObjLi, new Vector3(0, 0, 0));
@@ -293,5 +311,24 @@ public class GestureVisualizer : MonoBehaviour
     {
         int id = gesVis.GetComponent<GestureGameObject>().gesture.cluster;
         gesVis.transform.Find("GlowingField").GetComponent<MeshRenderer>().material.color = clusterColorDic[id];
+    }
+
+    public void UpdateGestureColour(GameObject gesVis)
+    {
+        foreach(MeshRenderer mr in gesVis.transform.Find("Trajectory").Find("Skeleton").GetComponentsInChildren<MeshRenderer>())
+        {
+            mr.material.color = clusterColorDic[gesVis.GetComponent<GestureGameObject>().gesture.cluster];
+        }
+    }
+
+    public void EmptySelected()
+    {
+        foreach (GameObject obj in selectedGestures)
+        {
+            obj.GetComponent<GestureGameObject>().selected = false;
+            UpdateGlowingFieldColour(obj);
+        }
+
+        selectedGestures.Clear();
     }
 }

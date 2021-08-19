@@ -114,9 +114,12 @@ public class GestureAnalyser : MonoBehaviour
 
     public void CalculateBaryCentre(List<Gesture> gList)
     {
-        CSharp2Python(gList);
+        if (gList.Count > 1)
+        {
+            CSharp2Python(gList);
 
-        PythonRunner.RunFile("Assets/Scripts/BaryCentre.py");
+            PythonRunner.RunFile("Assets/Scripts/BaryCentre.py");
+        }
     }
 
     public Gesture Python2CSharp()
