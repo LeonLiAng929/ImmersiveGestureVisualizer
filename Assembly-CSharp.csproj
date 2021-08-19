@@ -70,18 +70,20 @@
     <Compile Include="Assets\Scripts\Obsolete\DBA.cs" />
     <Compile Include="Assets\Scripts\ActionSwitcher.cs" />
     <Compile Include="Assets\VR Beginner\Scripts\Gameplay\HandPrefab.cs" />
+    <Compile Include="Assets\Scripts\GlowingField.cs" />
     <Compile Include="Assets\Scripts\VatavuDataWrangling\Joint.cs" />
     <Compile Include="Assets\Scripts\EventReactor.cs" />
     <Compile Include="Assets\Scripts\Cluster.cs" />
     <Compile Include="Assets\Scripts\VatavuDataWrangling\Gesture.cs" />
+    <Compile Include="Assets\changeColorGlow.cs" />
     <Compile Include="Assets\Scripts\Trajectory.cs" />
     <Compile Include="Assets\Scripts\TrajectoryTracer.cs" />
     <Compile Include="Assets\Scripts\DrawSkeleton.cs" />
     <Compile Include="Assets\Scripts\GestureAnalyser.cs" />
     <Compile Include="Assets\Scripts\Extension.cs" />
     <Compile Include="Assets\Scripts\TesttingScript\pressed.cs" />
-    <Compile Include="Assets\changeColorGlow.cs" />
-    <Compile Include="Assets\Scripts\GlowingField.cs" />
+    <Compile Include="Assets\Scripts\Map.cs" />
+    <Compile Include="Assets\Scripts\SummonMap.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Resources\7\crouch-3.xml" />
