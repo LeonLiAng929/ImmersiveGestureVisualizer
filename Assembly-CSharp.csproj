@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\K_MeanClustering.cs" />
     <Compile Include="Assets\Scripts\IO.cs" />
+    <Compile Include="Assets\Scripts\SummonMap.cs" />
     <Compile Include="Assets\Scripts\VatavuDataWrangling\Pose.cs" />
     <Compile Include="Assets\test2.cs" />
     <Compile Include="Assets\Scripts\Obsolete\HandPrescence.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="Assets\Scripts\ClusterGameObject.cs" />
     <Compile Include="Assets\Scripts\TesttingScript\ChangeColor.cs" />
     <Compile Include="Assets\Scripts\GestureVisualizer.cs" />
+    <Compile Include="Assets\TubeRenderer\Runtime\SplineMaker.cs" />
     <Compile Include="Assets\Scripts\SummonMenu.cs" />
     <Compile Include="Assets\Scripts\Obsolete\K_Mean.cs" />
     <Compile Include="Assets\Scripts\Actions.cs" />
@@ -69,21 +71,23 @@
     <Compile Include="Assets\Scripts\GestureGameObject.cs" />
     <Compile Include="Assets\Scripts\Obsolete\DBA.cs" />
     <Compile Include="Assets\Scripts\ActionSwitcher.cs" />
+    <Compile Include="Assets\Scripts\Map.cs" />
     <Compile Include="Assets\VR Beginner\Scripts\Gameplay\HandPrefab.cs" />
     <Compile Include="Assets\Scripts\GlowingField.cs" />
     <Compile Include="Assets\Scripts\VatavuDataWrangling\Joint.cs" />
     <Compile Include="Assets\Scripts\EventReactor.cs" />
+    <Compile Include="Assets\TubeRenderer\Runtime\Internals\RenderPipelineHelpers.cs" />
     <Compile Include="Assets\Scripts\Cluster.cs" />
     <Compile Include="Assets\Scripts\VatavuDataWrangling\Gesture.cs" />
     <Compile Include="Assets\changeColorGlow.cs" />
+    <Compile Include="Assets\TubeRenderer\Runtime\TubeRenderer.cs" />
     <Compile Include="Assets\Scripts\Trajectory.cs" />
     <Compile Include="Assets\Scripts\TrajectoryTracer.cs" />
     <Compile Include="Assets\Scripts\DrawSkeleton.cs" />
     <Compile Include="Assets\Scripts\GestureAnalyser.cs" />
     <Compile Include="Assets\Scripts\Extension.cs" />
     <Compile Include="Assets\Scripts\TesttingScript\pressed.cs" />
-    <Compile Include="Assets\Scripts\Map.cs" />
-    <Compile Include="Assets\Scripts\SummonMap.cs" />
+    <Compile Include="Assets\Scripts\TrajectoryTR.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Resources\7\crouch-3.xml" />
@@ -913,6 +917,7 @@
     <None Include="Assets\Resources\28\draw flower-3.xml" />
     <None Include="Assets\Resources\10\scratch like a cat-1.xml" />
     <None Include="Assets\Resources\13\scratch like a cat-3.xml" />
+    <None Include="Assets\TubeRenderer\Runtime\Internals\Resources\StandardVertexColor.shader" />
     <None Include="Assets\Resources\14\angry like a bear-2.xml" />
     <None Include="Assets\Resources\16\stand on one leg-3.xml" />
     <None Include="Assets\Resources\17\turn around-2.xml" />

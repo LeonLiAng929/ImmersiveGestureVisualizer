@@ -26,13 +26,13 @@ public class SummonMap : MonoBehaviour
 
     private void ZoomIn(InputAction.CallbackContext ctx)
     {
-        if (gameObject.active)
+        if (gameObject.activeSelf)
             mapCam.orthographicSize -= 1;
     }
 
     private void ZoomOut(InputAction.CallbackContext ctx)
     {
-        if (gameObject.active)
+        if (gameObject.activeSelf)
             mapCam.orthographicSize += 1;
     }
     private void Summon(InputAction.CallbackContext ctx)

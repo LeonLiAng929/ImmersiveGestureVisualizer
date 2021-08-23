@@ -12,8 +12,8 @@ public class GestureVisualizer : MonoBehaviour
     // Trajectory visualization
     [SerializeField]
     protected GameObject trajectoryRendererPrefab;
-    [SerializeField]
-    protected GameObject tracerRef;
+    //[SerializeField]
+    //protected GameObject tracerRef;
     [SerializeField]
     protected GameObject trajectoryPrefab;
     [SerializeField]
@@ -22,6 +22,8 @@ public class GestureVisualizer : MonoBehaviour
     protected GameObject skeletonModel;
     [SerializeField]
     protected GameObject clusterVisPrefab;
+    [SerializeField]
+    public Material tubeRendererMat;
 
     private Dictionary<int, GameObject> clustersObjDic = new Dictionary<int, GameObject>();
     private List<Color> trajectoryColorSet = new List<Color>();
@@ -157,12 +159,26 @@ public class GestureVisualizer : MonoBehaviour
         //Destroy(trajectoryPrefab);
         //Destroy(gesVisPrefab);
         skeletonModel.SetActive(false);
-        tracerRef.SetActive(false);
+        //tracerRef.SetActive(false);
         trajectoryPrefab.SetActive(false);
         gesVisPrefab.SetActive(false);
        
     }
-
+    public void AdjustClusterPosition()
+    {
+        ArrangeLocationForGestures();
+        Dictionary<int, Cluster> clusters = GestureAnalyser.instance.GetClusters();
+        // set size for the clusters in the scene
+        foreach (KeyValuePair<int, GameObject> p in clustersObjDic)
+        {
+            if (p.Value != null)
+            {
+                ClusterGameObject a = p.Value.GetComponentInChildren<ClusterGameObject>();
+                float count = Mathf.Sqrt(clusters[p.Key].GestureCount());
+                a.InitializeClusterVisualizationScale(new Vector3(count, count, count));
+            }
+        }
+    }
     public void DestroyClusterObjectById(int id)
     {
         Destroy(clustersObjDic[id]);
@@ -173,6 +189,7 @@ public class GestureVisualizer : MonoBehaviour
         {
             foreach (GameObject obj in stackedObjects)
             {
+                obj.transform.Find("Capsule").gameObject.SetActive(true);
                 obj.GetComponent<GestureGameObject>().RevertStacking();
                 MeshRenderer[] mr = obj.GetComponent<Transform>().Find("Trajectory").Find("Skeleton").GetComponentsInChildren<MeshRenderer>();
                 foreach (MeshRenderer m in mr)
@@ -182,8 +199,27 @@ public class GestureVisualizer : MonoBehaviour
                     m.material.color = temp;
                 }
 
-                LineRenderer[] traj = obj.GetComponent<Transform>().Find("Trajectory").Find("LineRanderers").GetComponentsInChildren<LineRenderer>();
+                //For old trajectory with linerenderers, also need to change the correspoding section in PrepareStack()
+                /*LineRenderer[] traj = obj.GetComponent<Transform>().Find("Trajectory").Find("LineRanderers").GetComponentsInChildren<LineRenderer>();
                 foreach (LineRenderer lr in traj)
+                {
+                    Color temp = lr.endColor;
+                    temp.a = 1;
+                    lr.startColor = temp;
+                    lr.endColor = temp;
+                }*/
+
+                // for new trajecotry with tube renderers
+                MeshRenderer[] traj = obj.GetComponent<Transform>().Find("Trajectory").Find("LineRanderers").GetComponentsInChildren<MeshRenderer>();
+                foreach (MeshRenderer lr in traj)
+                {
+                    Color temp = lr.material.color;
+                    temp.a = 1;
+                    lr.material.color = temp;
+                }
+
+                LineRenderer[] skeltonRd = obj.GetComponent<Transform>().Find("Trajectory").Find("Skeleton").Find("LineRenderers").GetComponentsInChildren<LineRenderer>();
+                foreach (LineRenderer lr in skeltonRd)
                 {
                     Color temp = lr.endColor;
                     temp.a = 1;
@@ -217,9 +253,13 @@ public class GestureVisualizer : MonoBehaviour
         GameObject newTrajObj = Instantiate(trajectoryPrefab, newGesVisTrans);
         newTrajObj.SetActive(true);
         newTrajObj.name = "Trajectory";
-        newTrajObj.AddComponent<Trajectory>();
+        /*newTrajObj.AddComponent<Trajectory>();
         Trajectory traj = newTrajObj.GetComponent<Trajectory>();
         traj.SetAttributes(g, newTrajObj, trajectoryRendererPrefab, tracerRef);
+        */
+        newTrajObj.AddComponent<TrajectoryTR>();
+        TrajectoryTR traj = newTrajObj.GetComponent<TrajectoryTR>();
+        traj.SetAttributes(g, newTrajObj, trajectoryRendererPrefab);
         traj.DrawTrajectory(trajectoryColorSet);
 
         //instantiate skeletonReference for trajectories
@@ -235,7 +275,8 @@ public class GestureVisualizer : MonoBehaviour
         Transform[] transforms = skeleton.GetComponentsInChildren<Transform>();
         for (int i = 1; i < 21; i++)
         {
-            transforms[i].localPosition = traj.trajectoryRenderers[i - 1].GetPosition(0);
+            //transforms[i].localPosition = traj.trajectoryRenderers[i - 1].GetPosition(0);
+            transforms[i].localPosition = traj.trajectoryRenderers[i - 1].points.ToArray()[0];
         }
     }
 
@@ -280,7 +321,8 @@ public class GestureVisualizer : MonoBehaviour
 
         foreach(GameObject obj in stackedObjects)
         {
-            MeshRenderer[] mr = obj.GetComponent<Transform>().Find("Trajectory").Find("Skeleton").GetComponentsInChildren<MeshRenderer>();
+            obj.transform.Find("Capsule").gameObject.SetActive(false);
+            MeshRenderer[] mr = obj.transform.Find("Trajectory").Find("Skeleton").GetComponentsInChildren<MeshRenderer>();
             foreach (MeshRenderer m in mr)
             {
                 Color temp = m.material.color;
@@ -288,13 +330,12 @@ public class GestureVisualizer : MonoBehaviour
                 m.material.color = temp;
             }
 
-            LineRenderer[] traj = obj.GetComponent<Transform>().Find("Trajectory").Find("LineRanderers").GetComponentsInChildren<LineRenderer>();
-            foreach (LineRenderer lr in traj)
+            MeshRenderer[] traj = obj.GetComponent<Transform>().Find("Trajectory").Find("LineRanderers").GetComponentsInChildren<MeshRenderer>();
+            foreach (MeshRenderer lr in traj)
             {
-                Color temp = lr.endColor;
+                Color temp = lr.material.color;
                 temp.a = a;
-                lr.startColor = temp;
-                lr.endColor = temp;
+                lr.material.color = temp;
             }
             LineRenderer[] skeltonRd = obj.GetComponent<Transform>().Find("Trajectory").Find("Skeleton").Find("LineRenderers").GetComponentsInChildren<LineRenderer>();
             foreach (LineRenderer lr in skeltonRd)

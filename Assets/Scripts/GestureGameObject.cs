@@ -146,7 +146,7 @@ public class GestureGameObject : MonoBehaviour
 
     public void Swing()
     {
-        GameObject skeleton = gameObject.GetComponentInChildren<Trajectory>().skeletonRef;
+        GameObject skeleton = gameObject.GetComponentInChildren<TrajectoryTR>().skeletonRef;
         Transform[] transforms = skeleton.GetComponentsInChildren<Transform>();
         for (int i = 1; i < 21; i++)
         {
