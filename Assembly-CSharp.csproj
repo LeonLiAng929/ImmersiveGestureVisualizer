@@ -80,6 +80,7 @@
     <Compile Include="Assets\Scripts\Cluster.cs" />
     <Compile Include="Assets\Scripts\VatavuDataWrangling\Gesture.cs" />
     <Compile Include="Assets\changeColorGlow.cs" />
+    <Compile Include="Assets\Scripts\TrajectoryTR.cs" />
     <Compile Include="Assets\TubeRenderer\Runtime\TubeRenderer.cs" />
     <Compile Include="Assets\Scripts\Trajectory.cs" />
     <Compile Include="Assets\Scripts\TrajectoryTracer.cs" />
@@ -87,7 +88,8 @@
     <Compile Include="Assets\Scripts\GestureAnalyser.cs" />
     <Compile Include="Assets\Scripts\Extension.cs" />
     <Compile Include="Assets\Scripts\TesttingScript\pressed.cs" />
-    <Compile Include="Assets\Scripts\TrajectoryTR.cs" />
+    <Compile Include="Assets\ShaderTest.cs" />
+    <Compile Include="Assets\Scripts\Feature\StackingHeatMap.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Resources\7\crouch-3.xml" />
@@ -441,6 +443,7 @@
     <None Include="Assets\Resources\13\turn around-2.xml" />
     <None Include="Assets\Resources\25\crouch-2.xml" />
     <None Include="Assets\Resources\25\jump-3.xml" />
+    <None Include="Assets\Materials\Overdraw.shader" />
     <None Include="Assets\Resources\24\stand on one leg-2.xml" />
     <None Include="Assets\Resources\22\throw ball-3.xml" />
     <None Include="Assets\Resources\15\draw circle-1.xml" />

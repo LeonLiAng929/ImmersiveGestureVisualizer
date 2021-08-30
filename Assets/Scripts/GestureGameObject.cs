@@ -303,7 +303,7 @@ public class GestureGameObject : MonoBehaviour
 
     public bool IsSelected()
     {
-        return stacked;
+        return selected;
     }
 
     public void RevertStacking()

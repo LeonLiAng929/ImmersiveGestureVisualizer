@@ -10,6 +10,7 @@ public class test2 : MonoBehaviour
     Quaternion last;
     void Start()
     {
+        
         var leftHandDevices = new List<UnityEngine.XR.InputDevice>();
         UnityEngine.XR.InputDevices.GetDevicesAtXRNode(UnityEngine.XR.XRNode.LeftHand, leftHandDevices);
 
