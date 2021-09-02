@@ -78,6 +78,7 @@
     <Compile Include="Assets\Scripts\GlowingField.cs" />
     <Compile Include="Assets\Scripts\VatavuDataWrangling\Joint.cs" />
     <Compile Include="Assets\Scripts\EventReactor.cs" />
+    <Compile Include="Assets\Scripts\Feature\ChangeArrangement.cs" />
     <Compile Include="Assets\TubeRenderer\Runtime\Internals\RenderPipelineHelpers.cs" />
     <Compile Include="Assets\Scripts\Cluster.cs" />
     <Compile Include="Assets\Scripts\VatavuDataWrangling\Gesture.cs" />
@@ -90,7 +91,9 @@
     <Compile Include="Assets\Scripts\GestureAnalyser.cs" />
     <Compile Include="Assets\Scripts\Extension.cs" />
     <Compile Include="Assets\Scripts\TesttingScript\pressed.cs" />
-    <Compile Include="Assets\Scripts\Feature\ChangeArrangement.cs" />
+    <Compile Include="Assets\Scripts\Feature\Revolving.cs" />
+    <Compile Include="Assets\Scripts\Feature\LookAtMe.cs" />
+    <Compile Include="Assets\Scripts\TrajectoryFilter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Resources\7\crouch-3.xml" />

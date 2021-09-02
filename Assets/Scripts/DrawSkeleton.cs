@@ -6,7 +6,6 @@ public class DrawSkeleton : MonoBehaviour
 {
     [SerializeField]
     protected GameObject lr;
-    [SerializeField]
     //protected Transform skeletonRendererContainer;
 
     protected Transform trans;

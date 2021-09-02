@@ -24,6 +24,8 @@ public class GestureVisualizer : MonoBehaviour
     protected GameObject clusterVisPrefab;
     [SerializeField]
     public Material tubeRendererMat;
+    [SerializeField]
+    protected GameObject TrajectoryFilterGameObject;
 
     private Dictionary<int, GameObject> clustersObjDic = new Dictionary<int, GameObject>();
     private List<Color> trajectoryColorSet = new List<Color>();
@@ -81,13 +83,17 @@ public class GestureVisualizer : MonoBehaviour
 
         //float y = 0;
 
-        //Generate trajectory and tracer colors
-
+        //Generate trajectory colors and assign them to trajectory filter
+        TrajectoryFilter[] filters = TrajectoryFilterGameObject.GetComponentsInChildren<TrajectoryFilter>(true);
         for (int j = 0; j < gestures[0].poses[0].num_of_joints; j++)
         {
             Color c = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
             trajectoryColorSet.Add(c);
+            filters[j].gameObject.GetComponent<MeshRenderer>().material.color = c;
         }
+
+       
+        
 
         foreach (Gesture g in gestures)
         {

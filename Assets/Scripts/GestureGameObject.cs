@@ -139,9 +139,26 @@ public class GestureGameObject : MonoBehaviour
     public void ActivateAnimate()
     {
         if (animate)
+        {
             animate = false;
+            foreach (MeshRenderer mr in gameObject.transform.Find("Trajectory").Find("LineRanderers").GetComponentsInChildren<MeshRenderer>())
+            {
+                Color temp = mr.material.color;
+                temp.a = 1;
+                mr.material.color = temp;
+            }
+        }
         else
+        {
             animate = true;
+            foreach (MeshRenderer mr in gameObject.transform.Find("Trajectory").Find("LineRanderers").GetComponentsInChildren<MeshRenderer>())
+            {
+                Color temp = mr.material.color;
+                temp.a = 0.5f;
+                mr.material.color = temp;
+            }
+        }
+
     }
 
     public void Swing()
