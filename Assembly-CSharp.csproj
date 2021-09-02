@@ -59,10 +59,12 @@
     <Compile Include="Assets\Scripts\VatavuDataWrangling\Pose.cs" />
     <Compile Include="Assets\test2.cs" />
     <Compile Include="Assets\Scripts\Obsolete\HandPrescence.cs" />
+    <Compile Include="Assets\ShaderTest.cs" />
     <Compile Include="Assets\Scripts\Obsolete\Extensions.cs" />
     <Compile Include="Assets\Scripts\ClusterGameObject.cs" />
     <Compile Include="Assets\Scripts\TesttingScript\ChangeColor.cs" />
     <Compile Include="Assets\Scripts\GestureVisualizer.cs" />
+    <Compile Include="Assets\Scripts\Feature\StackingHeatMap.cs" />
     <Compile Include="Assets\TubeRenderer\Runtime\SplineMaker.cs" />
     <Compile Include="Assets\Scripts\SummonMenu.cs" />
     <Compile Include="Assets\Scripts\Obsolete\K_Mean.cs" />
@@ -88,8 +90,7 @@
     <Compile Include="Assets\Scripts\GestureAnalyser.cs" />
     <Compile Include="Assets\Scripts\Extension.cs" />
     <Compile Include="Assets\Scripts\TesttingScript\pressed.cs" />
-    <Compile Include="Assets\ShaderTest.cs" />
-    <Compile Include="Assets\Scripts\Feature\StackingHeatMap.cs" />
+    <Compile Include="Assets\Scripts\Feature\ChangeArrangement.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Resources\7\crouch-3.xml" />

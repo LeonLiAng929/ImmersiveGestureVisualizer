@@ -28,6 +28,7 @@ public class GestureVisualizer : MonoBehaviour
     private Dictionary<int, GameObject> clustersObjDic = new Dictionary<int, GameObject>();
     private List<Color> trajectoryColorSet = new List<Color>();
     private Dictionary<int, Color> clusterColorDic = new Dictionary<int, Color>();
+    public bool globalArrangement = true;
     public InputDevice rightController;
     public List<GameObject> stackedObjects = new List<GameObject>();
     public List<GameObject> selectedGestures = new List<GameObject>();
@@ -164,9 +165,23 @@ public class GestureVisualizer : MonoBehaviour
         gesVisPrefab.SetActive(false);
        
     }
+
+    // global arrangement: gestures revolve around the origin, if false, then perform a cluster arrangement, where gestures
+    // would revolve around its cluster
     public void AdjustClusterPosition()
     {
-        ArrangeLocationForGestures();
+        if (globalArrangement)
+        {
+            ArrangeLocationForGestures();
+        }
+        else
+        {
+            foreach(KeyValuePair<int,GameObject> pair in clustersObjDic)
+            {
+                ClusterGameObject cobj = pair.Value.transform.Find("ClusterVisualization").GetComponent<ClusterGameObject>();
+                cobj.ArrangeLocationForChildren();
+            }
+        }
         Dictionary<int, Cluster> clusters = GestureAnalyser.instance.GetClusters();
         // set size for the clusters in the scene
         foreach (KeyValuePair<int, GameObject> p in clustersObjDic)
@@ -371,5 +386,10 @@ public class GestureVisualizer : MonoBehaviour
         }
 
         selectedGestures.Clear();
+    }
+
+    public Dictionary<int, GameObject> GetClusterObjs()
+    {
+        return clustersObjDic;
     }
 }

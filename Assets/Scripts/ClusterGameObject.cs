@@ -146,7 +146,8 @@ public class ClusterGameObject : MonoBehaviour
             float angle = i * angleSection;
             
             float radius = gestureObjs[i].gesture.GetGlobalSimilarity();
-            Vector3 newPos = location + new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * radius;
+            //Vector3 newPos = location + new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * radius;
+            Vector3 newPos = location + new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * radius * 2;
             //newPos.y = yPosition;
             //Instantiate(gestureObj, newPos, gestureObj.rotation);
             gestureObjs[i].GetComponent<Transform>().localPosition = newPos;
@@ -159,12 +160,12 @@ public class ClusterGameObject : MonoBehaviour
         GameObject clusterGameObj = GestureVisualizer.instance.GetClusterGameObjectById(clusterID);
         GestureGameObject averageGes = clusterGameObj.GetComponent<Transform>().Find("AverageGesture").gameObject.GetComponent<GestureGameObject>();
 
-        List<GestureGameObject> gestures = new List<GestureGameObject>(clusterGameObj.GetComponentsInChildren<GestureGameObject>());
+        List<GestureGameObject> gestures = new List<GestureGameObject>(clusterGameObj.GetComponentsInChildren<GestureGameObject>(true));
         gestures.Remove(averageGes);
         Transform baryTrans = baryCentreVis.GetComponent<Transform>();
 
-        //InstantiateInCircle(gestures, baryTrans.localPosition);
-        InstantiateInCircle(gestures, new Vector3(0,0,0));
+        InstantiateInCircle(gestures, baryTrans.localPosition);
+        //InstantiateInCircle(gestures, new Vector3(0,0,0));
     } 
     
 }

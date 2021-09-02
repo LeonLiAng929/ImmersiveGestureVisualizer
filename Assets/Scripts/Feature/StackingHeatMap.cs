@@ -4,12 +4,8 @@ using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 public class StackingHeatMap : MonoBehaviour
 {
-    [SerializeField]
     protected XRSimpleInteractable xRSimpleInteractable;
-    [SerializeField]
-    protected Material selected;
-    [SerializeField]
-    protected Material deselected;
+    Color init;
 
     private bool on = false;
     // Start is called before the first frame update
@@ -17,6 +13,7 @@ public class StackingHeatMap : MonoBehaviour
     {
         xRSimpleInteractable = GetComponent<XRSimpleInteractable>();
         xRSimpleInteractable.activated.AddListener(ActivateHeatMap);
+        init = gameObject.GetComponent<MeshRenderer>().material.color;
     }
 
     // Update is called once per frame
@@ -38,7 +35,7 @@ public class StackingHeatMap : MonoBehaviour
                     mr.material.shader = Shader.Find("Custom/Overdraw");
                 }
             }
-            gameObject.GetComponent<MeshRenderer>().material = selected;
+            gameObject.GetComponent<MeshRenderer>().material.color = Color.white;
         }
         else
         {
@@ -50,7 +47,7 @@ public class StackingHeatMap : MonoBehaviour
                     mr.material.shader = Shader.Find("Standard");
                 }
             }
-            gameObject.GetComponent<MeshRenderer>().material = deselected;
+            gameObject.GetComponent<MeshRenderer>().material.color = init;
         }
     }
 }

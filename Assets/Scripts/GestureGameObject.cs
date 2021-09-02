@@ -211,7 +211,7 @@ public class GestureGameObject : MonoBehaviour
     }
     public void ChangeCluster()
     {
-        List<GameObject> selectedList = GestureVisualizer.instance.selectedGestures;
+        List<GameObject> selectionList = GestureVisualizer.instance.selectedGestures;
         if (selected)
         {
             selected = false;
@@ -223,10 +223,10 @@ public class GestureGameObject : MonoBehaviour
                 {
                     if (gGO.gameObject.name != "AverageGesture")
                     {
-                        if (selectedList.Contains(gGO.gameObject))
+                        if (selectionList.Contains(gGO.gameObject))
                         {
                             GestureVisualizer.instance.UpdateGlowingFieldColour(gGO.gameObject);
-                            selectedList.Remove(gGO.gameObject);
+                            selectionList.Remove(gGO.gameObject);
                             gGO.selected = false;
                         }
                     }
@@ -234,8 +234,8 @@ public class GestureGameObject : MonoBehaviour
             }
             else
             {
-                if (selectedList.Contains(gameObject))
-                    selectedList.Remove(gameObject);
+                if (selectionList.Contains(gameObject))
+                    selectionList.Remove(gameObject);
             }
 
         }
@@ -251,19 +251,19 @@ public class GestureGameObject : MonoBehaviour
                 {
                     if (gGO.gameObject.name != "AverageGesture")
                     {
-                        if (!selectedList.Contains(gGO.gameObject))
+                        if (!selectionList.Contains(gGO.gameObject))
                         {
                             gGO.gameObject.transform.Find("GlowingField").GetComponent<MeshRenderer>().material.color = Color.white;
                             gGO.selected = true;
-                            selectedList.Add(gGO.gameObject);
+                            selectionList.Add(gGO.gameObject);
                         }
                     }
                 }
             }
             else
             {
-                if (!selectedList.Contains(gameObject))
-                    selectedList.Add(gameObject);
+                if (!selectionList.Contains(gameObject))
+                    selectionList.Add(gameObject);
             }
         }
     }
