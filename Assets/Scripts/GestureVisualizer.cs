@@ -55,7 +55,7 @@ public class GestureVisualizer : MonoBehaviour
         }
         else
         {
-            Debug.LogError("You have more than one right controller connected!");
+            Debug.LogError("You have zero or more than one right controller connected! Make sure you have exactly one right controller connected.");
         }
         List<Gesture> gestures = GestureAnalyser.instance.GetGestures();
 
@@ -120,7 +120,7 @@ public class GestureVisualizer : MonoBehaviour
                 Transform[] transforms = skeleton.GetComponentsInChildren<Transform>();
                 //Debug.Log(transforms.Length);
                 transforms[0].localPosition = new Vector3(0, 0, x);
-                x += 1;
+                x += 0.5f;
                 for (int i = 1; i < 21; i++)
                 {
                     transforms[i].localPosition = p.joints[i-1].ToVector();

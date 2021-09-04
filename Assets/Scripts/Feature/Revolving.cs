@@ -33,7 +33,7 @@ public class Revolving : MonoBehaviour
         {
             float angle = i * angleSection;
             float radius = 2;
-            Vector3 newPos = location + new Vector3(Mathf.Cos(angle), 1, Mathf.Sin(angle)) * radius;
+            Vector3 newPos = location + new Vector3(Mathf.Cos(angle), 0.55f, Mathf.Sin(angle)) * radius;
             //newPos.y = yPosition;
             featureObjs[i].localPosition = newPos;
         }

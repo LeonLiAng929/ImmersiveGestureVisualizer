@@ -15,44 +15,53 @@ public class IO
        List<Gesture> gestures = new List<Gesture>();   
        for (int i = 1; i < 31; i++)
         {
-            if (Resources.Load<TextAsset>(i.ToString() + "/angry like a bear-1") != null)
+            string sourceDirectory = Application.dataPath + "/Resources/" + i.ToString()+"/";
+
+            var txtFiles = Directory.EnumerateFiles(sourceDirectory, "*.xml");
+
+            foreach (string currentFile in txtFiles)
             {
-                TextAsset xmlTextAsset = Resources.Load<TextAsset>(i.ToString() + "/angry like a bear-1");
+                string name = currentFile.Substring(sourceDirectory.Length);
 
-                //Debug.Log(xmlTextAsset.ToString());
-                XmlDocument gestureDataXml = new XmlDocument();
-                gestureDataXml.LoadXml(xmlTextAsset.text);
-
-                
-                XmlNodeList postureLi = gestureDataXml.SelectNodes("/BodyGesture/BodyPosture");
-                
-                Gesture temp = new Gesture();
-
-                XmlNode gesture_node = gestureDataXml.SelectSingleNode("BodyGesture");
-                temp.gestureType = gesture_node.Attributes["Name"].Value;
-                temp.id = i;
-                temp.num_of_poses = int.Parse(gesture_node.Attributes["Postures"].Value);
-                foreach (XmlNode x in postureLi)
+                if (name.Contains(fileName))
                 {
-                    Pose temp_p = new Pose();
-                    temp_p.timestamp = double.Parse(x.Attributes["Time"].Value);
-                    temp_p.num_of_joints = int.Parse(x.Attributes["Joints"].Value);
-                    XmlNodeList jointLi = x.SelectNodes("Joint");
-                    foreach (XmlNode y in jointLi)
+                    name = name.Substring(0, name.Length-4);
+                    TextAsset xmlTextAsset = Resources.Load<TextAsset>(i.ToString() + "/" + name);
+                 
+                    XmlDocument gestureDataXml = new XmlDocument();
+                    gestureDataXml.LoadXml(xmlTextAsset.text);
+
+
+                    XmlNodeList postureLi = gestureDataXml.SelectNodes("/BodyGesture/BodyPosture");
+
+                    Gesture temp = new Gesture();
+
+                    XmlNode gesture_node = gestureDataXml.SelectSingleNode("BodyGesture");
+                    temp.gestureType = gesture_node.Attributes["Name"].Value;
+                    temp.id = i;
+                    temp.num_of_poses = int.Parse(gesture_node.Attributes["Postures"].Value);
+                    foreach (XmlNode x in postureLi)
                     {
-                        Joint temp_q = new Joint();
-                        temp_q.jointType = y.Attributes["Type"].Value;
-                        temp_q.x = float.Parse(y.Attributes["X"].Value);
-                        temp_q.y = float.Parse(y.Attributes["Y"].Value);
-                        temp_q.z = float.Parse(y.Attributes["Z"].Value);
-                        temp_p.joints.Add(temp_q);
+                        Pose temp_p = new Pose();
+                        temp_p.timestamp = double.Parse(x.Attributes["Time"].Value);
+                        temp_p.num_of_joints = int.Parse(x.Attributes["Joints"].Value);
+                        XmlNodeList jointLi = x.SelectNodes("Joint");
+                        foreach (XmlNode y in jointLi)
+                        {
+                            Joint temp_q = new Joint();
+                            temp_q.jointType = y.Attributes["Type"].Value;
+                            temp_q.x = float.Parse(y.Attributes["X"].Value);
+                            temp_q.y = float.Parse(y.Attributes["Y"].Value);
+                            temp_q.z = float.Parse(y.Attributes["Z"].Value);
+                            temp_p.joints.Add(temp_q);
+                        }
+                        temp.poses.Add(temp_p);
                     }
-                    temp.poses.Add(temp_p);
+                    temp.SetBoundingBox();
+                    temp.SetCentroid();
+                    temp.NormalizeTimestamp();
+                    gestures.Add(temp);
                 }
-                temp.SetBoundingBox();
-                temp.SetCentroid();
-                temp.NormalizeTimestamp();
-                gestures.Add(temp);
             }
         }
         return gestures;

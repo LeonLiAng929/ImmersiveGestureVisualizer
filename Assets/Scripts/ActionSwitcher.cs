@@ -14,6 +14,7 @@ public class ActionSwitcher : MonoBehaviour
     #endregion
     //public Dictionary<string, bool> actions = new Dictionary<string, bool>();
 
+    private bool firstTime = true;
     private static Actions currentlyActive;
     private static Actions previouslyActive;
     public int actionID;
@@ -27,7 +28,6 @@ public class ActionSwitcher : MonoBehaviour
     {
         xRSimpleInteractable = GetComponent<XRSimpleInteractable>();
         xRSimpleInteractable.activated.AddListener(SwitchAction);
-        xRSimpleInteractable.firstHoverEntered.AddListener(OnHovered);
         init = gameObject.GetComponent<MeshRenderer>().material.color;
     }
 
@@ -62,21 +62,19 @@ public class ActionSwitcher : MonoBehaviour
     {
         if (currentlyActive != (Actions)actionID)
         {
-            previouslyActive = currentlyActive;
+            foreach (ActionSwitcher aswr in gameObject.transform.parent.GetComponentsInChildren<ActionSwitcher>())
+            {
+                aswr.gameObject.GetComponent<MeshRenderer>().material.color = aswr.init;
+
+            }
+            
             currentlyActive = (Actions)actionID;
             Debug.Log(currentlyActive);
+      
             gameObject.GetComponent<MeshRenderer>().material.color = Color.white;
-        }
-        if (previouslyActive == (Actions)actionID)
-        {
-            gameObject.GetComponent<MeshRenderer>().material.color = init;
         }
     }
 
-    public void OnHovered(HoverEnterEventArgs arg)
-    {
-        gameObject.transform.parent.GetComponent<Revolving>().hovered = true;
-    }
     public Actions GetCurrentAction()
     {
         return currentlyActive;

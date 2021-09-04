@@ -42,7 +42,7 @@ public class ClusterGameObject : MonoBehaviour
             interactable.activated.AddListener(PerformAction);
         }
 
-        if (scale.y > 1)
+        if (scale.y > 1 && GestureVisualizer.instance.globalArrangement)
         {
             Vector3 size = baryCentreVis.GetComponent<GestureGameObject>().gesture.GetBoundingBoxSize();
             float initHeight = size.y;
@@ -163,8 +163,9 @@ public class ClusterGameObject : MonoBehaviour
         List<GestureGameObject> gestures = new List<GestureGameObject>(clusterGameObj.GetComponentsInChildren<GestureGameObject>(true));
         gestures.Remove(averageGes);
         Transform baryTrans = baryCentreVis.GetComponent<Transform>();
-
-        InstantiateInCircle(gestures, baryTrans.localPosition);
+        Vector3 temp = baryTrans.localPosition;
+        temp.y = 0;
+        InstantiateInCircle(gestures, temp);
         //InstantiateInCircle(gestures, new Vector3(0,0,0));
     } 
     
