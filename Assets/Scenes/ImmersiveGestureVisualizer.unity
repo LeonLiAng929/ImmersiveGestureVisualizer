@@ -11736,7 +11736,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d5395191966094caedb953059ba494, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offsetY: 1.5
+  offsetY: 0.7
   focus: 0
   tagSize: {x: 0.01, y: 0.01, z: 0.01}
   featuretagPrefab: {fileID: 7504907593663313336, guid: b8c14ec034b00af4dab7e61b4fe70808,

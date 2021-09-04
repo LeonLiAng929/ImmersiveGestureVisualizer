@@ -10,6 +10,7 @@ public class ClusterTag : XRTag
     [SerializeField]
     protected GameObject featuretagPrefab;
     protected RectTransform textTagTrans;
+    protected Cluster cluster;
     void Start()
     {
         textTag = Instantiate(featuretagPrefab, gameObject.transform);
@@ -17,7 +18,7 @@ public class ClusterTag : XRTag
         simpleInteractable = GetComponent<XRSimpleInteractable>();
         textTag.GetComponent<RectTransform>().localScale = tagSize;
 
-        Cluster cluster = GestureAnalyser.instance.GetClusterByID(gameObject.GetComponent<ClusterGameObject>().clusterID);
+        cluster = GestureAnalyser.instance.GetClusterByID(gameObject.GetComponent<ClusterGameObject>().clusterID);
         string tag2Display = gameObject.transform.parent.name + "\n" +
             "Number of gestures: " + cluster.GestureCount().ToString() + "\n" +
             "Global Consensus: " + cluster.GetSimilarity().ToString() + "\n" +
@@ -31,7 +32,7 @@ public class ClusterTag : XRTag
 
     public void UpdateTag()
     {
-        Cluster cluster = GestureAnalyser.instance.GetClusterByID(gameObject.GetComponent<ClusterGameObject>().clusterID);
+        cluster = GestureAnalyser.instance.GetClusterByID(gameObject.GetComponent<ClusterGameObject>().clusterID);
         string tag2Display = gameObject.transform.parent.name + "\n" +
            "Number of gestures: " + cluster.GestureCount().ToString() + "\n" +
            "Global Consensus: " + cluster.GetSimilarity().ToString() + "\n" +
@@ -42,6 +43,6 @@ public class ClusterTag : XRTag
     void Update()
     {
         textTagTrans.LookAt(2 * textTagTrans.position - Camera.main.gameObject.transform.position);
-        textTag.transform.position = gameObject.transform.position + new Vector3(0, offsetY, 0);
+        textTag.transform.position = gameObject.transform.position + new Vector3(0, offsetY * Mathf.Sqrt(cluster.GestureCount()), 0);
     }
 }
