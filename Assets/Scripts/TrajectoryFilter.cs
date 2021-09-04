@@ -5,7 +5,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class TrajectoryFilter : MonoBehaviour
 {
-    private Color init;
+    public Color init;
     private XRSimpleInteractable xRSimpleInteractable;
     private bool shown = true;
     // Start is called before the first frame update
@@ -38,8 +38,8 @@ public class TrajectoryFilter : MonoBehaviour
             GestureGameObject[] gestureGameObjects = pair.Value.GetComponentsInChildren<GestureGameObject>(true);
             foreach (GestureGameObject gGO in gestureGameObjects)
             {
-                gGO.gameObject.transform.Find("Trajectory").Find(gameObject.name).gameObject.SetActive(shown);
-             
+                gGO.gameObject.transform.Find("Trajectory").Find("LineRanderers").Find(gameObject.name).gameObject.SetActive(shown);
+
             }
         }
     }

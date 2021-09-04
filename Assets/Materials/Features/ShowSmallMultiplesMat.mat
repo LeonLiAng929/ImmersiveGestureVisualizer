@@ -77,7 +77,7 @@ Material:
     - _DstBlend: 0
     - _EnableExternalAlpha: 0
     - _Exposure: 1
-    - _GlossMapScale: 0.5
+    - _GlossMapScale: 0.29
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _ImageType: 0

@@ -90,6 +90,7 @@ public class GestureVisualizer : MonoBehaviour
             Color c = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
             trajectoryColorSet.Add(c);
             filters[j].gameObject.GetComponent<MeshRenderer>().material.color = c;
+            filters[j].init = c;
         }
 
        
