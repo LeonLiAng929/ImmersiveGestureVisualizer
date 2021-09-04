@@ -100,7 +100,7 @@ public class GestureVisualizer : MonoBehaviour
         {
             // instantiate Gesture visualizations. A gesture visualziation has a trajectory view and a small-multiples view.
             GameObject newGesVis = Instantiate(gesVisPrefab, clustersObjDic[g.cluster].GetComponent<Transform>());
-            newGesVis.name = g.gestureType + g.id.ToString();
+            newGesVis.name = g.gestureType + g.id.ToString() + "-Trial" + g.trial.ToString();
             newGesVis.GetComponent<GestureGameObject>().gesture = g;
             newGesVis.GetComponent<GestureGameObject>().Initialize();
             Transform newGesVisTrans = newGesVis.GetComponent<Transform>();
@@ -255,7 +255,7 @@ public class GestureVisualizer : MonoBehaviour
 
     public void InstantiateAverageGestureVis(GameObject clusterObj, int clusterId)
     {
-        GameObject newGesVis = Instantiate(gesVisPrefab, clusterObj.GetComponent<Transform>());
+        GameObject newGesVis = Instantiate(gesVisPrefab, clusterObj.GetComponent<Transform>());  
         newGesVis.SetActive(true);
         newGesVis.name = "AverageGesture";
         newGesVis.GetComponent<GestureGameObject>().gesture = GestureAnalyser.instance.GetClusterByID(clusterId).GetBaryCentre();

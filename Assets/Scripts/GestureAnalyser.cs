@@ -24,6 +24,7 @@ public class GestureAnalyser : MonoBehaviour
         // loading and wranglng raw data
         IO xmlLoader = new IO();
 
+        //temporarily hardcoded to angrylike a bear.
         gestures = xmlLoader.LoadXML("angry like a bear");
 
         foreach (Gesture g in gestures)

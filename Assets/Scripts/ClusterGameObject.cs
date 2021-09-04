@@ -99,6 +99,13 @@ public class ClusterGameObject : MonoBehaviour
                 Destroy(clusterObj.baryCentreVis.gameObject);
                 GestureVisualizer.instance.InstantiateAverageGestureVis(g, clusterObj.clusterID);
                 //clusterObj.UpdateClusterVisualizationScale();
+                ClusterTag ctag = g.GetComponentInChildren<ClusterTag>();
+                ctag.UpdateTag();
+                GestureTag[] gestureTags = g.GetComponentsInChildren<GestureTag>();
+                foreach(GestureTag gtag in gestureTags)
+                {
+                    gtag.UpdateTag();
+                }
             }
         }
         Destroy(baryCentreVis.gameObject);
@@ -113,6 +120,13 @@ public class ClusterGameObject : MonoBehaviour
             }
         }
         UpdateClusterVisualizationScale();*/
+        ClusterTag clusterTag = GetComponentInChildren<ClusterTag>();
+        clusterTag.UpdateTag();
+        GestureTag[] gTags = GetComponentsInChildren<GestureTag>();
+        foreach (GestureTag gtag in gTags)
+        {
+            gtag.UpdateTag();
+        }
         GestureVisualizer.instance.AdjustClusterPosition();
         GestureVisualizer.instance.EmptySelected();
     }

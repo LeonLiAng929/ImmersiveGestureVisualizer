@@ -123,7 +123,7 @@ public class Cluster
 
     public float GetSimilarity()
     {
-        return similarity;
+        return baryCentre.GetGlobalSimilarity();
     }
 
 }

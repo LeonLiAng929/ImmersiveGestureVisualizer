@@ -39,6 +39,7 @@ public class IO
                     XmlNode gesture_node = gestureDataXml.SelectSingleNode("BodyGesture");
                     temp.gestureType = gesture_node.Attributes["Name"].Value;
                     temp.id = i;
+                    temp.trial = name[name.IndexOf('-') + 1];
                     temp.num_of_poses = int.Parse(gesture_node.Attributes["Postures"].Value);
                     foreach (XmlNode x in postureLi)
                     {

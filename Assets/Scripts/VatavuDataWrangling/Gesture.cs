@@ -9,6 +9,7 @@ public class Gesture
     public List<Pose> poses = new List<Pose>();
     public int num_of_poses;
     public int id;
+    public char trial;
     public int cluster;
 
     private float localSimilarity; // DTW similarity score between this gesture and the average gesture of the cluster it belongs to.

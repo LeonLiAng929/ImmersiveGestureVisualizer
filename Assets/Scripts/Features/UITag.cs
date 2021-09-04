@@ -4,16 +4,18 @@ using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using TMPro;
 
-public class FeatureTag : MonoBehaviour
+public class UITag : XRTag
 {
-    public Vector3 tagSize = new Vector3 (1,1,1);
-    public float offsetY = 0;
-    public bool focus;
-    Transform user;
-    XRSimpleInteractable simpleInteractable;
-    public GameObject featuretagPrefab;
-    private GameObject textTag;
+    //public Vector3 tagSize = new Vector3 (1,1,1);
+    //public float offsetY = 0;
+    //public bool focus;
+    //Transform user;
+    //XRSimpleInteractable simpleInteractable;
+    //public GameObject featuretagPrefab;
+    // private GameObject textTag;
     // Start is called before the first frame update
+    [SerializeField]
+    protected GameObject featuretagPrefab;
     void Start()
     {
         textTag= Instantiate(featuretagPrefab, gameObject.transform);
@@ -40,15 +42,5 @@ public class FeatureTag : MonoBehaviour
         }
        
         textTag.transform.position = gameObject.transform.position + new Vector3(0,offsetY,0);
-    }
-
-    public void OnHovered(HoverEnterEventArgs arg)
-    {
-        textTag.SetActive(true);
-    }
-
-    public void OnHoverExit(HoverExitEventArgs arg)
-    {
-        textTag.SetActive(false);
     }
 }

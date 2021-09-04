@@ -14,9 +14,7 @@ public class ActionSwitcher : MonoBehaviour
     #endregion
     //public Dictionary<string, bool> actions = new Dictionary<string, bool>();
 
-    private bool firstTime = true;
     private static Actions currentlyActive;
-    private static Actions previouslyActive;
     public int actionID;
     void Awake()
     {
