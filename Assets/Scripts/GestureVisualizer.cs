@@ -110,7 +110,7 @@ public class GestureVisualizer : MonoBehaviour
 
             // instantiate small-multiples 
             List<Pose> sampled = g.Resample(5);
-            float x = 1;
+            float x = 0.7f;
             int samplePoseIndex = 1;
             foreach (Pose p in sampled)
             {

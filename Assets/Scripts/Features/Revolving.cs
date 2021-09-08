@@ -30,7 +30,7 @@ public class Revolving : MonoBehaviour
             /*Vector3 temp = gameObject.transform.rotation.eulerAngles;
             temp.z += 1;
             gameObject.transform.rotation.eulerAngles = temp;*/
-            gameObject.transform.Rotate(new Vector3(0,0,0.3f));
+            gameObject.transform.Rotate(new Vector3(0,0,0.1f));
         }
     }
 
