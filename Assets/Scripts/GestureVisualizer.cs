@@ -170,7 +170,6 @@ public class GestureVisualizer : MonoBehaviour
         //tracerRef.SetActive(false);
         trajectoryPrefab.SetActive(false);
         gesVisPrefab.SetActive(false);
-       
     }
 
     // global arrangement: gestures revolve around the origin, if false, then perform a cluster arrangement, where gestures
