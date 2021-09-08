@@ -44,17 +44,20 @@ public class GestureTag : XRTag
 
     public void UpdateTag()
     {
-        Gesture gesture = gameObject.GetComponent<GestureGameObject>().gesture;
-        string tag2Display =
-           "Gesture Type: " + gesture.gestureType.ToString() + "\n" +
-           "UserID: " + gesture.id.ToString() + "\n" +
-           "Trial: " + gesture.trial.ToString() + "\n" +
-           "Cluster: " + gesture.cluster.ToString() + "\n" +
-           "Number of Poses: " + gesture.num_of_poses.ToString() + "\n" +
-           "Global Consensus: " + gesture.GetGlobalSimilarity().ToString() + "\n" +
-           "Local Consensus: " + gesture.GetLocalSimilarity().ToString();
+        if (gameObject.name != "AverageGesture")
+        {
+            Gesture gesture = gameObject.GetComponent<GestureGameObject>().gesture;
+            string tag2Display =
+               "Gesture Type: " + gesture.gestureType.ToString() + "\n" +
+               "UserID: " + gesture.id.ToString() + "\n" +
+               "Trial: " + gesture.trial.ToString() + "\n" +
+               "Cluster: " + gesture.cluster.ToString() + "\n" +
+               "Number of Poses: " + gesture.num_of_poses.ToString() + "\n" +
+               "Global Consensus: " + gesture.GetGlobalSimilarity().ToString() + "\n" +
+               "Local Consensus: " + gesture.GetLocalSimilarity().ToString();
 
-        textTag.GetComponent<TextMeshPro>().text = tag2Display;
+            textTag.GetComponent<TextMeshPro>().text = tag2Display;
+        }
     }
 
     // Update is called once per frame

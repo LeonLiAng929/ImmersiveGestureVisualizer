@@ -159,9 +159,9 @@ public class ClusterGameObject : MonoBehaviour
         {
             float angle = i * angleSection;
             
-            float radius = gestureObjs[i].gesture.GetGlobalSimilarity();
+            float radius = gestureObjs[i].gesture.GetLocalSimilarity();
             //Vector3 newPos = location + new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * radius;
-            Vector3 newPos = location + new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * radius * 2;
+            Vector3 newPos = location + new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * radius;
             //newPos.y = yPosition;
             //Instantiate(gestureObj, newPos, gestureObj.rotation);
             gestureObjs[i].GetComponent<Transform>().localPosition = newPos;

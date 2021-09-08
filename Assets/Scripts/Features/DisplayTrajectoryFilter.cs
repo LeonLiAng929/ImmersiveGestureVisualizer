@@ -30,6 +30,7 @@ public class DisplayTrajectoryFilter : MonoBehaviour
             gameObject.GetComponent<MeshRenderer>().material.color = init;
         }
         else {
+            filter.gameObject.transform.position = new Vector3(Camera.main.gameObject.transform.position.x, 0.55f, Camera.main.gameObject.transform.position.z + 2);
             filter.SetActive(!filter.activeSelf);
             gameObject.GetComponent<MeshRenderer>().material.color = Color.white;
             }

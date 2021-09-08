@@ -154,7 +154,7 @@ public class GestureGameObject : MonoBehaviour
             foreach (MeshRenderer mr in gameObject.transform.Find("Trajectory").Find("LineRanderers").GetComponentsInChildren<MeshRenderer>())
             {
                 Color temp = mr.material.color;
-                temp.a = 0.5f;
+                temp.a = 0.25f;
                 mr.material.color = temp;
             }
         }
@@ -222,9 +222,25 @@ public class GestureGameObject : MonoBehaviour
     public void ActivateSwinging()
     {
         if (swing)
+        {
+            foreach (MeshRenderer mr in gameObject.transform.Find("Trajectory").Find("LineRanderers").GetComponentsInChildren<MeshRenderer>())
+            {
+                Color temp = mr.material.color;
+                temp.a = 1f;
+                mr.material.color = temp;
+            }
             swing = false;
+        }
         else
+        {
+            foreach (MeshRenderer mr in gameObject.transform.Find("Trajectory").Find("LineRanderers").GetComponentsInChildren<MeshRenderer>())
+            {
+                Color temp = mr.material.color;
+                temp.a = 0.25f;
+                mr.material.color = temp;
+            }
             swing = true;
+        }
     }
     public void ChangeCluster()
     {

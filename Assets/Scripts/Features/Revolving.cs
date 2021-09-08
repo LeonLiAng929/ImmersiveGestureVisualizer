@@ -10,17 +10,28 @@ public class Revolving : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        featureTrans = new List<Transform>(gameObject.GetComponentsInChildren<Transform>(true));
-        if (featureTrans.Contains(gameObject.transform))
-            featureTrans.Remove(gameObject.transform);
+        List<LookAtMe> uniqueFeatures = new List<LookAtMe>(gameObject.GetComponentsInChildren<LookAtMe>(true));
+        if (uniqueFeatures.Contains(gameObject.GetComponent<LookAtMe>()))
+            uniqueFeatures.Remove(gameObject.GetComponent<LookAtMe>());
+        foreach(LookAtMe tag in uniqueFeatures)
+        {
+            featureTrans.Add(tag.gameObject.transform);
+        }
         InstantiateInCircle(featureTrans, gameObject.transform.position);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(!hovered)
-        gameObject.transform.Rotate(new Vector3(0,1,0), 0.1f);
+        gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, Camera.main.transform.localPosition.y, gameObject.transform.localPosition.z);
+        //gameObject.transform.position = new Vector3(Camera.main.gameObject.transform.position.x, Camera.main.gameObject.transform.position.y, gameObject.transform.position.z);
+        if (!hovered)
+        {
+            /*Vector3 temp = gameObject.transform.rotation.eulerAngles;
+            temp.z += 1;
+            gameObject.transform.rotation.eulerAngles = temp;*/
+            gameObject.transform.Rotate(new Vector3(0,0,0.3f));
+        }
     }
 
 
@@ -28,12 +39,12 @@ public class Revolving : MonoBehaviour
     {
         int howMany = featureObjs.Count;
         float angleSection = Mathf.PI * 2f / howMany;
-
         for (int i = 0; i < howMany; i++)
         {
             float angle = i * angleSection;
-            float radius = 2;
-            Vector3 newPos = location + new Vector3(Mathf.Cos(angle), 0.55f, Mathf.Sin(angle)) * radius;
+            float radius = 0.8f;
+            //Vector3 newPos = location + new Vector3(Mathf.Cos(angle), 0.55f, Mathf.Sin(angle)) * radius;
+            Vector3 newPos = location + new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 1.5f) * radius;
             //newPos.y = yPosition;
             featureObjs[i].localPosition = newPos;
         }
