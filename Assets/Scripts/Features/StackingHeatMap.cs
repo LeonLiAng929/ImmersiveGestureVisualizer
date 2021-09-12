@@ -6,6 +6,8 @@ public class StackingHeatMap : MonoBehaviour
 {
     protected XRSimpleInteractable xRSimpleInteractable;
     Color init;
+    public Material HeatMapMat;
+    public Material RegularMat;
 
     private bool on = false;
     // Start is called before the first frame update
@@ -32,10 +34,13 @@ public class StackingHeatMap : MonoBehaviour
             {
                 foreach (MeshRenderer mr in obj.transform.Find("Trajectory").Find("LineRanderers").GetComponentsInChildren<MeshRenderer>())
                 {
-                    mr.material.shader = Shader.Find("Custom/Overdraw");
+                    Color matColor = mr.material.color;
+                    mr.material = HeatMapMat;
+                    mr.material.color = matColor;
+                    //mr.material.shader = Shader.Find("Custom/Overdraw");
                 }
             }
-            gameObject.GetComponent<MeshRenderer>().material.color = Color.white;
+            //gameObject.GetComponent<MeshRenderer>().material.color = Color.white;
         }
         else
         {
@@ -44,10 +49,13 @@ public class StackingHeatMap : MonoBehaviour
             {
                 foreach (MeshRenderer mr in obj.transform.Find("Trajectory").Find("LineRanderers").GetComponentsInChildren<MeshRenderer>())
                 {
-                    mr.material.shader = Shader.Find("Standard");
+                    Color matColor = mr.material.color;
+                    mr.material = RegularMat;
+                    mr.material.color = matColor;
+                    //mr.material.shader = Shader.Find("Standard");
                 }
             }
-            gameObject.GetComponent<MeshRenderer>().material.color = init;
+           //gameObject.GetComponent<MeshRenderer>().material.color = init;
         }
     }
 }

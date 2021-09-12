@@ -3,7 +3,9 @@ guid: bfb1c7c54b04f5741b684b57c56df8bf
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - HeatMapMat: {fileID: 2100000, guid: 31f9db50ce9e7e343bc1d4d2c1bb7f18, type: 2}
+  - RegularMat: {fileID: 2100000, guid: b6a5181e85a60064f99966f56d500136, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
