@@ -67,6 +67,15 @@ public class ClusterGameObject : MonoBehaviour
         if (curr == Actions.StackAll) { StackAll(); }
         else if (curr == Actions.UnfoldCluster) { UnfoldCluster(); }
         else if (curr == Actions.ChangeCluster) { ChangeCluster(); }
+        else if (curr == Actions.Animate) { ActivateAnimate(); }
+    }
+
+    public void ActivateAnimate()
+    {
+        foreach (GestureGameObject gGO in gameObject.transform.parent.gameObject.GetComponentsInChildren<GestureGameObject>(true))
+        {
+            gGO.ActivateAnimate();
+        }
     }
 
     public void ChangeCluster()
