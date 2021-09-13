@@ -32,7 +32,7 @@ public class StackingHeatMap : MonoBehaviour
             on = true;
             foreach (GameObject obj in stackedGes)
             {
-                foreach (MeshRenderer mr in obj.transform.Find("Trajectory").Find("LineRanderers").GetComponentsInChildren<MeshRenderer>())
+                foreach (MeshRenderer mr in obj.transform.Find("Trajectory").Find("LineRanderers").GetComponentsInChildren<MeshRenderer>(true))
                 {
                     Color matColor = mr.material.color;
                     mr.material = HeatMapMat;
@@ -47,7 +47,7 @@ public class StackingHeatMap : MonoBehaviour
             on = false;
             foreach (GameObject obj in stackedGes)
             {
-                foreach (MeshRenderer mr in obj.transform.Find("Trajectory").Find("LineRanderers").GetComponentsInChildren<MeshRenderer>())
+                foreach (MeshRenderer mr in obj.transform.Find("Trajectory").Find("LineRanderers").GetComponentsInChildren<MeshRenderer>(true))
                 {
                     Color matColor = mr.material.color;
                     mr.material = RegularMat;

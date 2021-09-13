@@ -7,7 +7,7 @@ public class TrajectoryFilter : MonoBehaviour
 {
     public Color init;
     private XRSimpleInteractable xRSimpleInteractable;
-    private bool shown = true;
+    public bool shown = true;
     // Start is called before the first frame update
     void Start()
     {

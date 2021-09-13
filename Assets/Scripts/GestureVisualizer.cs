@@ -212,7 +212,7 @@ public class GestureVisualizer : MonoBehaviour
             {
                 obj.transform.Find("Capsule").gameObject.SetActive(true);
                 obj.GetComponent<GestureGameObject>().RevertStacking();
-                MeshRenderer[] mr = obj.GetComponent<Transform>().Find("Trajectory").Find("Skeleton").GetComponentsInChildren<MeshRenderer>();
+                MeshRenderer[] mr = obj.GetComponent<Transform>().Find("Trajectory").Find("Skeleton").GetComponentsInChildren<MeshRenderer>(true);
                 foreach (MeshRenderer m in mr)
                 {
                     Color temp = m.material.color;
