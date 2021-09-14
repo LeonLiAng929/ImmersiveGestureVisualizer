@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: TubeRenderer_Heatmap
-  m_Shader: {fileID: 4800000, guid: 5450354967a6d1646b8eb89bdb6b6cb1, type: 3}
+  m_Shader: {fileID: 4800000, guid: faa322f8ae70b2b4c8072c5394708847, type: 3}
   m_ShaderKeywords: _ALPHABLEND_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
