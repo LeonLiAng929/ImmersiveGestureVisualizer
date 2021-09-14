@@ -9498,6 +9498,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cfef8df51240c84da393475911772db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rightController: {fileID: 1378976130}
   xRSimpleInteractable: {fileID: 1261460699}
   selected: 0
   allocatedPos: {x: 0, y: 0, z: 0}
@@ -13258,7 +13259,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1604943102}
-  - component: {fileID: 1604943103}
   - component: {fileID: 1604943104}
   m_Layer: 0
   m_Name: GestureVisualizer
@@ -13281,18 +13281,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1604943103
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1604943101}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b01b15ff2cf06db438058dc1b911f763, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1604943104
 MonoBehaviour:
   m_ObjectHideFlags: 0

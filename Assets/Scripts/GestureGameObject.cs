@@ -7,6 +7,7 @@ using System;
 public class GestureGameObject : MonoBehaviour
 {
     public Gesture gesture;
+    public Transform rightController; // just in case if some controllers cant be dectected using XR.commam usages.
 
     [SerializeField]
     protected XRSimpleInteractable xRSimpleInteractable;
@@ -201,6 +202,10 @@ public class GestureGameObject : MonoBehaviour
     public void SwingConditionUpdate() {
         Quaternion currQuat;
         GestureVisualizer.instance.rightController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.deviceRotation, out currQuat);
+
+        if (currQuat.eulerAngles == Vector3.zero)
+            currQuat = rightController.rotation;
+
         GetRotateDirection(lastQuat, currQuat);
         if (rotate != 0)
         {
