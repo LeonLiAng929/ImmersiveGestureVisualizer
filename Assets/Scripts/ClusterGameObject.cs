@@ -64,7 +64,7 @@ public class ClusterGameObject : MonoBehaviour
     public void PerformAction(ActivateEventArgs arg)
     {
         Actions curr = ActionSwitcher.instance.GetCurrentAction();
-        if (curr == Actions.StackAll) { StackAll(); }
+        if (curr == Actions.StackGestures) { StackAll(); }
         else if (curr == Actions.UnfoldCluster) { UnfoldCluster(); }
         else if (curr == Actions.ChangeCluster) { ChangeCluster(); }
         else if (curr == Actions.Animate) { ActivateAnimate(); }
