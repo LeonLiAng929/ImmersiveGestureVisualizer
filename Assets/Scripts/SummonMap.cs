@@ -15,7 +15,7 @@ public class SummonMap : MonoBehaviour
         secondaryButtonPressedRef.action.started += Summon;
         zoomOutRef.action.started += ZoomOut;
         zoomInRef.action.started += ZoomIn;
-        gameObject.SetActive(false);
+        
     }
 
     // Update is called once per frame
