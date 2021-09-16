@@ -1062,6 +1062,17 @@
                 },
                 {
                     "name": "",
+                    "id": "147e75f9-fa7b-42bb-9e17-b1e86bc4fbff",
+                    "path": "<WMRSpatialController>/menu",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SummonMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "640947c3-11c1-470e-9766-66bfcba11cc1",
                     "path": "<XRInputV1::Oculus::OculusTouchControllerLeft>{RightHand}/grippressed",
                     "interactions": "",
