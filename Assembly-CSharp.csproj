@@ -101,7 +101,7 @@
     <Compile Include="Assets\Scripts\Extension.cs" />
     <Compile Include="Assets\Scripts\TesttingScript\pressed.cs" />
     <Compile Include="Assets\Scripts\PlayerIconTracing.cs" />
-    <Compile Include="Assets\Scripts\Features\LineUp.cs" />
+    <Compile Include="Assets\Scripts\Features\ResumeFromComparison.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Resources\7\crouch-3.xml" />

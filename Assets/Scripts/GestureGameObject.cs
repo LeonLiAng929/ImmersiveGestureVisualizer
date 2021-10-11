@@ -22,6 +22,7 @@ public class GestureGameObject : MonoBehaviour
     private int counter = 0;
     private float prevTimestamp;
     public Vector3 allocatedPos;
+    private Vector3 initPos;
     public Vector3 sizeB4Stack;
     private Quaternion lastQuat;
     int rotate = 0;
@@ -74,8 +75,59 @@ public class GestureGameObject : MonoBehaviour
         else if (curr == Actions.Slidimation) { ActivateSwinging(); 
             GestureVisualizer.instance.rightController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.deviceRotation, out lastQuat); }
         else if(curr == Actions.StackGestures) { StackGesture();}
+        else if (curr == Actions.CloseComparison) { if (arg.interactor.gameObject.name == "LeftHand Controller")
+            CloseComparison(true);
+            else if (arg.interactor.gameObject.name == "RightHand Controller")
+            {
+                CloseComparison(false);
+            }
+        }
     }
 
+    public void CloseComparison(bool lefthand)
+    {
+        if ((lefthand && !GestureVisualizer.instance.leftHandSelected) || (!lefthand && !GestureVisualizer.instance.rightHandSelected))
+        {
+            List<GameObject> selectionList = GestureVisualizer.instance.selectedGestures;
+            if (selected)
+            {
+                selected = false;
+                if (selectionList.Contains(gameObject))
+                {
+                    GestureVisualizer.instance.UpdateGlowingFieldColour(gameObject);
+                    selectionList.Remove(gameObject);
+                    if (lefthand)
+                        GestureVisualizer.instance.leftHandSelected = false;
+                    else
+                        GestureVisualizer.instance.rightHandSelected = false;
+                }
+            }
+            else
+            {
+                selected = true;
+                if (!selectionList.Contains(gameObject))
+                {
+                    selectionList.Add(gameObject);
+                    if (lefthand)
+                    {
+                        gameObject.transform.Find("GlowingField").GetComponent<MeshRenderer>().material.color = Color.white;
+                        GestureVisualizer.instance.leftHandSelected = true;
+                    }
+                    else
+                    {
+                        gameObject.transform.Find("GlowingField").GetComponent<MeshRenderer>().material.color = Color.black;
+                        GestureVisualizer.instance.rightHandSelected = true;
+                    }
+                }
+
+            }
+            initPos = gameObject.transform.localPosition;
+            if (GestureVisualizer.instance.rightHandSelected && GestureVisualizer.instance.leftHandSelected)
+            {
+                GestureVisualizer.instance.CloseComparison();
+            }
+        }
+    }
 
     public void AnimationConditionUpdate()
     {
@@ -323,6 +375,7 @@ public class GestureGameObject : MonoBehaviour
         List<GameObject> stackedList = GestureVisualizer.instance.stackedObjects;
         if (!stackedList.Contains(gameObject))
         {
+            initPos = gameObject.transform.localPosition;
             gameObject.transform.localPosition = new Vector3(0, 0, 0);
             stackedList.Add(gameObject);
             if (gameObject.name == "AverageGesture")
@@ -347,10 +400,19 @@ public class GestureGameObject : MonoBehaviour
     public void RevertStacking()
     {
         stacked = false;
-        gameObject.transform.localPosition = allocatedPos;
+        gameObject.transform.localPosition = initPos;
         if (gameObject.name == "AverageGesture")
         {
             gameObject.transform.localScale = sizeB4Stack;
+        }
+    }
+    public void RevertComparing()
+    {
+        selected = false;
+        gameObject.transform.localPosition = initPos;
+        if (GestureVisualizer.instance.arrangementMode == 2)
+        {
+            gameObject.transform.rotation = Quaternion.AngleAxis(90, new Vector3(0, 1, 0));
         }
     }
 }

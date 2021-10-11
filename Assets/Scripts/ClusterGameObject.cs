@@ -112,6 +112,7 @@ public class ClusterGameObject : MonoBehaviour
             {
                 originalClusterObjs.Add(obj);
             }
+
         }
         foreach(GameObject g in originalClusterObjs)
         {
@@ -121,9 +122,9 @@ public class ClusterGameObject : MonoBehaviour
                 Destroy(clusterObj.baryCentreVis.gameObject);
                 GestureVisualizer.instance.InstantiateAverageGestureVis(g, clusterObj.clusterID);
                 //clusterObj.UpdateClusterVisualizationScale();
-                ClusterTag ctag = g.GetComponentInChildren<ClusterTag>();
+                ClusterTag ctag = g.GetComponentInChildren<ClusterTag>(true);
                 ctag.UpdateTag();
-                GestureTag[] gestureTags = g.GetComponentsInChildren<GestureTag>();
+                GestureTag[] gestureTags = g.GetComponentsInChildren<GestureTag>(true);
                 foreach(GestureTag gtag in gestureTags)
                 {
                     gtag.UpdateTag();
@@ -142,14 +143,17 @@ public class ClusterGameObject : MonoBehaviour
             }
         }
         UpdateClusterVisualizationScale();*/
-        ClusterTag clusterTag = GetComponentInChildren<ClusterTag>();
+        ClusterTag clusterTag = GetComponentInChildren<ClusterTag>(true);
         clusterTag.UpdateTag();
-        GestureTag[] gTags = GetComponentsInChildren<GestureTag>();
+        GestureTag[] gTags = this.transform.parent.GetComponentsInChildren<GestureTag>(true);
+
         foreach (GestureTag gtag in gTags)
         {
             gtag.UpdateTag();
         }
-        GestureVisualizer.instance.AdjustClusterPosition();
+
+        ChangeArrangement.instance._Rearragne();
+        //GestureVisualizer.instance.AdjustClusterPosition();
         //GestureVisualizer.instance.EmptySelected();   Disabled to show where the newly assigned gestures are in the new cluster.
     }
     public void StackAll()

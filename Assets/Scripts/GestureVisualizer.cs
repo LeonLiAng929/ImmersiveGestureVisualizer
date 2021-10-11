@@ -36,6 +36,9 @@ public class GestureVisualizer : MonoBehaviour
     public List<GameObject> selectedGestures = new List<GameObject>();
     public List<int> freeId = new List<int>();
 
+    // for close Comparison
+    public bool leftHandSelected = false;
+    public bool rightHandSelected = false;
     #region Singleton
     public static GestureVisualizer instance;
     #endregion
@@ -174,6 +177,22 @@ public class GestureVisualizer : MonoBehaviour
         AdjustClusterPosition();
     }
 
+    public void CloseComparison()
+    {
+        selectedGestures[0].transform.localPosition = new Vector3(Camera.main.gameObject.transform.position.x - 0.25f, selectedGestures[0].transform.localPosition.y, Camera.main.gameObject.transform.position.z);
+        selectedGestures[1].transform.localPosition = new Vector3(Camera.main.gameObject.transform.position.x + 0.25f, selectedGestures[1].transform.localPosition.y, Camera.main.gameObject.transform.position.z);
+        selectedGestures[0].transform.localRotation = new Quaternion(0, 0, 0, 0);
+        selectedGestures[1].transform.localRotation = new Quaternion(0, 0, 0, 0);
+        foreach (KeyValuePair<int, GameObject> pair in clustersObjDic)
+        {
+            foreach (GestureGameObject gGO in pair.Value.GetComponentsInChildren<GestureGameObject>())
+            {
+                gGO.gameObject.SetActive(false);
+            }
+        }
+        selectedGestures[0].gameObject.SetActive(true);
+        selectedGestures[1].gameObject.SetActive(true);
+    }
     public void AdjustClusterPosition()
     {
         if (arrangementMode == 1)

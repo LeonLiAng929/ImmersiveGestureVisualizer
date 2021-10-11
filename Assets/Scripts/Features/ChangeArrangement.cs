@@ -5,10 +5,9 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class ChangeArrangement : MonoBehaviour
 {
     protected XRSimpleInteractable xRSimpleInteractable;
-    //[SerializeField]
-    //protected Material selected;
-    //[SerializeField]
-    //protected Material deselected;
+    #region Singleton
+    public static ChangeArrangement instance;
+    #endregion
 
     private int mode = 0; //0 = local, 1=global, 2 = lineUp
     Color init;
@@ -18,6 +17,7 @@ public class ChangeArrangement : MonoBehaviour
         xRSimpleInteractable = GetComponent<XRSimpleInteractable>();
         xRSimpleInteractable.activated.AddListener(Rearrange);
         init = gameObject.GetComponent<MeshRenderer>().material.color;
+        instance = this;
     }
 
     // Update is called once per frame
@@ -51,4 +51,31 @@ public class ChangeArrangement : MonoBehaviour
             GestureVisualizer.instance.AdjustClusterPosition();
         }
     }
+    
+    public void _Rearragne()
+    {
+        if (mode == 0)
+        {
+            mode = 2;
+            gameObject.GetComponent<MeshRenderer>().material.color = Color.red;
+            GestureVisualizer.instance.arrangementMode = 0;
+            GestureVisualizer.instance.AdjustClusterPosition();
+
+        }
+        else if (mode == 1)
+        {
+            mode = 0;
+            gameObject.GetComponent<MeshRenderer>().material.color = Color.green;
+            GestureVisualizer.instance.arrangementMode = 1;
+            GestureVisualizer.instance.AdjustClusterPosition();
+        }
+        else if (mode == 2)
+        {
+            mode = 1;
+            gameObject.GetComponent<MeshRenderer>().material.color = init;
+            GestureVisualizer.instance.arrangementMode = 2;
+            GestureVisualizer.instance.AdjustClusterPosition();
+        }
+    }
+
 }
