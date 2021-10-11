@@ -10,7 +10,7 @@ public class ChangeArrangement : MonoBehaviour
     //[SerializeField]
     //protected Material deselected;
 
-    private bool on = false;
+    private int mode = 0; //0 = local, 1=global, 2 = lineUp
     Color init;
     // Start is called before the first frame update
     void Start()
@@ -29,19 +29,25 @@ public class ChangeArrangement : MonoBehaviour
     private void Rearrange(ActivateEventArgs arg)
     {
         Dictionary<int, GameObject> clusterObjs = GestureVisualizer.instance.GetClusterObjs();
-        if (!on)
+        if (mode == 0)
         {
-            on = true;
-            gameObject.GetComponent<MeshRenderer>().material.color = Color.white;
-            GestureVisualizer.instance.globalArrangement = false;
+            mode = 2;
+            gameObject.GetComponent<MeshRenderer>().material.color = Color.red;
+            GestureVisualizer.instance.arrangementMode = 0;
             GestureVisualizer.instance.AdjustClusterPosition();
 
         }
-        else
+        else if (mode == 1){
+            mode = 0;
+            gameObject.GetComponent<MeshRenderer>().material.color = Color.green;
+            GestureVisualizer.instance.arrangementMode = 1;
+            GestureVisualizer.instance.AdjustClusterPosition();
+        }
+        else if ( mode == 2)
         {
-            on = false;
+            mode = 1;
             gameObject.GetComponent<MeshRenderer>().material.color = init;
-            GestureVisualizer.instance.globalArrangement = true;
+            GestureVisualizer.instance.arrangementMode = 2;
             GestureVisualizer.instance.AdjustClusterPosition();
         }
     }

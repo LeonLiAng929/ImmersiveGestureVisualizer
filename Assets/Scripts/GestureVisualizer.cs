@@ -27,10 +27,10 @@ public class GestureVisualizer : MonoBehaviour
     [SerializeField]
     protected GameObject TrajectoryFilterGameObject;
 
-    private Dictionary<int, GameObject> clustersObjDic = new Dictionary<int, GameObject>();
+    public Dictionary<int, GameObject> clustersObjDic = new Dictionary<int, GameObject>();
     private List<Color> trajectoryColorSet = new List<Color>();
     private Dictionary<int, Color> clusterColorDic = new Dictionary<int, Color>();
-    public bool globalArrangement = true;
+    public int arrangementMode = 1; // 0 = local, 1 = global, 2 = line-up
     public InputDevice rightController;
     public List<GameObject> stackedObjects = new List<GameObject>();
     public List<GameObject> selectedGestures = new List<GameObject>();
@@ -170,22 +170,38 @@ public class GestureVisualizer : MonoBehaviour
         //tracerRef.SetActive(false);
         trajectoryPrefab.SetActive(false);
         gesVisPrefab.SetActive(false);
+        arrangementMode = 2;
+        AdjustClusterPosition();
     }
 
-    // global arrangement: gestures revolve around the origin, if false, then perform a cluster arrangement, where gestures
-    // would revolve around its cluster
     public void AdjustClusterPosition()
     {
-        if (globalArrangement)
+        if (arrangementMode == 1)
         {
             ArrangeLocationForGestures();
         }
-        else
+        else if(arrangementMode == 0)
         {
             foreach(KeyValuePair<int,GameObject> pair in clustersObjDic)
             {
                 ClusterGameObject cobj = pair.Value.transform.Find("ClusterVisualization").GetComponent<ClusterGameObject>();
                 cobj.ArrangeLocationForChildren();
+            }
+        }
+        else if(arrangementMode == 2)
+        {
+            List<int> rank = GestureAnalyser.instance.Sort();
+            int distance = 3;
+            foreach (int i in rank)
+            {
+                // line up clusters
+                Transform avgGes = clustersObjDic[i].transform.Find("AverageGesture");
+                avgGes.localPosition = new Vector3(distance, avgGes.localPosition.y, 0);
+                distance += 4;
+
+                // line up gestures
+                clustersObjDic[i].transform.Find("ClusterVisualization").GetComponent<ClusterGameObject>().LineUp();
+
             }
         }
         Dictionary<int, Cluster> clusters = GestureAnalyser.instance.GetClusters();
@@ -332,6 +348,7 @@ public class GestureVisualizer : MonoBehaviour
             //newPos.y = yPosition;
             gestureObjs[i].allocatedPos = newPos;
             gestureObjs[i].GetComponent<Transform>().localPosition = newPos;
+            gestureObjs[i].GetComponent<Transform>().localRotation = new Quaternion(0, 0, 0, 0);
         }
     }
 

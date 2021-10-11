@@ -216,4 +216,36 @@ public class GestureAnalyser : MonoBehaviour
     {
         return globalConsensus;
     }
+
+    /// <summary>
+    /// return a list of int representing clusters by their similarity to the entire dataset.
+    /// </summary>
+    /// <returns></returns>
+    public List<int> Sort()
+    {
+        List<Cluster> temp = new List<Cluster>();
+        foreach(KeyValuePair<int, Cluster> pair in clusters)
+        {
+            if (GestureVisualizer.instance.clustersObjDic[pair.Key].gameObject != null)
+            { temp.Add(pair.Value); }
+        }
+        List<int> result = new List<int>();
+
+        while (temp.Count > 0)
+        {
+            Cluster cluster = null;
+            float min = float.PositiveInfinity;
+            for (int i = 0; i < temp.Count; i++)
+            {
+                if (temp[i].GetSimilarity() < min)
+                {
+                    min = temp[i].GetSimilarity();
+                    cluster = temp[i]; 
+                }
+            }
+            result.Add(cluster.clusterID);
+            temp.Remove(cluster);
+        }
+        return result;
+    }
 }

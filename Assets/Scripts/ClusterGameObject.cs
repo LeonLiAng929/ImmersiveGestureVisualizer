@@ -42,7 +42,7 @@ public class ClusterGameObject : MonoBehaviour
             interactable.activated.AddListener(PerformAction);
         }
 
-        if (scale.y > 1 && GestureVisualizer.instance.globalArrangement)
+        if (scale.y > 1 && GestureVisualizer.instance.arrangementMode == 1)
         {
             Vector3 size = baryCentreVis.GetComponent<GestureGameObject>().gesture.GetBoundingBoxSize();
             float initHeight = size.y;
@@ -68,8 +68,21 @@ public class ClusterGameObject : MonoBehaviour
         else if (curr == Actions.UnfoldCluster) { UnfoldCluster(); }
         else if (curr == Actions.ChangeCluster) { ChangeCluster(); }
         else if (curr == Actions.Animate) { ActivateAnimate(); }
+        else if (curr == Actions.ShowSmallMultiples) { ShowSmallMultiples(); }
     }
 
+    public void ShowSmallMultiples()
+    {
+        GameObject clusterGameObj = GestureVisualizer.instance.GetClusterGameObjectById(clusterID);
+        GestureGameObject averageGes = clusterGameObj.GetComponent<Transform>().Find("AverageGesture").gameObject.GetComponent<GestureGameObject>();
+
+        List<GestureGameObject> gestures = new List<GestureGameObject>(clusterGameObj.GetComponentsInChildren<GestureGameObject>(true));
+        gestures.Remove(averageGes);
+        foreach(GestureGameObject gGO in gestures)
+        {
+            gGO.ShowSmallMultiples();
+        }
+    }
     public void ActivateAnimate()
     {
         foreach (GestureGameObject gGO in gameObject.transform.parent.gameObject.GetComponentsInChildren<GestureGameObject>(true))
@@ -192,4 +205,41 @@ public class ClusterGameObject : MonoBehaviour
         //InstantiateInCircle(gestures, new Vector3(0,0,0));
     } 
     
+    public List<GestureGameObject> Sort()
+    {
+        GameObject clusterGameObj = GestureVisualizer.instance.GetClusterGameObjectById(clusterID);
+        GestureGameObject averageGes = clusterGameObj.GetComponent<Transform>().Find("AverageGesture").gameObject.GetComponent<GestureGameObject>();
+
+        List<GestureGameObject> gestures = new List<GestureGameObject>(clusterGameObj.GetComponentsInChildren<GestureGameObject>(true));
+        gestures.Remove(averageGes);
+        List<GestureGameObject> result = new List<GestureGameObject>();
+        while (gestures.Count > 0)
+        {
+            float min = float.PositiveInfinity;
+            GestureGameObject minGes = null;
+            foreach(GestureGameObject gGO in gestures)
+            {
+                if (gGO.gesture.GetGlobalSimilarity() < min)
+                {
+                    min = gGO.gesture.GetGlobalSimilarity();
+                    minGes = gGO;
+                }
+            }
+            result.Add(minGes);
+            gestures.Remove(minGes);
+        }
+        return result;
+    }
+
+    public void LineUp()
+    {
+        List<GestureGameObject> sorted = Sort();
+        float x = baryCentreVis.localPosition.x;
+        
+        for(int i =0; i < sorted.Count; i++)
+        {
+            sorted[i].gameObject.transform.localPosition = new Vector3(x, 0, i + 1.5f);
+            sorted[i].gameObject.transform.localRotation = Quaternion.AngleAxis(90, new Vector3(0, 1, 0)); 
+        }
+    }
 }

@@ -2441,7 +2441,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c5631c7d3c26274cb320efdabf8b859, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  k: 7
+  k: 5
   similarityScore: 0
 --- !u!1 &288462194
 GameObject:
@@ -13091,7 +13091,7 @@ MonoBehaviour:
   clusterVisPrefab: {fileID: 91992558}
   tubeRendererMat: {fileID: 2100000, guid: b6a5181e85a60064f99966f56d500136, type: 2}
   TrajectoryFilterGameObject: {fileID: 1286329788}
-  globalArrangement: 1
+  arrangementMode: 1
   stackedObjects: []
   selectedGestures: []
   freeId: 

@@ -67,6 +67,7 @@
     <Compile Include="Assets\Scripts\TesttingScript\ChangeColor.cs" />
     <Compile Include="Assets\Scripts\GestureVisualizer.cs" />
     <Compile Include="Assets\Scripts\Features\StackingHeatMap.cs" />
+    <Compile Include="Assets\Scripts\Features\DisplayMap.cs" />
     <Compile Include="Assets\TubeRenderer\Runtime\SplineMaker.cs" />
     <Compile Include="Assets\Scripts\SummonMenu.cs" />
     <Compile Include="Assets\Scripts\Obsolete\K_Mean.cs" />
@@ -100,7 +101,7 @@
     <Compile Include="Assets\Scripts\Extension.cs" />
     <Compile Include="Assets\Scripts\TesttingScript\pressed.cs" />
     <Compile Include="Assets\Scripts\PlayerIconTracing.cs" />
-    <Compile Include="Assets\Scripts\Features\DisplayMap.cs" />
+    <Compile Include="Assets\Scripts\Features\LineUp.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Resources\7\crouch-3.xml" />
