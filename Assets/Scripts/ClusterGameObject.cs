@@ -150,7 +150,7 @@ public class ClusterGameObject : MonoBehaviour
             gtag.UpdateTag();
         }
         GestureVisualizer.instance.AdjustClusterPosition();
-        GestureVisualizer.instance.EmptySelected();
+        //GestureVisualizer.instance.EmptySelected();   Disabled to show where the newly assigned gestures are in the new cluster.
     }
     public void StackAll()
     {

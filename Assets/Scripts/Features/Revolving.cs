@@ -25,13 +25,10 @@ public class Revolving : MonoBehaviour
     {
         gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, Camera.main.transform.localPosition.y, gameObject.transform.localPosition.z);
         //gameObject.transform.position = new Vector3(Camera.main.gameObject.transform.position.x, Camera.main.gameObject.transform.position.y, gameObject.transform.position.z);
-        if (!hovered)
+        /*if (!hovered)
         {
-            /*Vector3 temp = gameObject.transform.rotation.eulerAngles;
-            temp.z += 1;
-            gameObject.transform.rotation.eulerAngles = temp;*/
             gameObject.transform.Rotate(new Vector3(0,0,0.1f));
-        }
+        }*/
     }
 
 

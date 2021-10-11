@@ -23,9 +23,9 @@ public class UITag : XRTag
         simpleInteractable = GetComponent<XRSimpleInteractable>();
         textTag.GetComponent<RectTransform>().localScale = tagSize;
         textTag.GetComponent<TextMeshPro>().text = gameObject.name;
-        simpleInteractable.firstHoverEntered.AddListener(OnHovered);
-        simpleInteractable.lastHoverExited.AddListener(OnHoverExit);
-        textTag.SetActive(false);
+        //simpleInteractable.firstHoverEntered.AddListener(OnHovered);
+        //simpleInteractable.lastHoverExited.AddListener(OnHoverExit);
+        textTag.SetActive(true);
     }
     
 
