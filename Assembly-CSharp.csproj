@@ -56,6 +56,7 @@
     <Compile Include="Assets\Scripts\K_MeanClustering.cs" />
     <Compile Include="Assets\Scripts\Features\Revolving.cs" />
     <Compile Include="Assets\Scripts\IO.cs" />
+    <Compile Include="Assets\Scripts\Features\ResumeFromComparison.cs" />
     <Compile Include="Assets\Scripts\SummonMap.cs" />
     <Compile Include="Assets\Scripts\Features\TrajectoryFilter.cs" />
     <Compile Include="Assets\Scripts\VatavuDataWrangling\Pose.cs" />
@@ -101,7 +102,7 @@
     <Compile Include="Assets\Scripts\Extension.cs" />
     <Compile Include="Assets\Scripts\TesttingScript\pressed.cs" />
     <Compile Include="Assets\Scripts\PlayerIconTracing.cs" />
-    <Compile Include="Assets\Scripts\Features\ResumeFromComparison.cs" />
+    <Compile Include="Assets\VRRig.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Resources\7\crouch-3.xml" />
@@ -1707,6 +1708,9 @@
     <Reference Include="Accord.Math">
       <HintPath>Assets\Accord\Accord.Math.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.Burst.Unsafe">
+      <HintPath>Library\PackageCache\com.unity.burst@1.3.4\Unity.Burst.Unsafe.dll</HintPath>
+    </Reference>
     <Reference Include="netstandard">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.17f1\Editor\Data\NetStandard\ref\2.0.0\netstandard.dll</HintPath>
     </Reference>
@@ -2171,6 +2175,24 @@
     </Reference>
     <Reference Include="Unity.XR.Oculus">
       <HintPath>Library\ScriptAssemblies\Unity.XR.Oculus.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Mathematics">
+      <HintPath>Library\ScriptAssemblies\Unity.Mathematics.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Burst">
+      <HintPath>Library\ScriptAssemblies\Unity.Burst.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Mathematics.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.Mathematics.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Animation.Rigging">
+      <HintPath>Library\ScriptAssemblies\Unity.Animation.Rigging.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Animation.Rigging.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.Animation.Rigging.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Burst.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.Burst.Editor.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
