@@ -12,8 +12,8 @@ public class LookAtMe : MonoBehaviour
     {
         user = Camera.main.gameObject.transform;
         simpleInteractable = GetComponent<XRSimpleInteractable>();
-        simpleInteractable.firstHoverEntered.AddListener(OnHovered);
-        simpleInteractable.lastHoverExited.AddListener(OnHoverExit);
+        //simpleInteractable.firstHoverEntered.AddListener(OnHovered);
+        //simpleInteractable.lastHoverExited.AddListener(OnHoverExit);
     }
 
     // Update is called once per frame

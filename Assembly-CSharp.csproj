@@ -103,6 +103,8 @@
     <Compile Include="Assets\Scripts\TesttingScript\pressed.cs" />
     <Compile Include="Assets\Scripts\PlayerIconTracing.cs" />
     <Compile Include="Assets\VRRig.cs" />
+    <Compile Include="Assets\Scripts\Features\Search.cs" />
+    <Compile Include="Assets\Scripts\Features\CancelSearch.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Resources\7\crouch-3.xml" />

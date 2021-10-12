@@ -13,6 +13,23 @@ public class Revolving : MonoBehaviour
         List<LookAtMe> uniqueFeatures = new List<LookAtMe>(gameObject.GetComponentsInChildren<LookAtMe>(true));
         if (uniqueFeatures.Contains(gameObject.GetComponent<LookAtMe>()))
             uniqueFeatures.Remove(gameObject.GetComponent<LookAtMe>());
+        LookAtMe confirm = null;
+        LookAtMe reject = null;
+        foreach(LookAtMe button in uniqueFeatures)
+        {
+            if (button.gameObject.name == "Confirm")
+            {
+                confirm = button;
+            }
+            if (button.gameObject.name == "Cancel")
+            {
+                reject = button;
+            }
+        }
+
+        uniqueFeatures.Remove(confirm);
+        uniqueFeatures.Remove(reject);
+
         foreach(LookAtMe tag in uniqueFeatures)
         {
             featureTrans.Add(tag.gameObject.transform);

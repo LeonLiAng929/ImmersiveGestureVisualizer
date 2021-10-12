@@ -22,7 +22,7 @@ public class GestureGameObject : MonoBehaviour
     private int counter = 0;
     private float prevTimestamp;
     public Vector3 allocatedPos;
-    private Vector3 initPos;
+    public Vector3 initPos;
     public Vector3 sizeB4Stack;
     private Quaternion lastQuat;
     int rotate = 0;

@@ -12,7 +12,7 @@ public class GestureTag : XRTag
     protected RectTransform textTagTrans;
     void Start()
     {
-        if (gameObject.name != "AverageGesture" && gameObject.name != "Gesture")
+        if (gameObject.name != "AverageGesture" && gameObject.name != "Gesture" && gameObject.name != "Gesture(Clone)")
         {
             textTag = Instantiate(featuretagPrefab, gameObject.transform);
             //user = Camera.main.gameObject.transform;
@@ -63,7 +63,7 @@ public class GestureTag : XRTag
     // Update is called once per frame
     void Update()
     {
-        if (gameObject.name == "AverageGesture" || gameObject.name == "Gesture")
+        if (gameObject.name == "AverageGesture" || gameObject.name == "Gesture" || gameObject.name == "Gesture(Clone)")
         {
         }
         else

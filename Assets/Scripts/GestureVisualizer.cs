@@ -26,12 +26,25 @@ public class GestureVisualizer : MonoBehaviour
     public Material tubeRendererMat;
     [SerializeField]
     protected GameObject TrajectoryFilterGameObject;
+    [SerializeField]
+    public Transform wristRight;
+    [SerializeField]
+    public Transform elbowRight;
+    [SerializeField]
+    public Transform shoulderRight;
+    [SerializeField]
+    public Transform wristLeft;
+    [SerializeField]
+    public Transform elbowLeft;
+    [SerializeField]
+    public Transform shoulderLeft;
 
     public Dictionary<int, GameObject> clustersObjDic = new Dictionary<int, GameObject>();
     private List<Color> trajectoryColorSet = new List<Color>();
     private Dictionary<int, Color> clusterColorDic = new Dictionary<int, Color>();
     public int arrangementMode = 1; // 0 = local, 1 = global, 2 = line-up
     public InputDevice rightController;
+    public InputDevice leftController;
     public List<GameObject> stackedObjects = new List<GameObject>();
     public List<GameObject> selectedGestures = new List<GameObject>();
     public List<int> freeId = new List<int>();
@@ -39,6 +52,13 @@ public class GestureVisualizer : MonoBehaviour
     // for close Comparison
     public bool leftHandSelected = false;
     public bool rightHandSelected = false;
+
+    // for search
+    public float time = 0;
+    public Gesture proposedGes;
+    public List<GestureGameObject> searchResult = new List<GestureGameObject>();
+    public GameObject proposedGesVis = null;
+    public int preCount = 0;
     #region Singleton
     public static GestureVisualizer instance;
     #endregion
@@ -46,12 +66,15 @@ public class GestureVisualizer : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        proposedGes = new Gesture();
+        
     }
     private void Start()
     {
         var rightHandDevices = new List<UnityEngine.XR.InputDevice>();
+        var leftHandDevices = new List<UnityEngine.XR.InputDevice>();
         UnityEngine.XR.InputDevices.GetDevicesAtXRNode(UnityEngine.XR.XRNode.RightHand, rightHandDevices);
-
+        UnityEngine.XR.InputDevices.GetDevicesAtXRNode(UnityEngine.XR.XRNode.LeftHand, leftHandDevices);
         if (rightHandDevices.Count == 1)
         {
             rightController = rightHandDevices[0];
@@ -59,6 +82,10 @@ public class GestureVisualizer : MonoBehaviour
         else
         {
             Debug.LogError("You have zero or more than one right controller connected! Make sure you have exactly one right controller connected.");
+        }
+        if (leftHandDevices.Count == 1)
+        {
+            leftController = leftHandDevices[0];
         }
         List<Gesture> gestures = GestureAnalyser.instance.GetGestures();
 
@@ -173,10 +200,33 @@ public class GestureVisualizer : MonoBehaviour
         //tracerRef.SetActive(false);
         trajectoryPrefab.SetActive(false);
         gesVisPrefab.SetActive(false);
-        arrangementMode = 2;
         AdjustClusterPosition();
     }
 
+    public void ShowSearchResult(List<Gesture> result)
+    {
+        List<GestureGameObject> gestureGameObjects = new List<GestureGameObject>();
+        foreach (Gesture g in result) {
+            foreach (KeyValuePair<int, GameObject> pair in clustersObjDic)
+            {
+                foreach (GestureGameObject gGO in pair.Value.GetComponentsInChildren<GestureGameObject>())
+                {
+                    if (gGO.gesture.id == g.id && gGO.gesture.trial == g.trial)
+                    {
+                        gestureGameObjects.Add(gGO);
+                    }
+                }
+            } 
+        }
+
+        for (int i = 0; i < gestureGameObjects.Count;i++)
+        {
+            gestureGameObjects[i].initPos = gestureGameObjects[i].gameObject.transform.localPosition;
+            gestureGameObjects[i].gameObject.transform.localPosition = new Vector3(Camera.main.gameObject.transform.position.x + 0.5f*i, gestureGameObjects[i].gameObject.transform.localPosition.y, Camera.main.gameObject.transform.position.z);
+            gestureGameObjects[i].gameObject.transform.localRotation = new Quaternion(0, 0, 0, 0);
+        }
+        searchResult = gestureGameObjects;      
+    }
     public void CloseComparison()
     {
         selectedGestures[0].transform.localPosition = new Vector3(Camera.main.gameObject.transform.position.x - 0.25f, selectedGestures[0].transform.localPosition.y, Camera.main.gameObject.transform.position.z);
@@ -287,6 +337,61 @@ public class GestureVisualizer : MonoBehaviour
         }
     }
 
+    private void FixedUpdate()
+    {
+        if (ActionSwitcher.instance.GetCurrentAction() == Actions.Search)
+        {
+            bool rightGripped;
+            rightController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.gripButton, out rightGripped);
+            if (rightGripped)
+            {
+                Pose p = new Pose();
+                time += Time.deltaTime;
+                p.timestamp = time;
+                p.num_of_joints = 6;
+               
+                Joint leftShoulderJoint = CreateNewJointByType("ShoulderLeft", shoulderLeft);
+                p.joints.Add(leftShoulderJoint);
+                Joint leftElbowJoint = CreateNewJointByType("ElbowLeft", elbowLeft);
+                p.joints.Add(leftElbowJoint);
+                Joint leftWristJoint = CreateNewJointByType("WristLeft", wristLeft);
+                p.joints.Add(leftWristJoint);
+                Joint rightShoulderJoint = CreateNewJointByType("ShoulderRight", shoulderRight);
+                p.joints.Add(rightShoulderJoint);
+                Joint rightElbowJoint = CreateNewJointByType("ElbowRight", elbowRight);
+                p.joints.Add(rightElbowJoint);
+                Joint rightWristJoint = CreateNewJointByType("WristRight", wristRight);
+                p.joints.Add(rightWristJoint);
+                preCount = proposedGes.poses.Count;
+                proposedGes.poses.Add(p);
+            }
+            else
+            {
+                if (proposedGes.poses.Count > 0 && preCount != proposedGes.poses.Count)
+                {
+                    proposedGes.cluster = 0;
+                    if(proposedGesVis != null)
+                        Destroy(proposedGesVis);
+                    gesVisPrefab.SetActive(true);
+                    proposedGesVis = Instantiate(gesVisPrefab);
+                    //proposedGesVis.transform.Find("GestureTagPrefab(Clone)").gameObject.SetActive(false);
+                    preCount = proposedGes.poses.Count;
+                    InstantiateTrajectory(proposedGesVis, proposedGes);
+                    gesVisPrefab.SetActive(false);
+                }
+            }
+        }
+    }
+
+    public Joint CreateNewJointByType(string type, Transform trans)
+    {
+        Joint joint = new Joint();
+        joint.jointType = type;
+        joint.x = trans.localPosition.x;
+        joint.y = trans.localPosition.y;
+        joint.z = trans.localPosition.z;
+        return joint;
+    }
     public void InstantiateAverageGestureVis(GameObject clusterObj, int clusterId)
     {
         GameObject newGesVis = Instantiate(gesVisPrefab, clusterObj.GetComponent<Transform>());  
@@ -329,7 +434,7 @@ public class GestureVisualizer : MonoBehaviour
         }
         traj.skeletonRef = skeleton;
         Transform[] transforms = skeleton.GetComponentsInChildren<Transform>();
-        for (int i = 1; i < 21; i++)
+        for (int i = 1; i < traj.trajectoryRenderers.Count +1; i++)
         {
             //transforms[i].localPosition = traj.trajectoryRenderers[i - 1].GetPosition(0);
             transforms[i].localPosition = traj.trajectoryRenderers[i - 1].points.ToArray()[0];
