@@ -15,7 +15,7 @@ public class DrawSkeleton : MonoBehaviour
     {
         trans = GetComponent<Transform>();
      
-        lr.GetComponent<LineRenderer>().SetWidth(0.01f, 0.01f);
+        lr.GetComponent<LineRenderer>().SetWidth(0.035f, 0.035f);
       
         DrawHumanSkeleton();
     }

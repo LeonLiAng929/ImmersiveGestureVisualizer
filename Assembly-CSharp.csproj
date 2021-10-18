@@ -56,55 +56,55 @@
     <Compile Include="Assets\Scripts\K_MeanClustering.cs" />
     <Compile Include="Assets\Scripts\Features\Revolving.cs" />
     <Compile Include="Assets\Scripts\IO.cs" />
+    <Compile Include="Assets\Scripts\Features\Search.cs" />
+    <Compile Include="Assets\Scripts\VatavuDataWrangling\Pose.cs" />
+    <Compile Include="Assets\test2.cs" />
+    <Compile Include="Assets\VRRig.cs" />
+    <Compile Include="Assets\ShaderTest.cs" />
+    <Compile Include="Assets\Scripts\Features\StackingHeatMap.cs" />
+    <Compile Include="Assets\Scripts\Features\DisplayMap.cs" />
+    <Compile Include="Assets\Scripts\GestureTag.cs" />
+    <Compile Include="Assets\Scripts\GestureGameObject.cs" />
+    <Compile Include="Assets\Scripts\Features\ActionSwitcher.cs" />
+    <Compile Include="Assets\Scripts\Map.cs" />
+    <Compile Include="Assets\Scripts\XRTag.cs" />
+    <Compile Include="Assets\Scripts\GlowingField.cs" />
+    <Compile Include="Assets\Scripts\VatavuDataWrangling\Joint.cs" />
+    <Compile Include="Assets\Scripts\ClusterTag.cs" />
+    <Compile Include="Assets\Scripts\Features\ChangeArrangement.cs" />
+    <Compile Include="Assets\Scripts\Cluster.cs" />
+    <Compile Include="Assets\Scripts\VatavuDataWrangling\Gesture.cs" />
+    <Compile Include="Assets\changeColorGlow.cs" />
+    <Compile Include="Assets\TubeRenderer\Runtime\TubeRenderer.cs" />
+    <Compile Include="Assets\Scripts\TrajectoryTracer.cs" />
+    <Compile Include="Assets\Scripts\Features\UITag.cs" />
+    <Compile Include="Assets\Scripts\GestureAnalyser.cs" />
+    <Compile Include="Assets\Scripts\Extension.cs" />
     <Compile Include="Assets\Scripts\Features\ResumeFromComparison.cs" />
     <Compile Include="Assets\Scripts\SummonMap.cs" />
     <Compile Include="Assets\Scripts\Features\TrajectoryFilter.cs" />
-    <Compile Include="Assets\Scripts\VatavuDataWrangling\Pose.cs" />
-    <Compile Include="Assets\test2.cs" />
     <Compile Include="Assets\Scripts\Obsolete\HandPrescence.cs" />
-    <Compile Include="Assets\ShaderTest.cs" />
     <Compile Include="Assets\Scripts\Obsolete\Extensions.cs" />
     <Compile Include="Assets\Scripts\ClusterGameObject.cs" />
     <Compile Include="Assets\Scripts\TesttingScript\ChangeColor.cs" />
     <Compile Include="Assets\Scripts\GestureVisualizer.cs" />
-    <Compile Include="Assets\Scripts\Features\StackingHeatMap.cs" />
-    <Compile Include="Assets\Scripts\Features\DisplayMap.cs" />
     <Compile Include="Assets\TubeRenderer\Runtime\SplineMaker.cs" />
     <Compile Include="Assets\Scripts\SummonMenu.cs" />
     <Compile Include="Assets\Scripts\Obsolete\K_Mean.cs" />
     <Compile Include="Assets\Scripts\Features\Actions.cs" />
     <Compile Include="Assets\Scripts\TestCreateObjectsInCircle.cs" />
-    <Compile Include="Assets\Scripts\GestureTag.cs" />
+    <Compile Include="Assets\Scripts\Features\CancelSearch.cs" />
     <Compile Include="Assets\Scripts\Features\LookAtMe.cs" />
-    <Compile Include="Assets\Scripts\GestureGameObject.cs" />
     <Compile Include="Assets\Scripts\Obsolete\DBA.cs" />
-    <Compile Include="Assets\Scripts\Features\ActionSwitcher.cs" />
-    <Compile Include="Assets\Scripts\Map.cs" />
     <Compile Include="Assets\VR Beginner\Scripts\Gameplay\HandPrefab.cs" />
-    <Compile Include="Assets\Scripts\XRTag.cs" />
-    <Compile Include="Assets\Scripts\GlowingField.cs" />
     <Compile Include="Assets\Scripts\Features\DisplayTrajectoryFilter.cs" />
-    <Compile Include="Assets\Scripts\VatavuDataWrangling\Joint.cs" />
-    <Compile Include="Assets\Scripts\ClusterTag.cs" />
-    <Compile Include="Assets\Scripts\Features\ChangeArrangement.cs" />
     <Compile Include="Assets\TubeRenderer\Runtime\Internals\RenderPipelineHelpers.cs" />
-    <Compile Include="Assets\Scripts\Cluster.cs" />
-    <Compile Include="Assets\Scripts\VatavuDataWrangling\Gesture.cs" />
-    <Compile Include="Assets\changeColorGlow.cs" />
     <Compile Include="Assets\Scripts\TrajectoryTR.cs" />
-    <Compile Include="Assets\TubeRenderer\Runtime\TubeRenderer.cs" />
     <Compile Include="Assets\Scripts\Trajectory.cs" />
     <Compile Include="Assets\Scripts\Features\ResetFilter.cs" />
-    <Compile Include="Assets\Scripts\TrajectoryTracer.cs" />
     <Compile Include="Assets\Scripts\DrawSkeleton.cs" />
-    <Compile Include="Assets\Scripts\Features\UITag.cs" />
-    <Compile Include="Assets\Scripts\GestureAnalyser.cs" />
-    <Compile Include="Assets\Scripts\Extension.cs" />
     <Compile Include="Assets\Scripts\TesttingScript\pressed.cs" />
     <Compile Include="Assets\Scripts\PlayerIconTracing.cs" />
-    <Compile Include="Assets\VRRig.cs" />
-    <Compile Include="Assets\Scripts\Features\Search.cs" />
-    <Compile Include="Assets\Scripts\Features\CancelSearch.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Resources\7\crouch-3.xml" />
@@ -1701,6 +1701,9 @@
     <Reference Include="ADN.Extensions">
       <HintPath>Assets\Plugins\ADN.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.Burst.Unsafe">
+      <HintPath>Library\PackageCache\com.unity.burst@1.3.4\Unity.Burst.Unsafe.dll</HintPath>
+    </Reference>
     <Reference Include="NDtw">
       <HintPath>Assets\Plugins\NDtw.dll</HintPath>
     </Reference>
@@ -1709,9 +1712,6 @@
     </Reference>
     <Reference Include="Accord.Math">
       <HintPath>Assets\Accord\Accord.Math.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Burst.Unsafe">
-      <HintPath>Library\PackageCache\com.unity.burst@1.3.4\Unity.Burst.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.17f1\Editor\Data\NetStandard\ref\2.0.0\netstandard.dll</HintPath>
@@ -2061,38 +2061,11 @@
     <Reference Include="Unity.VSCode.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.VSCode.Editor.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEditor.InteractiveTutorialsFramework">
-      <HintPath>Library\ScriptAssemblies\UnityEditor.InteractiveTutorialsFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.XR.WindowsMixedReality">
-      <HintPath>Library\ScriptAssemblies\Unity.XR.WindowsMixedReality.dll</HintPath>
-    </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.XR.OpenXR.Features.OculusQuestSupport.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.XR.OpenXR.Features.OculusQuestSupport.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.VisualStudio.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.VisualStudio.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.XR.Management.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.XR.Management.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Timeline">
-      <HintPath>Library\ScriptAssemblies\Unity.Timeline.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.TextMeshPro">
-      <HintPath>Library\ScriptAssemblies\Unity.TextMeshPro.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.XR.Interaction.Toolkit">
-      <HintPath>Library\ScriptAssemblies\Unity.XR.Interaction.Toolkit.dll</HintPath>
-    </Reference>
     <Reference Include="Unity.Scripting.Python.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.Scripting.Python.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Subsystem.Registration">
-      <HintPath>Library\ScriptAssemblies\Unity.Subsystem.Registration.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UI">
       <HintPath>Library\ScriptAssemblies\UnityEditor.UI.dll</HintPath>
@@ -2103,20 +2076,11 @@
     <Reference Include="Unity.Rider.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.Rider.Editor.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.PlasticSCM.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.PlasticSCM.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.XR.OpenXR.Features.OculusQuestSupport">
-      <HintPath>Library\ScriptAssemblies\Unity.XR.OpenXR.Features.OculusQuestSupport.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.SpatialTracking">
-      <HintPath>Library\ScriptAssemblies\UnityEngine.SpatialTracking.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>Library\ScriptAssemblies\UnityEngine.UI.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.InteractiveTutorials.Core">
-      <HintPath>Library\ScriptAssemblies\Unity.InteractiveTutorials.Core.dll</HintPath>
+    <Reference Include="UnityEngine.SpatialTracking">
+      <HintPath>Library\ScriptAssemblies\UnityEngine.SpatialTracking.dll</HintPath>
     </Reference>
     <Reference Include="Unity.EditorCoroutines.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.EditorCoroutines.Editor.dll</HintPath>
@@ -2127,8 +2091,80 @@
     <Reference Include="Unity.XR.WindowsMixedReality.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.XR.WindowsMixedReality.Editor.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.XR.ARSubsystems.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.XR.ARSubsystems.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.XR.Management">
+      <HintPath>Library\ScriptAssemblies\Unity.XR.Management.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Scripting.Python.Editor.PlatformCheck">
+      <HintPath>Library\ScriptAssemblies\Unity.Scripting.Python.Editor.PlatformCheck.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Mathematics.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.Mathematics.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.XR.ARSubsystems">
+      <HintPath>Library\ScriptAssemblies\Unity.XR.ARSubsystems.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.XR.Oculus.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.XR.Oculus.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Animation.Rigging.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.Animation.Rigging.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.InteractiveTutorials.Core.Scripts">
+      <HintPath>Library\ScriptAssemblies\Unity.InteractiveTutorials.Core.Scripts.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.InteractiveTutorialsFramework">
+      <HintPath>Library\ScriptAssemblies\UnityEditor.InteractiveTutorialsFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.XR.WindowsMixedReality">
+      <HintPath>Library\ScriptAssemblies\Unity.XR.WindowsMixedReality.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.VisualStudio.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.VisualStudio.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.XR.OpenXR.Features.OculusQuestSupport.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.XR.OpenXR.Features.OculusQuestSupport.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.XR.Management.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.XR.Management.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Timeline">
+      <HintPath>Library\ScriptAssemblies\Unity.Timeline.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.TextMeshPro">
+      <HintPath>Library\ScriptAssemblies\Unity.TextMeshPro.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Burst.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.Burst.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.XR.Interaction.Toolkit">
+      <HintPath>Library\ScriptAssemblies\Unity.XR.Interaction.Toolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Subsystem.Registration">
+      <HintPath>Library\ScriptAssemblies\Unity.Subsystem.Registration.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.PlasticSCM.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.PlasticSCM.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.XR.OpenXR.Features.OculusQuestSupport">
+      <HintPath>Library\ScriptAssemblies\Unity.XR.OpenXR.Features.OculusQuestSupport.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.InteractiveTutorials.Core">
+      <HintPath>Library\ScriptAssemblies\Unity.InteractiveTutorials.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Animation.Rigging">
+      <HintPath>Library\ScriptAssemblies\Unity.Animation.Rigging.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Mathematics">
+      <HintPath>Library\ScriptAssemblies\Unity.Mathematics.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.XR.OpenXR.TestHelpers">
       <HintPath>Library\ScriptAssemblies\Unity.XR.OpenXR.TestHelpers.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Burst">
+      <HintPath>Library\ScriptAssemblies\Unity.Burst.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.XR.LegacyInputHelpers">
       <HintPath>Library\ScriptAssemblies\UnityEngine.XR.LegacyInputHelpers.dll</HintPath>
@@ -2139,26 +2175,17 @@
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.Timeline.Editor.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.XR.ARSubsystems.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.XR.ARSubsystems.Editor.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEditor.XR.LegacyInputHelpers">
       <HintPath>Library\ScriptAssemblies\UnityEditor.XR.LegacyInputHelpers.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.XR.Management">
-      <HintPath>Library\ScriptAssemblies\Unity.XR.Management.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Scripting.Python.Editor.PlatformCheck">
-      <HintPath>Library\ScriptAssemblies\Unity.Scripting.Python.Editor.PlatformCheck.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.XR.ARSubsystems">
-      <HintPath>Library\ScriptAssemblies\Unity.XR.ARSubsystems.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.XR.Oculus.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.XR.Oculus.Editor.dll</HintPath>
-    </Reference>
     <Reference Include="Unity.XR.OpenXR">
       <HintPath>Library\ScriptAssemblies\Unity.XR.OpenXR.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.XR.Interaction.Toolkit.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.XR.Interaction.Toolkit.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.XR.Oculus">
+      <HintPath>Library\ScriptAssemblies\Unity.XR.Oculus.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.SpatialTracking">
       <HintPath>Library\ScriptAssemblies\UnityEditor.SpatialTracking.dll</HintPath>
@@ -2166,35 +2193,8 @@
     <Reference Include="Unity.XR.OpenXR.Features.ConformanceAutomation">
       <HintPath>Library\ScriptAssemblies\Unity.XR.OpenXR.Features.ConformanceAutomation.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.XR.Interaction.Toolkit.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.XR.Interaction.Toolkit.Editor.dll</HintPath>
-    </Reference>
     <Reference Include="Unity.XR.OpenXR.Features.RuntimeDebugger.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.XR.OpenXR.Features.RuntimeDebugger.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.InteractiveTutorials.Core.Scripts">
-      <HintPath>Library\ScriptAssemblies\Unity.InteractiveTutorials.Core.Scripts.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.XR.Oculus">
-      <HintPath>Library\ScriptAssemblies\Unity.XR.Oculus.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Mathematics">
-      <HintPath>Library\ScriptAssemblies\Unity.Mathematics.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Burst">
-      <HintPath>Library\ScriptAssemblies\Unity.Burst.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Mathematics.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.Mathematics.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Animation.Rigging">
-      <HintPath>Library\ScriptAssemblies\Unity.Animation.Rigging.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Animation.Rigging.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.Animation.Rigging.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Burst.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.Burst.Editor.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
