@@ -105,6 +105,7 @@
     <Compile Include="Assets\Scripts\DrawSkeleton.cs" />
     <Compile Include="Assets\Scripts\TesttingScript\pressed.cs" />
     <Compile Include="Assets\Scripts\PlayerIconTracing.cs" />
+    <Compile Include="Assets\Scenes\TRTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Resources\7\crouch-3.xml" />

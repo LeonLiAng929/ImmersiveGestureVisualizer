@@ -38,6 +38,8 @@ public class GestureVisualizer : MonoBehaviour
     public Transform elbowLeft;
     [SerializeField]
     public Transform shoulderLeft;
+    [SerializeField]
+    public GameObject proposedGestureObj; // used for visualizing user proposed gesture when using the search feature.
 
     public Dictionary<int, GameObject> clustersObjDic = new Dictionary<int, GameObject>();
     private List<Color> trajectoryColorSet = new List<Color>();
@@ -123,8 +125,19 @@ public class GestureVisualizer : MonoBehaviour
             filters[j].init = c;
         }
 
-       
-        
+        // initialize colors for user proposed trajectories
+        proposedGestureObj.transform.Find("WristLeft").GetComponent<MeshRenderer>().material.color = trajectoryColorSet[6];
+        proposedGestureObj.transform.Find("ElbowLeft").GetComponent<MeshRenderer>().material.color = trajectoryColorSet[5];
+        proposedGestureObj.transform.Find("ShoulderLeft").GetComponent<MeshRenderer>().material.color = trajectoryColorSet[4];
+        proposedGestureObj.transform.Find("WristRight").GetComponent<MeshRenderer>().material.color = trajectoryColorSet[10];
+        proposedGestureObj.transform.Find("ElbowRight").GetComponent<MeshRenderer>().material.color = trajectoryColorSet[9];
+        proposedGestureObj.transform.Find("ShoulderRight").GetComponent<MeshRenderer>().material.color = trajectoryColorSet[8];
+        proposedGestureObj.transform.Find("WristLeft").GetComponent<TubeRenderer>().points = new Vector3[] { };
+        proposedGestureObj.transform.Find("ElbowLeft").GetComponent<TubeRenderer>().points = new Vector3[] { };
+        proposedGestureObj.transform.Find("ShoulderLeft").GetComponent<TubeRenderer>().points = new Vector3[] { };
+        proposedGestureObj.transform.Find("WristRight").GetComponent<TubeRenderer>().points = new Vector3[] { };
+        proposedGestureObj.transform.Find("ElbowRight").GetComponent<TubeRenderer>().points = new Vector3[] { };
+        proposedGestureObj.transform.Find("ShoulderRight").GetComponent<TubeRenderer>().points = new Vector3[] { };
 
         foreach (Gesture g in gestures)
         {
@@ -349,7 +362,7 @@ public class GestureVisualizer : MonoBehaviour
                 time += Time.deltaTime;
                 p.timestamp = time;
                 p.num_of_joints = 6;
-               
+                
                 Joint leftShoulderJoint = CreateNewJointByType("ShoulderLeft", shoulderLeft);
                 p.joints.Add(leftShoulderJoint);
                 Joint leftElbowJoint = CreateNewJointByType("ElbowLeft", elbowLeft);
@@ -364,8 +377,17 @@ public class GestureVisualizer : MonoBehaviour
                 p.joints.Add(rightWristJoint);
                 preCount = proposedGes.poses.Count;
                 proposedGes.poses.Add(p);
+
+                UpdateUserProposedTrajectoryByType("ShoulderLeft", p.joints[0].ToVector());
+             
+               
+                UpdateUserProposedTrajectoryByType("ElbowLeft", p.joints[1].ToVector());
+                UpdateUserProposedTrajectoryByType("WristLeft", p.joints[2].ToVector());
+                UpdateUserProposedTrajectoryByType("ShoulderRight", p.joints[3].ToVector());
+                UpdateUserProposedTrajectoryByType("ElbowRight", p.joints[4].ToVector());
+                UpdateUserProposedTrajectoryByType("WristRight", p.joints[5].ToVector());
             }
-            else
+            /*else
             {
                 if (proposedGes.poses.Count > 0 && preCount != proposedGes.poses.Count)
                 {
@@ -379,7 +401,7 @@ public class GestureVisualizer : MonoBehaviour
                     InstantiateTrajectory(proposedGesVis, proposedGes);
                     gesVisPrefab.SetActive(false);
                 }
-            }
+            }*/
         }
     }
 
@@ -387,10 +409,21 @@ public class GestureVisualizer : MonoBehaviour
     {
         Joint joint = new Joint();
         joint.jointType = type;
-        joint.x = trans.localPosition.x;
-        joint.y = trans.localPosition.y;
-        joint.z = trans.localPosition.z;
+        joint.x = trans.position.x;
+        joint.y = trans.position.y;
+        joint.z = trans.position.z;
         return joint;
+    }
+
+    public void UpdateUserProposedTrajectoryByType(string type, Vector3 joint)
+    {
+        TubeRenderer tr = proposedGestureObj.transform.Find(type).GetComponent<TubeRenderer>();
+        Vector3[] old = tr.points;
+        Vector3[] update = new Vector3[] { joint };
+        Vector3[] newPoints = new Vector3[old.Length + update.Length];
+        old.CopyTo(newPoints, 0);
+        update.CopyTo(newPoints, old.Length);
+        tr.points = newPoints;
     }
     public void InstantiateAverageGestureVis(GameObject clusterObj, int clusterId)
     {
@@ -414,10 +447,7 @@ public class GestureVisualizer : MonoBehaviour
         GameObject newTrajObj = Instantiate(trajectoryPrefab, newGesVisTrans);
         newTrajObj.SetActive(true);
         newTrajObj.name = "Trajectory";
-        /*newTrajObj.AddComponent<Trajectory>();
-        Trajectory traj = newTrajObj.GetComponent<Trajectory>();
-        traj.SetAttributes(g, newTrajObj, trajectoryRendererPrefab, tracerRef);
-        */
+    
         newTrajObj.AddComponent<TrajectoryTR>();
         TrajectoryTR traj = newTrajObj.GetComponent<TrajectoryTR>();
         traj.SetAttributes(g, newTrajObj, trajectoryRendererPrefab);
