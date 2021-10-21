@@ -354,9 +354,9 @@ public class GestureVisualizer : MonoBehaviour
     {
         if (ActionSwitcher.instance.GetCurrentAction() == Actions.Search)
         {
-            bool rightGripped;
-            rightController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.gripButton, out rightGripped);
-            if (rightGripped)
+            bool primaryTounched;
+            rightController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.primaryTouch, out primaryTounched);
+            if (primaryTounched)
             {
                 Pose p = new Pose();
                 time += Time.deltaTime;

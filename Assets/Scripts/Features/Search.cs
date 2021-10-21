@@ -16,12 +16,6 @@ public class Search : MonoBehaviour
         init = gameObject.GetComponent<MeshRenderer>().material.color;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void ConfirmSearch(ActivateEventArgs arg)
     {
         Debug.Log(GestureVisualizer.instance.proposedGes.poses.Count);
@@ -61,6 +55,6 @@ public class Search : MonoBehaviour
         }
 
         GestureVisualizer.instance.ShowSearchResult(sortedResult);
-        Debug.Log(sortedResult.Count);
+        //Debug.Log(sortedResult.Count);
     }
 }

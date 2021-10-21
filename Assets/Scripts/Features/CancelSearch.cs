@@ -32,5 +32,12 @@ public class CancelSearch : MonoBehaviour
         GestureVisualizer.instance.proposedGes = new Gesture();
         GestureVisualizer.instance.time = 0;
         GestureVisualizer.instance.searchResult = new List<GestureGameObject>();
+        GameObject proposedGesObj = GestureVisualizer.instance.proposedGestureObj;
+        proposedGesObj.transform.Find("WristLeft").GetComponent<TubeRenderer>().points = new Vector3[] { };
+        proposedGesObj.transform.Find("ElbowLeft").GetComponent<TubeRenderer>().points = new Vector3[] { };
+        proposedGesObj.transform.Find("ShoulderLeft").GetComponent<TubeRenderer>().points = new Vector3[] { };
+        proposedGesObj.transform.Find("WristRight").GetComponent<TubeRenderer>().points = new Vector3[] { };
+        proposedGesObj.transform.Find("ElbowRight").GetComponent<TubeRenderer>().points = new Vector3[] { };
+        proposedGesObj.transform.Find("ShoulderRight").GetComponent<TubeRenderer>().points = new Vector3[] { };
     }
 }
