@@ -263,7 +263,6 @@ public class GestureAnalyser : MonoBehaviour
             {
                 Pose temp_p = new Pose();
                 temp_p.timestamp = p.timestamp;
-                Debug.Log(p.joints.Count);
                 List<Joint> leftJoints = p.joints.GetRange(4, 3);
                 List<Joint> rightJoints = p.joints.GetRange(8, 3);
                 leftJoints.InsertRange(3, rightJoints);
