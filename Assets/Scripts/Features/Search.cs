@@ -7,18 +7,21 @@ public class Search : MonoBehaviour
 {
     private XRSimpleInteractable simpleInteractable;
     public float tolerance;
-    Color init;
+    private GameObject selectionIndicator;
+    
     // Start is called before the first frame update
     void Start()
     {
         simpleInteractable = GetComponent<XRSimpleInteractable>();
         simpleInteractable.activated.AddListener(ConfirmSearch);
-        init = gameObject.GetComponent<MeshRenderer>().material.color;
+        selectionIndicator = transform.Find("SelectionIndicator").gameObject;
+        selectionIndicator.SetActive(false);
     }
 
     public void ConfirmSearch(ActivateEventArgs arg)
     {
-        Debug.Log(GestureVisualizer.instance.proposedGes.poses.Count);
+        selectionIndicator.SetActive(true);
+
         List<Gesture> gestures = GestureAnalyser.instance.PrepareGestureForSearch();
         Gesture proposedGes = GestureVisualizer.instance.proposedGes;
         proposedGes.num_of_poses = proposedGes.poses.Count;
@@ -55,6 +58,7 @@ public class Search : MonoBehaviour
         }
 
         GestureVisualizer.instance.ShowSearchResult(sortedResult);
+        selectionIndicator.SetActive(false) ;
         //Debug.Log(sortedResult.Count);
     }
 }

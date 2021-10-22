@@ -8,13 +8,16 @@ public class DisplayMap : MonoBehaviour
     private XRSimpleInteractable simpleInteractable;
     public GameObject map;
     Color init;
+    private GameObject selectionIndicator;
     // Start is called before the first frame update
     void Start()
     {
+        selectionIndicator = transform.Find("SelectionIndicator").gameObject;
         simpleInteractable = GetComponent<XRSimpleInteractable>();
         simpleInteractable.activated.AddListener(ShowMap);
         init = gameObject.GetComponent<MeshRenderer>().material.color;
         map.SetActive(false);
+        selectionIndicator.SetActive(false);
     }
 
     // Update is called once per frame
@@ -28,11 +31,13 @@ public class DisplayMap : MonoBehaviour
         if (map.activeSelf)
         {
             map.SetActive(!map.activeSelf);
+            selectionIndicator.SetActive(!selectionIndicator.activeSelf);
             gameObject.GetComponent<MeshRenderer>().material.color = init;
         }
         else {
             //filter.gameObject.transform.position = new Vector3(Camera.main.gameObject.transform.position.x, 0.55f, Camera.main.gameObject.transform.position.z + 2);
             map.SetActive(!map.activeSelf);
+            selectionIndicator.SetActive(!selectionIndicator.activeSelf);
             gameObject.GetComponent<MeshRenderer>().material.color = Color.white;
             }
     }

@@ -16,6 +16,7 @@ public class ActionSwitcher : MonoBehaviour
 
     private static Actions currentlyActive;
     public int actionID;
+    private GameObject selectionIndicator;
     void Awake()
     {
         instance = this;
@@ -24,9 +25,11 @@ public class ActionSwitcher : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
+        selectionIndicator = transform.Find("SelectionIndicator").gameObject;
         xRSimpleInteractable = GetComponent<XRSimpleInteractable>();
         xRSimpleInteractable.activated.AddListener(SwitchAction);
         init = gameObject.GetComponent<MeshRenderer>().material.color;
+        transform.Find("SelectionIndicator").gameObject.SetActive(false);
     }
 
     // for the old Menu system
@@ -63,6 +66,7 @@ public class ActionSwitcher : MonoBehaviour
             foreach (ActionSwitcher aswr in gameObject.transform.parent.GetComponentsInChildren<ActionSwitcher>())
             {
                 aswr.gameObject.GetComponent<MeshRenderer>().material.color = aswr.init;
+                aswr.selectionIndicator.SetActive(false);
 
             }
             
@@ -70,6 +74,7 @@ public class ActionSwitcher : MonoBehaviour
             Debug.Log(currentlyActive);
       
             gameObject.GetComponent<MeshRenderer>().material.color = Color.white;
+            selectionIndicator.SetActive(true);
         }
     }
 

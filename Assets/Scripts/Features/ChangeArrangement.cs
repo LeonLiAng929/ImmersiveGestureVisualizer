@@ -9,14 +9,17 @@ public class ChangeArrangement : MonoBehaviour
     public static ChangeArrangement instance;
     #endregion
 
+    public Material global;
+    public Material local;
+    public Material lineUp;
+
     private int mode = 0; //0 = local, 1=global, 2 = lineUp
-    Color init;
     // Start is called before the first frame update
     void Start()
     {
         xRSimpleInteractable = GetComponent<XRSimpleInteractable>();
         xRSimpleInteractable.activated.AddListener(Rearrange);
-        init = gameObject.GetComponent<MeshRenderer>().material.color;
+        gameObject.GetComponent<MeshRenderer>().material = global;
         instance = this;
     }
 
@@ -32,21 +35,21 @@ public class ChangeArrangement : MonoBehaviour
         if (mode == 0)
         {
             mode = 2;
-            gameObject.GetComponent<MeshRenderer>().material.color = Color.red;
+            gameObject.GetComponent<MeshRenderer>().material = local;
             GestureVisualizer.instance.arrangementMode = 0;
             GestureVisualizer.instance.AdjustClusterPosition();
 
         }
         else if (mode == 1){
             mode = 0;
-            gameObject.GetComponent<MeshRenderer>().material.color = Color.green;
+            gameObject.GetComponent<MeshRenderer>().material = global;
             GestureVisualizer.instance.arrangementMode = 1;
             GestureVisualizer.instance.AdjustClusterPosition();
         }
         else if ( mode == 2)
         {
             mode = 1;
-            gameObject.GetComponent<MeshRenderer>().material.color = init;
+            gameObject.GetComponent<MeshRenderer>().material = lineUp;
             GestureVisualizer.instance.arrangementMode = 2;
             GestureVisualizer.instance.AdjustClusterPosition();
         }
@@ -57,7 +60,7 @@ public class ChangeArrangement : MonoBehaviour
         if (mode == 0)
         {
             mode = 2;
-            gameObject.GetComponent<MeshRenderer>().material.color = Color.red;
+            
             GestureVisualizer.instance.arrangementMode = 0;
             GestureVisualizer.instance.AdjustClusterPosition();
 
@@ -65,14 +68,14 @@ public class ChangeArrangement : MonoBehaviour
         else if (mode == 1)
         {
             mode = 0;
-            gameObject.GetComponent<MeshRenderer>().material.color = Color.green;
+            
             GestureVisualizer.instance.arrangementMode = 1;
             GestureVisualizer.instance.AdjustClusterPosition();
         }
         else if (mode == 2)
         {
             mode = 1;
-            gameObject.GetComponent<MeshRenderer>().material.color = init;
+            
             GestureVisualizer.instance.arrangementMode = 2;
             GestureVisualizer.instance.AdjustClusterPosition();
         }

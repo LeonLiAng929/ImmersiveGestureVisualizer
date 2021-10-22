@@ -254,23 +254,25 @@ public class GestureAnalyser : MonoBehaviour
         List<Gesture> results = new List<Gesture>();
         foreach(Gesture g in gestures)
         {
-            Gesture tempG = new Gesture();
-            tempG.num_of_poses = g.num_of_poses;
-            tempG.id = g.id;
-            tempG.trial = g.trial;
-            tempG.cluster = g.cluster;
-            foreach(Pose p in g.poses)
-            {
-                Pose temp_p = new Pose();
-                temp_p.timestamp = p.timestamp;
-                List<Joint> leftJoints = p.joints.GetRange(4, 3);
-                List<Joint> rightJoints = p.joints.GetRange(8, 3);
-                leftJoints.InsertRange(3, rightJoints);
-                temp_p.joints = leftJoints;
-                temp_p.num_of_joints = 6;
-                tempG.poses.Add(temp_p);
+            if(GestureVisualizer.instance.clustersObjDic[g.cluster].transform.Find(g.gestureType + g.id.ToString() + "-Trial" + g.trial.ToString()).gameObject.activeSelf == true) {
+                Gesture tempG = new Gesture();
+                tempG.num_of_poses = g.num_of_poses;
+                tempG.id = g.id;
+                tempG.trial = g.trial;
+                tempG.cluster = g.cluster;
+                foreach(Pose p in g.poses)
+                {
+                    Pose temp_p = new Pose();
+                    temp_p.timestamp = p.timestamp;
+                    List<Joint> leftJoints = p.joints.GetRange(4, 3);
+                    List<Joint> rightJoints = p.joints.GetRange(8, 3);
+                    leftJoints.InsertRange(3, rightJoints);
+                    temp_p.joints = leftJoints;
+                    temp_p.num_of_joints = 6;
+                    tempG.poses.Add(temp_p);
+                }
+                results.Add(tempG);
             }
-            results.Add(tempG);
         }
         return results;
     }

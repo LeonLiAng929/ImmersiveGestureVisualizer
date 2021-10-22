@@ -235,8 +235,16 @@ public class GestureVisualizer : MonoBehaviour
         for (int i = 0; i < gestureGameObjects.Count;i++)
         {
             gestureGameObjects[i].initPos = gestureGameObjects[i].gameObject.transform.localPosition;
-            gestureGameObjects[i].gameObject.transform.localPosition = new Vector3(Camera.main.gameObject.transform.position.x + 0.5f*i, gestureGameObjects[i].gameObject.transform.localPosition.y, Camera.main.gameObject.transform.position.z);
+            gestureGameObjects[i].gameObject.transform.localPosition = new Vector3(Camera.main.gameObject.transform.position.x + 0.7f*i, gestureGameObjects[i].gameObject.transform.localPosition.y, Camera.main.gameObject.transform.position.z);
             gestureGameObjects[i].gameObject.transform.localRotation = new Quaternion(0, 0, 0, 0);
+            if (i == 0)
+            {
+                proposedGestureObj.transform.position = gestureGameObjects[i].transform.position;
+                proposedGestureObj.transform.localPosition = new Vector3(0,0,0);
+                proposedGestureObj.transform.position = proposedGestureObj.transform.position - new Vector3(0.7f, 0, 0);
+                proposedGestureObj.transform.localRotation = new Quaternion(0, 0, 0, 0);
+                proposedGestureObj.transform.rotation = gestureGameObjects[i].gameObject.transform.rotation;
+            }
         }
         searchResult = gestureGameObjects;      
     }

@@ -7,12 +7,15 @@ public class CancelSearch : MonoBehaviour
 {
     private Color init;
     private XRSimpleInteractable xRSimpleInteractable;
+    private GameObject selectionIndicator;
     // Start is called before the first frame update
     void Start()
     {
         xRSimpleInteractable = GetComponent<XRSimpleInteractable>();
         xRSimpleInteractable.activated.AddListener(Resume);
         init = gameObject.GetComponent<MeshRenderer>().material.color;
+        selectionIndicator = transform.Find("SelectionIndicator").gameObject;
+        selectionIndicator.SetActive(false);
     }
 
     // Update is called once per frame
@@ -23,7 +26,8 @@ public class CancelSearch : MonoBehaviour
 
     private void Resume(ActivateEventArgs arg)
     {
-        Debug.Log("reset!");
+        Debug.Log("Reset!");
+        selectionIndicator.SetActive(!selectionIndicator.activeSelf);
 
         foreach (GestureGameObject g in GestureVisualizer.instance.searchResult)
         {
@@ -39,5 +43,6 @@ public class CancelSearch : MonoBehaviour
         proposedGesObj.transform.Find("WristRight").GetComponent<TubeRenderer>().points = new Vector3[] { };
         proposedGesObj.transform.Find("ElbowRight").GetComponent<TubeRenderer>().points = new Vector3[] { };
         proposedGesObj.transform.Find("ShoulderRight").GetComponent<TubeRenderer>().points = new Vector3[] { };
+        selectionIndicator.SetActive(!selectionIndicator.activeSelf);
     }
 }
