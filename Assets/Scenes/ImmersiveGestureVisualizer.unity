@@ -3242,7 +3242,7 @@ Transform:
   m_Children:
   - {fileID: 1894166758}
   m_Father: {fileID: 586340483}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!114 &234051780
 MonoBehaviour:
@@ -6530,7 +6530,6 @@ Transform:
   - {fileID: 177503950}
   - {fileID: 642585581}
   - {fileID: 1572603997}
-  - {fileID: 1601255928}
   - {fileID: 1643210674}
   - {fileID: 1757862461}
   - {fileID: 234051779}
@@ -6638,6 +6637,7 @@ Transform:
   m_LocalScale: {x: 1.12, y: 1.12, z: 1.12}
   m_Children:
   - {fileID: 1341464347}
+  - {fileID: 1601255928}
   m_Father: {fileID: 642585581}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -9165,7 +9165,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 934046925}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.004, z: 0.75}
+  m_LocalPosition: {x: 0, y: 0, z: 0.75}
   m_LocalScale: {x: 1.12, y: 1.12, z: 1.12}
   m_Children: []
   m_Father: {fileID: 1601255928}
@@ -14005,7 +14005,7 @@ GameObject:
   - component: {fileID: 1341464348}
   - component: {fileID: 1341464353}
   m_Layer: 0
-  m_Name: ResumeStackedGesture
+  m_Name: ResumeFromStack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14019,7 +14019,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1341464346}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.733, y: -0.059, z: -1}
+  m_LocalPosition: {x: 0.733, y: -0.264, z: -1}
   m_LocalScale: {x: 0.41243923, y: 0.41243923, z: 0.0008928575}
   m_Children:
   - {fileID: 206766368}
@@ -14182,9 +14182,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8676b2c36c12c4143bdc65e81c72bdc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offsetY: 0.15
+  offsetY: -0.12
   focus: 1
-  tagSize: {x: 0.05, y: 0.05, z: 0.05}
+  tagSize: {x: 0.1, y: 0.1, z: 0.1}
   featuretagPrefab: {fileID: 7504907593663313336, guid: 8331cec399829f349b46317a5f271210,
     type: 3}
 --- !u!43 &1360658283
@@ -17247,7 +17247,6 @@ GameObject:
   - component: {fileID: 1601255935}
   - component: {fileID: 1601255932}
   - component: {fileID: 1601255931}
-  - component: {fileID: 1601255930}
   - component: {fileID: 1601255929}
   m_Layer: 0
   m_Name: HeatMap
@@ -17263,13 +17262,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1601255927}
-  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
-  m_LocalPosition: {x: 0, y: 0.55, z: 0}
-  m_LocalScale: {x: 0.25, y: 0.25, z: 0.001}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.731, y: 0.274, z: -0.6696429}
+  m_LocalScale: {x: 0.41243923, y: 0.41243923, z: 0.0008928575}
   m_Children:
   - {fileID: 934046926}
-  m_Father: {fileID: 586340483}
-  m_RootOrder: 8
+  m_Father: {fileID: 596470486}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!114 &1601255929
 MonoBehaviour:
@@ -17285,18 +17284,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HeatMapMat: {fileID: 2100000, guid: 31f9db50ce9e7e343bc1d4d2c1bb7f18, type: 2}
   RegularMat: {fileID: 2100000, guid: b6a5181e85a60064f99966f56d500136, type: 2}
---- !u!114 &1601255930
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1601255927}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42de3efade1404b469737ee5f658ab7b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1601255931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17440,9 +17427,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8676b2c36c12c4143bdc65e81c72bdc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offsetY: 0.15
+  offsetY: 0.05
   focus: 1
-  tagSize: {x: 0.05, y: 0.05, z: 0.05}
+  tagSize: {x: 0.1, y: 0.1, z: 0.1}
   featuretagPrefab: {fileID: 7504907593663313336, guid: 8331cec399829f349b46317a5f271210,
     type: 3}
 --- !u!1 &1604943101
@@ -17885,7 +17872,7 @@ Transform:
   m_Children:
   - {fileID: 1113049142}
   m_Father: {fileID: 586340483}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!114 &1643210675
 MonoBehaviour:
@@ -19268,7 +19255,7 @@ Transform:
   m_Children:
   - {fileID: 779512444}
   m_Father: {fileID: 586340483}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!114 &1757862462
 MonoBehaviour:
