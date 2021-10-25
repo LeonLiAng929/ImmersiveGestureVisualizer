@@ -28,6 +28,22 @@ public class GestureGameObject : MonoBehaviour
     int rotate = 0;
     int currPoseIndex = 0;
     // Update is called once per frame
+
+    // a skeleton to link the animation and the slidimation with the small-multiples
+    private GameObject timeIndicator;
+
+    private void Start()
+    {
+        GameObject multiples = GetComponent<Transform>().Find("SmallMultiples").gameObject;
+        timeIndicator = Instantiate(GestureVisualizer.instance.skeletonModel, multiples.transform);
+        timeIndicator.name = "TimeIndicator";
+        Transform[] transforms = timeIndicator.GetComponentsInChildren<Transform>();
+        transforms[0].localPosition = new Vector3(0, 0, 0.7f);
+        for (int i = 1; i < 21; i++)
+        {
+            transforms[i].localPosition = gesture.poses[0].joints[i - 1].ToVector();
+        }
+    }
     void Update()
     {
         if (animate)
@@ -182,9 +198,10 @@ public class GestureGameObject : MonoBehaviour
             if (currTime - prevTimestamp > 0)
             {
                 float ratio = (Extension.SecondsToMs(timer) - prevTimestamp) / (currTime - prevTimestamp);
+                
                 Vector3 interpolation = Vector3.Lerp(start_pos, end_pos, ratio);
-           
-                transforms[i].localPosition = Vector3.Lerp(start_pos, end_pos, ratio);
+
+                transforms[i].localPosition = interpolation;
             }
         }
     }

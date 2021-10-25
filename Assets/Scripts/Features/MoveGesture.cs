@@ -29,11 +29,14 @@ public class MoveGesture : MonoBehaviour
             GestureVisualizer.instance.adjustTranform = false;
             GestureVisualizer.instance.proposedGestureObj.transform.parent = null;
             selectionIndicator.SetActive(false);
+            GestureVisualizer.instance.proposedGestureObj.transform.localPosition = new Vector3(0, 0, 0);
+            GestureVisualizer.instance.proposedGestureObj.transform.localRotation = new Quaternion(0, 0, 0, 0);
         }
         else
         {
             GestureVisualizer.instance.adjustTranform = true;
             GestureVisualizer.instance.proposedGestureObj.transform.parent = Camera.main.gameObject.transform.parent;
+            
             selectionIndicator.SetActive(true);
         }
     }

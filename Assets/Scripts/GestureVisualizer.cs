@@ -11,21 +11,21 @@ public class GestureVisualizer : MonoBehaviour
 {
     // Trajectory visualization
     [SerializeField]
-    protected GameObject trajectoryRendererPrefab;
+    public GameObject trajectoryRendererPrefab;
     //[SerializeField]
     //protected GameObject tracerRef;
     [SerializeField]
-    protected GameObject trajectoryPrefab;
+    public GameObject trajectoryPrefab;
     [SerializeField]
-    protected GameObject gesVisPrefab;
+    public GameObject gesVisPrefab;
     [SerializeField]
-    protected GameObject skeletonModel;
+    public GameObject skeletonModel;
     [SerializeField]
-    protected GameObject clusterVisPrefab;
+    public GameObject clusterVisPrefab;
     [SerializeField]
     public Material tubeRendererMat;
     [SerializeField]
-    protected GameObject TrajectoryFilterGameObject;
+    public GameObject TrajectoryFilterGameObject;
     [SerializeField]
     public Transform wristRight;
     [SerializeField]
@@ -168,11 +168,9 @@ public class GestureVisualizer : MonoBehaviour
             foreach (Pose p in sampled)
             {
                 GameObject skeleton = Instantiate(skeletonModel, newGesVisTrans.GetComponent<Transform>().Find("SmallMultiples").GetComponent<Transform>());
-                //p.model = skeleton;
                 skeleton.name = g.gestureType + g.id.ToString() + "-Pose" + samplePoseIndex.ToString();
                 samplePoseIndex++;
                 Transform[] transforms = skeleton.GetComponentsInChildren<Transform>();
-                //Debug.Log(transforms.Length);
                 transforms[0].localPosition = new Vector3(0, 0, x);
                 x += 0.5f;
                 for (int i = 1; i < 21; i++)
