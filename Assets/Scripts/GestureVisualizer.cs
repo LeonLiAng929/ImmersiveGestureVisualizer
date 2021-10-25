@@ -370,10 +370,14 @@ public class GestureVisualizer : MonoBehaviour
     {
         if (ActionSwitcher.instance.GetCurrentAction() == Actions.Search)
         {
-            bool gripped;
-            leftController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.gripButton, out gripped);
-            if (gripped && !adjustTranform)
+            bool leftGripped;
+            bool rightGripped;
+            leftController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.gripButton, out leftGripped);
+            rightController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.gripButton, out rightGripped);
+            if (rightGripped && leftGripped && !adjustTranform)
             {
+                proposedGestureObj.transform.localPosition = new Vector3(0, 0, 0);
+                proposedGestureObj.transform.localRotation = new Quaternion(0, 0, 0, 0);
                 Pose p = new Pose();
                 time += Time.deltaTime;
                 p.timestamp = time;

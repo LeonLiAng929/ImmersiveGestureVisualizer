@@ -5,7 +5,7 @@ using UnityEngine;
 public class DrawSkeleton : MonoBehaviour
 {
     [SerializeField]
-    protected GameObject lr;
+    public GameObject lr;
     //protected Transform skeletonRendererContainer;
 
     protected Transform trans;

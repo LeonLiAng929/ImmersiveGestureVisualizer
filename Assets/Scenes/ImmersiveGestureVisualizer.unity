@@ -4897,7 +4897,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7caf34c0e6427904a818dc4888cdebf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tolerance: 5
+  tolerance: 15
 --- !u!114 &389818504
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13153,7 +13153,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1286329788}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.55, z: 2}
+  m_LocalPosition: {x: 0, y: 0, z: 2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1552818367}
@@ -17509,12 +17509,12 @@ MonoBehaviour:
   clusterVisPrefab: {fileID: 91992558}
   tubeRendererMat: {fileID: 2100000, guid: b6a5181e85a60064f99966f56d500136, type: 2}
   TrajectoryFilterGameObject: {fileID: 1286329788}
-  wristRight: {fileID: 1282340325}
-  elbowRight: {fileID: 651059840}
-  shoulderRight: {fileID: 1202841574}
-  wristLeft: {fileID: 595895824}
-  elbowLeft: {fileID: 1258627891}
-  shoulderLeft: {fileID: 524994468}
+  wristRight: {fileID: 595895824}
+  elbowRight: {fileID: 1258627891}
+  shoulderRight: {fileID: 524994468}
+  wristLeft: {fileID: 1282340325}
+  elbowLeft: {fileID: 651059840}
+  shoulderLeft: {fileID: 1202841574}
   proposedGestureObj: {fileID: 1450978162}
   arrangementMode: 1
   stackedObjects: []

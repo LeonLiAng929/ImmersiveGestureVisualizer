@@ -54,7 +54,6 @@ public class TrajectoryTR : MonoBehaviour
             }
 
             trajectoryRenderers.Add(DrawTrajectoryByJointType(points.ToArray(), gesture.poses[0].joints[j].jointType, colorSet[j]));
-            Debug.Log(gesture.poses[0].joints[j].jointType + j.ToString());
             //trajectoryData.Add(points.ToArray());
         }
     }

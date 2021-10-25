@@ -34,14 +34,22 @@ public class GestureGameObject : MonoBehaviour
 
     private void Start()
     {
-        GameObject multiples = GetComponent<Transform>().Find("SmallMultiples").gameObject;
-        timeIndicator = Instantiate(GestureVisualizer.instance.skeletonModel, multiples.transform);
-        timeIndicator.name = "TimeIndicator";
-        Transform[] transforms = timeIndicator.GetComponentsInChildren<Transform>();
-        transforms[0].localPosition = new Vector3(0, 0, 0.7f);
-        for (int i = 1; i < 21; i++)
+        if (gameObject.name != "AverageGesture" && gameObject.name != "Gesture")
         {
-            transforms[i].localPosition = gesture.poses[0].joints[i - 1].ToVector();
+            GameObject multiples = GetComponent<Transform>().Find("SmallMultiples").gameObject;
+            timeIndicator = Instantiate(GestureVisualizer.instance.skeletonModel, multiples.transform);
+            timeIndicator.name = "TimeIndicator";
+            Transform[] transforms = timeIndicator.GetComponentsInChildren<Transform>();
+            transforms[0].localPosition = new Vector3(0, 0, 0.7f);
+            for (int i = 1; i < 21; i++)
+            {
+                transforms[i].localPosition = gesture.poses[0].joints[i - 1].ToVector();
+            }
+            MeshRenderer[] mrs = timeIndicator.GetComponentsInChildren<MeshRenderer>();
+            foreach(MeshRenderer mr in mrs)
+            {
+                mr.material.color = Color.red;
+            }
         }
     }
     void Update()
@@ -174,9 +182,9 @@ public class GestureGameObject : MonoBehaviour
         }
         timer = 0f;
         currTime = 0;
-        counter = 1;
+        counter = 0;
         init = 1;
-        UpdateCounter();
+        //UpdateCounter();
     }
     public void Animate()
     {
@@ -190,6 +198,7 @@ public class GestureGameObject : MonoBehaviour
         }
 
         Transform[] transforms= GetComponent<Transform>().Find("Trajectory").Find("Skeleton").GetComponentsInChildren<Transform>();
+        Transform[] timeIndicatorTrans = timeIndicator.GetComponentsInChildren<Transform>();
         for (int i = 1; i < gesture.poses[0].num_of_joints + 1; i++)
         {
             Vector3 start_pos = transforms[i].localPosition;
@@ -202,6 +211,9 @@ public class GestureGameObject : MonoBehaviour
                 Vector3 interpolation = Vector3.Lerp(start_pos, end_pos, ratio);
 
                 transforms[i].localPosition = interpolation;
+                timeIndicatorTrans[i].localPosition = interpolation;
+                double distance = currTime / gesture.poses[gesture.poses.Count - 1].timestamp * 2.0f;
+                timeIndicator.transform.localPosition = new Vector3(0, 0, 0.7f) + new Vector3(0, 0, (float)distance);
             }
         }
     }
@@ -211,6 +223,7 @@ public class GestureGameObject : MonoBehaviour
         if (animate)
         {
             animate = false;
+            timeIndicator.SetActive(false);
             foreach (MeshRenderer mr in gameObject.transform.Find("Trajectory").Find("LineRanderers").GetComponentsInChildren<MeshRenderer>())
             {
                 Color temp = mr.material.color;
@@ -221,6 +234,7 @@ public class GestureGameObject : MonoBehaviour
         else
         {
             animate = true;
+            timeIndicator.SetActive(true);
             foreach (MeshRenderer mr in gameObject.transform.Find("Trajectory").Find("LineRanderers").GetComponentsInChildren<MeshRenderer>())
             {
                 Color temp = mr.material.color;
@@ -235,9 +249,13 @@ public class GestureGameObject : MonoBehaviour
     {
         GameObject skeleton = gameObject.GetComponentInChildren<TrajectoryTR>().skeletonRef;
         Transform[] transforms = skeleton.GetComponentsInChildren<Transform>();
+        Transform[] timeIndicatorTrans = timeIndicator.GetComponentsInChildren<Transform>();
         for (int i = 1; i < 21; i++)
         {
             transforms[i].localPosition = gesture.poses[currPoseIndex].joints[i - 1].ToVector();
+            timeIndicatorTrans[i].localPosition = gesture.poses[currPoseIndex].joints[i - 1].ToVector();
+            double distance = gesture.poses[currPoseIndex].timestamp / gesture.poses[gesture.poses.Count - 1].timestamp * 2.0f;
+            timeIndicator.transform.localPosition = new Vector3(0, 0, 0.7f) + new Vector3(0, 0, (float)distance);
         }
     }
 
@@ -278,7 +296,7 @@ public class GestureGameObject : MonoBehaviour
         GetRotateDirection(lastQuat, currQuat);
         if (rotate != 0)
         {
-            if(rotate == 1)
+            if(rotate == -1)
             {
                 if(currPoseIndex < gesture.num_of_poses - 1)
                 currPoseIndex += 1;
@@ -297,6 +315,7 @@ public class GestureGameObject : MonoBehaviour
     {
         if (swing)
         {
+            timeIndicator.SetActive(false);
             foreach (MeshRenderer mr in gameObject.transform.Find("Trajectory").Find("LineRanderers").GetComponentsInChildren<MeshRenderer>())
             {
                 Color temp = mr.material.color;
@@ -307,6 +326,7 @@ public class GestureGameObject : MonoBehaviour
         }
         else
         {
+            timeIndicator.SetActive(true);
             foreach (MeshRenderer mr in gameObject.transform.Find("Trajectory").Find("LineRanderers").GetComponentsInChildren<MeshRenderer>())
             {
                 Color temp = mr.material.color;
