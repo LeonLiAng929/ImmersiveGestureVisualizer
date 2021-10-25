@@ -61,6 +61,7 @@ public class GestureVisualizer : MonoBehaviour
     public List<GestureGameObject> searchResult = new List<GestureGameObject>();
     public GameObject proposedGesVis = null;
     public int preCount = 0;
+    public bool adjustTranform = false;
     #region Singleton
     public static GestureVisualizer instance;
     #endregion
@@ -362,9 +363,9 @@ public class GestureVisualizer : MonoBehaviour
     {
         if (ActionSwitcher.instance.GetCurrentAction() == Actions.Search)
         {
-            bool primaryTounched;
-            rightController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.primaryTouch, out primaryTounched);
-            if (primaryTounched)
+            bool gripped;
+            leftController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.gripButton, out gripped);
+            if (gripped && !adjustTranform)
             {
                 Pose p = new Pose();
                 time += Time.deltaTime;
@@ -395,21 +396,12 @@ public class GestureVisualizer : MonoBehaviour
                 UpdateUserProposedTrajectoryByType("ElbowRight", p.joints[4].ToVector());
                 UpdateUserProposedTrajectoryByType("WristRight", p.joints[5].ToVector());
             }
-            /*else
+            else if (adjustTranform)
             {
-                if (proposedGes.poses.Count > 0 && preCount != proposedGes.poses.Count)
-                {
-                    proposedGes.cluster = 0;
-                    if(proposedGesVis != null)
-                        Destroy(proposedGesVis);
-                    gesVisPrefab.SetActive(true);
-                    proposedGesVis = Instantiate(gesVisPrefab);
-                    //proposedGesVis.transform.Find("GestureTagPrefab(Clone)").gameObject.SetActive(false);
-                    preCount = proposedGes.poses.Count;
-                    InstantiateTrajectory(proposedGesVis, proposedGes);
-                    gesVisPrefab.SetActive(false);
-                }
-            }*/
+                /*proposedGestureObj.transform.position = Camera.main.gameObject.transform.position + new Vector3(0, -Camera.main.gameObject.transform.position.y, 0);
+                proposedGestureObj.transform.rotation = Camera.main.gameObject.transform.rotation;*/
+                proposedGestureObj.transform.parent = Camera.main.gameObject.transform.parent;
+            }
         }
     }
 

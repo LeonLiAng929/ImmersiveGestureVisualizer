@@ -223,9 +223,9 @@ public class ClusterGameObject : MonoBehaviour
             GestureGameObject minGes = null;
             foreach(GestureGameObject gGO in gestures)
             {
-                if (gGO.gesture.GetGlobalSimilarity() < min)
+                if (gGO.gesture.GetLocalSimilarity() < min)
                 {
-                    min = gGO.gesture.GetGlobalSimilarity();
+                    min = gGO.gesture.GetLocalSimilarity();
                     minGes = gGO;
                 }
             }
