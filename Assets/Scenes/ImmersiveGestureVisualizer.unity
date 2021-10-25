@@ -322,7 +322,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 19702434}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.02, y: -0.008, z: 1201}
+  m_LocalPosition: {x: 0, y: 0, z: 5}
   m_LocalScale: {x: 1.0567862, y: 1.0567862, z: 1.0567863}
   m_Children: []
   m_Father: {fileID: 53696911}
@@ -4562,7 +4562,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 368727718}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.01, y: -0.00664064, z: 1201.0002}
+  m_LocalPosition: {x: 0, y: 0, z: 5}
   m_LocalScale: {x: 1.0567791, y: 1.0567791, z: 1.0564328}
   m_Children: []
   m_Father: {fileID: 389818502}
@@ -8544,7 +8544,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 848551767}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.02, y: -0.008, z: 1201}
+  m_LocalPosition: {x: 0, y: 0, z: 5}
   m_LocalScale: {x: 1.0567862, y: 1.0567862, z: 1.0567863}
   m_Children: []
   m_Father: {fileID: 1958909232}
@@ -17524,8 +17524,6 @@ MonoBehaviour:
   rightHandSelected: 0
   time: 0
   searchResult: []
-  proposedGesVis: {fileID: 0}
-  preCount: 0
   adjustTranform: 0
 --- !u!1 &1608542105
 GameObject:

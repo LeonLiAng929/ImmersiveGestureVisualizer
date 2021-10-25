@@ -41,26 +41,35 @@ public class GestureVisualizer : MonoBehaviour
     [SerializeField]
     public GameObject proposedGestureObj; // used for visualizing user proposed gesture when using the search feature.
 
+    [HideInInspector]
     public Dictionary<int, GameObject> clustersObjDic = new Dictionary<int, GameObject>();
     private List<Color> trajectoryColorSet = new List<Color>();
     private Dictionary<int, Color> clusterColorDic = new Dictionary<int, Color>();
+    [HideInInspector]
     public int arrangementMode = 1; // 0 = local, 1 = global, 2 = line-up
     public InputDevice rightController;
     public InputDevice leftController;
+    [HideInInspector]
     public List<GameObject> stackedObjects = new List<GameObject>();
+    [HideInInspector]
     public List<GameObject> selectedGestures = new List<GameObject>();
+    [HideInInspector]
     public List<int> freeId = new List<int>();
 
     // for close Comparison
+    [HideInInspector]
     public bool leftHandSelected = false;
+    [HideInInspector]
     public bool rightHandSelected = false;
 
     // for search
+    [HideInInspector]
     public float time = 0;
+    [HideInInspector]
     public Gesture proposedGes;
+    [HideInInspector]
     public List<GestureGameObject> searchResult = new List<GestureGameObject>();
-    public GameObject proposedGesVis = null;
-    public int preCount = 0;
+    [HideInInspector]
     public bool adjustTranform = false;
     #region Singleton
     public static GestureVisualizer instance;
@@ -384,23 +393,14 @@ public class GestureVisualizer : MonoBehaviour
                 p.joints.Add(rightElbowJoint);
                 Joint rightWristJoint = CreateNewJointByType("WristRight", wristRight);
                 p.joints.Add(rightWristJoint);
-                preCount = proposedGes.poses.Count;
                 proposedGes.poses.Add(p);
 
                 UpdateUserProposedTrajectoryByType("ShoulderLeft", p.joints[0].ToVector());
-             
-               
                 UpdateUserProposedTrajectoryByType("ElbowLeft", p.joints[1].ToVector());
                 UpdateUserProposedTrajectoryByType("WristLeft", p.joints[2].ToVector());
                 UpdateUserProposedTrajectoryByType("ShoulderRight", p.joints[3].ToVector());
                 UpdateUserProposedTrajectoryByType("ElbowRight", p.joints[4].ToVector());
                 UpdateUserProposedTrajectoryByType("WristRight", p.joints[5].ToVector());
-            }
-            else if (adjustTranform)
-            {
-                /*proposedGestureObj.transform.position = Camera.main.gameObject.transform.position + new Vector3(0, -Camera.main.gameObject.transform.position.y, 0);
-                proposedGestureObj.transform.rotation = Camera.main.gameObject.transform.rotation;*/
-                proposedGestureObj.transform.parent = Camera.main.gameObject.transform.parent;
             }
         }
     }
