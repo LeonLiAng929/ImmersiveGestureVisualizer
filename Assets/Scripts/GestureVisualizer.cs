@@ -222,6 +222,18 @@ public class GestureVisualizer : MonoBehaviour
         trajectoryPrefab.SetActive(false);
         gesVisPrefab.SetActive(false);
         AdjustClusterPosition();
+
+        foreach (KeyValuePair<int, GameObject> pair in clustersObjDic)
+        {
+            List<GestureGameObject> temp = new List<GestureGameObject>(pair.Value.GetComponentsInChildren<GestureGameObject>(true));
+            foreach(GestureGameObject gGO in temp)
+            {
+                if (gGO.gameObject.name != "AverageGesture")
+                {
+                    gGO.gameObject.AddComponent<ShowConnection>();
+                }
+            }
+        }
     }
 
     public void ShowSearchResult(List<Gesture> result)
