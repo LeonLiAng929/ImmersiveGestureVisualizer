@@ -22102,7 +22102,6 @@ GameObject:
   - component: {fileID: 1958909237}
   - component: {fileID: 1958909236}
   - component: {fileID: 1958909235}
-  - component: {fileID: 1958909234}
   - component: {fileID: 1958909233}
   m_Layer: 0
   m_Name: MoveGesture
@@ -22120,7 +22119,7 @@ Transform:
   m_GameObject: {fileID: 1958909231}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -1.22, y: -0.24107148, z: -0.6696429}
-  m_LocalScale: {x: 0.4124392, y: 0.4124392, z: 0.0008928575}
+  m_LocalScale: {x: 0.41243923, y: 0.41243923, z: 0.0008928575}
   m_Children:
   - {fileID: 848551768}
   m_Father: {fileID: 1894166758}
@@ -22136,18 +22135,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aa60c4c853e05d849b85d950d35f7d9c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1958909234
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1958909231}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42de3efade1404b469737ee5f658ab7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1958909235
