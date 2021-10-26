@@ -120,6 +120,7 @@
     <Compile Include="Assets\Scripts\TesttingScript\pressed.cs" />
     <Compile Include="Assets\Scripts\PlayerIconTracing.cs" />
     <Compile Include="Assets\Scripts\Features\ShowConnection.cs" />
+    <Compile Include="Assets\Scripts\Features\HighlightConnection.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Resources\7\crouch-3.xml" />

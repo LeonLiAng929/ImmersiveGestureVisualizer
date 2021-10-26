@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class ShowConnection : MonoBehaviour
 {
-    private LineRenderer lr;
-    private Vector3[] path = new Vector3[2];
+    [HideInInspector]
+    public LineRenderer lr;
+    [HideInInspector]
+    public Vector3[] path = new Vector3[2];
     private int currArrangement;
     // Start is called before the first frame update
     void Start()
@@ -25,6 +27,7 @@ public class ShowConnection : MonoBehaviour
     {
         if (GestureVisualizer.instance.arrangementMode != currArrangement)
         {
+            lr.SetVertexCount(0);
             currArrangement = GestureVisualizer.instance.arrangementMode;
             path[0] = transform.Find("Capsule").position;
             path[1] = transform.parent.Find("AverageGesture").Find("Capsule").position;

@@ -222,11 +222,15 @@ public class GestureVisualizer : MonoBehaviour
         trajectoryPrefab.SetActive(false);
         gesVisPrefab.SetActive(false);
         AdjustClusterPosition();
+        DrawConnection();
+    }
 
+    public void DrawConnection()
+    {
         foreach (KeyValuePair<int, GameObject> pair in clustersObjDic)
         {
             List<GestureGameObject> temp = new List<GestureGameObject>(pair.Value.GetComponentsInChildren<GestureGameObject>(true));
-            foreach(GestureGameObject gGO in temp)
+            foreach (GestureGameObject gGO in temp)
             {
                 if (gGO.gameObject.name != "AverageGesture")
                 {
@@ -236,6 +240,42 @@ public class GestureVisualizer : MonoBehaviour
         }
     }
 
+    public void ShowConnection()
+    {
+        foreach (KeyValuePair<int, GameObject> pair in clustersObjDic)
+        {
+            List<GestureGameObject> temp = new List<GestureGameObject>(pair.Value.GetComponentsInChildren<GestureGameObject>(true));
+            foreach (GestureGameObject gGO in temp)
+            {
+                if (gGO.gameObject.name != "AverageGesture")
+                {
+                    ShowConnection connection = gGO.gameObject.GetComponent<ShowConnection>();
+                    connection.path[0] = connection.gameObject.transform.Find("Capsule").position;
+                    connection.path[1] = connection.gameObject.transform.parent.Find("AverageGesture").Find("Capsule").position;
+                    connection.path[0] -= new Vector3(0, connection.path[0].y, 0);
+                    connection.path[1] -= new Vector3(0, connection.path[1].y, 0);
+                    connection.lr.material.color = connection.gameObject.transform.Find("GlowingField").GetComponent<MeshRenderer>().material.color;
+                    connection.lr.SetVertexCount(0);
+                    connection.lr.SetPositions(connection.path);
+                }
+            }
+        }
+    }
+
+    public void DestroyConnection()
+    {
+        foreach (KeyValuePair<int, GameObject> pair in clustersObjDic)
+        {
+            List<GestureGameObject> temp = new List<GestureGameObject>(pair.Value.GetComponentsInChildren<GestureGameObject>(true));
+            foreach (GestureGameObject gGO in temp)
+            {
+                if (gGO.gameObject.name != "AverageGesture")
+                {
+                    gGO.gameObject.GetComponent<ShowConnection>().lr.SetVertexCount(0);
+                }
+            }
+        }
+    }
     public void ShowSearchResult(List<Gesture> result)
     {
         List<GestureGameObject> gestureGameObjects = new List<GestureGameObject>();
