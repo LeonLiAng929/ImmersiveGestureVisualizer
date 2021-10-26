@@ -13,7 +13,8 @@ public class ShowConnection : MonoBehaviour
         gameObject.AddComponent<LineRenderer>();
         lr = GetComponent<LineRenderer>();
         lr.SetWidth(0.1f, 0.1f);
-        lr.material = new Material(Shader.Find("Standard"));
+        //lr.material = new Material(Shader.Find("Standard"));
+        
         path[0] = transform.Find("Capsule").position;
         path[1] = transform.parent.Find("AverageGesture").Find("Capsule").position;
         path[0] -= new Vector3(0, path[0].y, 0);
@@ -28,8 +29,8 @@ public class ShowConnection : MonoBehaviour
             currArrangement = GestureVisualizer.instance.arrangementMode;
             path[0] = transform.Find("Capsule").position;
             path[1] = transform.parent.Find("AverageGesture").Find("Capsule").position;
-            path[0] -= new Vector3(0, path[0].y, 0);
-            path[1] -= new Vector3(0, path[1].y, 0);
+            path[0] += new Vector3(0, -path[0].y, 0) + new Vector3(0, 0.01f, 0);
+            path[1] += new Vector3(0, -path[1].y, 0) + new Vector3(0, 0.01f, 0);
             lr.material.color = transform.Find("GlowingField").GetComponent<MeshRenderer>().material.color;
             lr.SetPositions(path);
         }
