@@ -69,7 +69,7 @@ public class ClusterGameObject : MonoBehaviour
         else if (curr == Actions.ChangeCluster) { ChangeCluster(); }
         else if (curr == Actions.Animate) { ActivateAnimate(); }
         else if (curr == Actions.ShowSmallMultiples) { ShowSmallMultiples(); }
-        else if (curr == Actions.Slidimation) { }
+        else if (curr == Actions.Slidimation) { SwingAll(); }
     }
 
     public void SwingAll()
@@ -96,7 +96,10 @@ public class ClusterGameObject : MonoBehaviour
     }
     public void ActivateAnimate()
     {
-        foreach (GestureGameObject gGO in gameObject.transform.parent.gameObject.GetComponentsInChildren<GestureGameObject>(true))
+        GameObject clusterGameObj = GestureVisualizer.instance.GetClusterGameObjectById(clusterID);
+        
+        List<GestureGameObject> gestures = new List<GestureGameObject>(clusterGameObj.GetComponentsInChildren<GestureGameObject>(true));
+        foreach (GestureGameObject gGO in gestures)
         {
             gGO.ActivateAnimate();
         }

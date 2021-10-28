@@ -198,7 +198,12 @@ public class GestureGameObject : MonoBehaviour
         }
 
         Transform[] transforms= GetComponent<Transform>().Find("Trajectory").Find("Skeleton").GetComponentsInChildren<Transform>();
-        Transform[] timeIndicatorTrans = timeIndicator.GetComponentsInChildren<Transform>();
+        GameObject multiples = GetComponent<Transform>().Find("SmallMultiples").gameObject;
+        Transform[] timeIndicatorTrans = new Transform[21];
+        if (gameObject.name != "AverageGesture")
+        {
+            timeIndicatorTrans = timeIndicator.GetComponentsInChildren<Transform>();
+        }
         for (int i = 1; i < gesture.poses[0].num_of_joints + 1; i++)
         {
             Vector3 start_pos = transforms[i].localPosition;
@@ -211,9 +216,13 @@ public class GestureGameObject : MonoBehaviour
                 Vector3 interpolation = Vector3.Lerp(start_pos, end_pos, ratio);
 
                 transforms[i].localPosition = interpolation;
-                timeIndicatorTrans[i].localPosition = interpolation;
+               
                 double distance = currTime / gesture.poses[gesture.poses.Count - 1].timestamp * 2.0f;
-                timeIndicator.transform.localPosition = new Vector3(0, 0, 0.7f) + new Vector3(0, 0, (float)distance);
+                if (gameObject.name != "AverageGesture")
+                {
+                    timeIndicatorTrans[i].localPosition = interpolation;
+                    timeIndicator.transform.localPosition = new Vector3(0, 0, 0.7f) + new Vector3(0, 0, (float)distance);
+                }
             }
         }
     }
@@ -223,7 +232,12 @@ public class GestureGameObject : MonoBehaviour
         if (animate)
         {
             animate = false;
-            timeIndicator.SetActive(false);
+            /*if (GetComponent<Transform>().Find("SmallMultiples").gameObject.activeSelf)
+            {
+                timeIndicator.SetActive(false);
+            }*/
+            
+
             foreach (MeshRenderer mr in gameObject.transform.Find("Trajectory").Find("LineRanderers").GetComponentsInChildren<MeshRenderer>())
             {
                 Color temp = mr.material.color;
@@ -234,7 +248,13 @@ public class GestureGameObject : MonoBehaviour
         else
         {
             animate = true;
-            timeIndicator.SetActive(true);
+            ShowSmallMultiples();
+            ShowSmallMultiples();
+            if (gameObject.name != "AverageGesture")
+            {
+                timeIndicator.SetActive(true);
+            }
+        
             foreach (MeshRenderer mr in gameObject.transform.Find("Trajectory").Find("LineRanderers").GetComponentsInChildren<MeshRenderer>())
             {
                 Color temp = mr.material.color;
@@ -249,13 +269,21 @@ public class GestureGameObject : MonoBehaviour
     {
         GameObject skeleton = gameObject.GetComponentInChildren<TrajectoryTR>().skeletonRef;
         Transform[] transforms = skeleton.GetComponentsInChildren<Transform>();
-        Transform[] timeIndicatorTrans = timeIndicator.GetComponentsInChildren<Transform>();
+
+        Transform[] timeIndicatorTrans = new Transform[21];
+        if (gameObject.name != "AverageGesture")
+        {
+            timeIndicatorTrans = timeIndicator.GetComponentsInChildren<Transform>();
+        }
         for (int i = 1; i < 21; i++)
         {
             transforms[i].localPosition = gesture.poses[currPoseIndex].joints[i - 1].ToVector();
-            timeIndicatorTrans[i].localPosition = gesture.poses[currPoseIndex].joints[i - 1].ToVector();
             double distance = gesture.poses[currPoseIndex].timestamp / gesture.poses[gesture.poses.Count - 1].timestamp * 2.0f;
-            timeIndicator.transform.localPosition = new Vector3(0, 0, 0.7f) + new Vector3(0, 0, (float)distance);
+            if (gameObject.name != "AverageGesture")
+            {
+                timeIndicatorTrans[i].localPosition = gesture.poses[currPoseIndex].joints[i - 1].ToVector();
+                timeIndicator.transform.localPosition = new Vector3(0, 0, 0.7f) + new Vector3(0, 0, (float)distance);
+            }
         }
     }
 
@@ -315,7 +343,11 @@ public class GestureGameObject : MonoBehaviour
     {
         if (swing)
         {
-            timeIndicator.SetActive(false);
+            if (gameObject.name != "AverageGesture")
+            {
+                timeIndicator.SetActive(false);
+            }
+         
             foreach (MeshRenderer mr in gameObject.transform.Find("Trajectory").Find("LineRanderers").GetComponentsInChildren<MeshRenderer>())
             {
                 Color temp = mr.material.color;
@@ -326,7 +358,11 @@ public class GestureGameObject : MonoBehaviour
         }
         else
         {
-            timeIndicator.SetActive(true);
+            if (gameObject.name != "AverageGesture")
+            {
+                timeIndicator.SetActive(true);
+            }
+            
             foreach (MeshRenderer mr in gameObject.transform.Find("Trajectory").Find("LineRanderers").GetComponentsInChildren<MeshRenderer>())
             {
                 Color temp = mr.material.color;
