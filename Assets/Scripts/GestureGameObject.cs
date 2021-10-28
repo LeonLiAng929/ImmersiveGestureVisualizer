@@ -248,8 +248,6 @@ public class GestureGameObject : MonoBehaviour
         else
         {
             animate = true;
-            ShowSmallMultiples();
-            ShowSmallMultiples();
             if (gameObject.name != "AverageGesture")
             {
                 timeIndicator.SetActive(true);
