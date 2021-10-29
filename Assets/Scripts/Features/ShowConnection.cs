@@ -24,16 +24,24 @@ public class ShowConnection : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GestureVisualizer.instance.arrangementMode != currArrangement)
-        {
-            currArrangement = GestureVisualizer.instance.arrangementMode;
+        //if (GestureVisualizer.instance.arrangementMode != currArrangement)
+        //{
+          //  currArrangement = GestureVisualizer.instance.arrangementMode;
             path[0] = transform.Find("Capsule").position;
             path[1] = transform.parent.Find("AverageGesture").Find("Capsule").position;
             path[0] += new Vector3(0, -path[0].y, 0) + new Vector3(0, 0.01f, 0);
             path[1] += new Vector3(0, -path[1].y, 0) + new Vector3(0, 0.01f, 0);
-            lr.material.color = transform.Find("GlowingField").GetComponent<MeshRenderer>().material.color;
             lr.SetPositions(path);
-        }
-        
+        //}
+        lr.material.color = transform.Find("GlowingField").GetComponent<MeshRenderer>().material.color;
+    }
+    public void UpdateConnection()
+    {
+        path[0] = transform.Find("Capsule").position;
+        path[1] = transform.parent.Find("AverageGesture").Find("Capsule").position;
+        path[0] += new Vector3(0, -path[0].y, 0) + new Vector3(0, 0.01f, 0);
+        path[1] += new Vector3(0, -path[1].y, 0) + new Vector3(0, 0.01f, 0);
+        lr.material.color = transform.Find("GlowingField").GetComponent<MeshRenderer>().material.color;
+        lr.SetPositions(path);
     }
 }

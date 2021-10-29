@@ -66,7 +66,7 @@ public class ClusterGameObject : MonoBehaviour
         Actions curr = ActionSwitcher.instance.GetCurrentAction();
         if (curr == Actions.StackGestures) { StackAll(); }
         else if (curr == Actions.UnfoldCluster) { UnfoldCluster(); }
-        else if (curr == Actions.ChangeCluster) { ChangeCluster(); }
+        else if (curr == Actions.ChangeCluster) { ChangeCluster(); GestureVisualizer.instance.AdjustClusterPosition();}
         else if (curr == Actions.Animate) { ActivateAnimate(); }
         else if (curr == Actions.ShowSmallMultiples) { ShowSmallMultiples(); }
         else if (curr == Actions.Slidimation) { SwingAll(); }
@@ -126,7 +126,6 @@ public class ClusterGameObject : MonoBehaviour
             {
                 originalClusterObjs.Add(obj);
             }
-
         }
         foreach(GameObject g in originalClusterObjs)
         {
@@ -165,8 +164,8 @@ public class ClusterGameObject : MonoBehaviour
         {
             gtag.UpdateTag();
         }
-
-        ChangeArrangement.instance._Rearragne();
+        GestureVisualizer.instance.AdjustClusterPosition();
+        //ChangeArrangement.instance._Rearragne();
         //GestureVisualizer.instance.AdjustClusterPosition();
         //GestureVisualizer.instance.EmptySelected();   Disabled to show where the newly assigned gestures are in the new cluster.
     }
