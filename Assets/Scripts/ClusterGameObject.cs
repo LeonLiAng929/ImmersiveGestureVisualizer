@@ -66,7 +66,13 @@ public class ClusterGameObject : MonoBehaviour
         Actions curr = ActionSwitcher.instance.GetCurrentAction();
         if (curr == Actions.StackGestures) { StackAll(); }
         else if (curr == Actions.UnfoldCluster) { UnfoldCluster(); }
-        else if (curr == Actions.ChangeCluster) { ChangeCluster(); GestureVisualizer.instance.AdjustClusterPosition();}
+        else if (curr == Actions.ChangeCluster) { ChangeCluster();
+            int original = GestureVisualizer.instance.arrangementMode;
+            GestureVisualizer.instance.arrangementMode = 1;
+            GestureVisualizer.instance.AdjustClusterPosition();
+            GestureVisualizer.instance.arrangementMode = original;
+            GestureVisualizer.instance.AdjustClusterPosition();
+        }
         else if (curr == Actions.Animate) { ActivateAnimate(); }
         else if (curr == Actions.ShowSmallMultiples) { ShowSmallMultiples(); }
         else if (curr == Actions.Slidimation) { SwingAll(); }
