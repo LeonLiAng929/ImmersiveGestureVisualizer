@@ -12,7 +12,7 @@ public class ResumeFromComparison : MonoBehaviour
     void Start()
     {
         xRSimpleInteractable = GetComponent<XRSimpleInteractable>();
-        xRSimpleInteractable.activated.AddListener(Resume);
+        xRSimpleInteractable.selectExited.AddListener(Resume);
         init = gameObject.GetComponent<MeshRenderer>().material.color;
     }
    
@@ -22,7 +22,7 @@ public class ResumeFromComparison : MonoBehaviour
         
     }
 
-    private void Resume(ActivateEventArgs arg)
+    private void Resume(SelectExitEventArgs arg)
     {
         if (comparison)
         {

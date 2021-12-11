@@ -27,7 +27,7 @@ public class ActionSwitcher : MonoBehaviour
     {
         selectionIndicator = transform.Find("SelectionIndicator").gameObject;
         xRSimpleInteractable = GetComponent<XRSimpleInteractable>();
-        xRSimpleInteractable.activated.AddListener(SwitchAction);
+        xRSimpleInteractable.selectExited.AddListener(SwitchAction);
         init = gameObject.GetComponent<MeshRenderer>().material.color;
         transform.Find("SelectionIndicator").gameObject.SetActive(false);
     }
@@ -59,7 +59,7 @@ public class ActionSwitcher : MonoBehaviour
     */
 
     // for the new menu system
-    public void SwitchAction(ActivateEventArgs args)
+    public void SwitchAction(SelectExitEventArgs args)
     {
         if (currentlyActive != (Actions)actionID)
         {

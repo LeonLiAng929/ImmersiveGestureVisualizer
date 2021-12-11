@@ -18,7 +18,7 @@ public class ChangeArrangement : MonoBehaviour
     void Start()
     {
         xRSimpleInteractable = GetComponent<XRSimpleInteractable>();
-        xRSimpleInteractable.activated.AddListener(Rearrange);
+        xRSimpleInteractable.selectExited.AddListener(Rearrange);
         gameObject.GetComponent<MeshRenderer>().material = global;
         instance = this;
     }
@@ -29,7 +29,7 @@ public class ChangeArrangement : MonoBehaviour
         
     }
 
-    private void Rearrange(ActivateEventArgs arg)
+    private void Rearrange(SelectExitEventArgs arg)
     {
         Dictionary<int, GameObject> clusterObjs = GestureVisualizer.instance.GetClusterObjs();
         if (mode == 0)

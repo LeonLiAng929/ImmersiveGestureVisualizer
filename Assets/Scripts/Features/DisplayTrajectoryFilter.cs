@@ -14,7 +14,7 @@ public class DisplayTrajectoryFilter : MonoBehaviour
     {
         selectionIndicator = transform.Find("SelectionIndicator").gameObject;
         simpleInteractable = GetComponent<XRSimpleInteractable>();
-        simpleInteractable.activated.AddListener(ShowFilter);
+        simpleInteractable.selectExited.AddListener(ShowFilter);
         init = gameObject.GetComponent<MeshRenderer>().material.color;
         selectionIndicator.SetActive(false);
     }
@@ -25,7 +25,7 @@ public class DisplayTrajectoryFilter : MonoBehaviour
         
     }
 
-    public void ShowFilter(ActivateEventArgs arg)
+    public void ShowFilter(SelectExitEventArgs arg)
     {
         if (filter.activeSelf)
         {

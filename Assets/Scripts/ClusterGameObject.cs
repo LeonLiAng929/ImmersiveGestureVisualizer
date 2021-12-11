@@ -27,7 +27,7 @@ public class ClusterGameObject : MonoBehaviour
     }
     private void OnDestroy()
     {
-        interactable.activated.RemoveAllListeners();
+        interactable.selectExited.RemoveAllListeners();
     }
 
     public void InitializeClusterVisualizationScale(Vector3 scale)
@@ -39,7 +39,7 @@ public class ClusterGameObject : MonoBehaviour
         if (interactable == null)
         {
             interactable = GetComponent<XRSimpleInteractable>();
-            interactable.activated.AddListener(PerformAction);
+            interactable.selectExited.AddListener(PerformAction);
         }
 
         if (scale.y > 1 && GestureVisualizer.instance.arrangementMode == 1)
@@ -61,7 +61,7 @@ public class ClusterGameObject : MonoBehaviour
         InitializeClusterVisualizationScale(new Vector3(count, count, count));
     }
 
-    public void PerformAction(ActivateEventArgs arg)
+    public void PerformAction(SelectExitEventArgs arg)
     {
         Actions curr = ActionSwitcher.instance.GetCurrentAction();
         if (curr == Actions.StackGestures) { StackAll(); }

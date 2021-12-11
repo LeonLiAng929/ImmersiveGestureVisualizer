@@ -12,7 +12,7 @@ public class ResetFilter : MonoBehaviour
     {
         gameObject.transform.localPosition = gameObject.transform.parent.Find("Head").localPosition + new Vector3(0, 0.1f, 0);
         simpleInteractable = GetComponent<XRSimpleInteractable>();
-        simpleInteractable.activated.AddListener(Reset);
+        simpleInteractable.selectExited.AddListener(Reset);
     }
 
     // Update is called once per frame
@@ -21,7 +21,7 @@ public class ResetFilter : MonoBehaviour
         
     }
 
-    void Reset(ActivateEventArgs arg)
+    void Reset(SelectExitEventArgs arg)
     {
         TrajectoryFilter[] filters = gameObject.transform.parent.GetComponentsInChildren<TrajectoryFilter>();
         if (reset)

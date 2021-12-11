@@ -80,16 +80,16 @@ public class GestureGameObject : MonoBehaviour
     public void Initialize()
     {
         xRSimpleInteractable = GetComponent<XRSimpleInteractable>();
-        xRSimpleInteractable.activated.AddListener(PerformAction);
+        xRSimpleInteractable.selectExited.AddListener(PerformAction);
         
     }
 
     private void OnDestroy()
     {
-        xRSimpleInteractable.activated.RemoveAllListeners();
+        xRSimpleInteractable.selectExited.RemoveAllListeners();
     }
 
-    public void PerformAction(ActivateEventArgs arg)
+    public void PerformAction(SelectExitEventArgs arg)
     {
         Actions curr = ActionSwitcher.instance.GetCurrentAction();
         if (curr == Actions.Animate){ ActivateAnimate();  }
