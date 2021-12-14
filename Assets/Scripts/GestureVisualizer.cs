@@ -234,6 +234,7 @@ public class GestureVisualizer : MonoBehaviour
                 }
             }
         }
+        Deploy.instance._DeployRig();
     }
 
     public void ShowSearchResult(List<Gesture> result)
