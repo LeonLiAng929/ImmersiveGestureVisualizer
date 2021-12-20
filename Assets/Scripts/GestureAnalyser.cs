@@ -35,6 +35,10 @@ public class GestureAnalyser : MonoBehaviour
             g.NormalizeHeight();
         }
 
+    }
+    public void InitializeClusters(int _k)
+    {
+        k = _k;
         //clustering
         PythonRunner.RunFile("Assets/Scripts/K_MeanClustering.py");
 
@@ -56,7 +60,8 @@ public class GestureAnalyser : MonoBehaviour
 
         foreach (KeyValuePair<int, Cluster> pair in clusters)
         {
-            if (pair.Value.GestureCount() > 1){
+            if (pair.Value.GestureCount() > 1)
+            {
                 //CalculateBaryCentre(pair.Value.GetGestures());
                 //pair.Value.SetBaryCentre(Python2CSharp());
                 pair.Value.UpdateBarycentre();
@@ -69,6 +74,10 @@ public class GestureAnalyser : MonoBehaviour
             }
         }
         CalculateGlobalConsensus();
+    }
+    public int GetGestureCount()
+    {
+        return gestures.Count;
     }
     public Cluster TryGetCluster(int id)
     {

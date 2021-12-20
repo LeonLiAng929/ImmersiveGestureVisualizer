@@ -111,6 +111,7 @@
     <Compile Include="Assets\Scripts\Features\LookAtMe.cs" />
     <Compile Include="Assets\Scripts\Obsolete\DBA.cs" />
     <Compile Include="Assets\VR Beginner\Scripts\Gameplay\HandPrefab.cs" />
+    <Compile Include="Assets\Scripts\Features\Deploy.cs" />
     <Compile Include="Assets\Scripts\Features\DisplayTrajectoryFilter.cs" />
     <Compile Include="Assets\TubeRenderer\Runtime\Internals\RenderPipelineHelpers.cs" />
     <Compile Include="Assets\Scripts\TrajectoryTR.cs" />
@@ -120,7 +121,9 @@
     <Compile Include="Assets\Scripts\Features\ShowConnection.cs" />
     <Compile Include="Assets\Scripts\TesttingScript\pressed.cs" />
     <Compile Include="Assets\Scripts\PlayerIconTracing.cs" />
-    <Compile Include="Assets\Scripts\Features\Deploy.cs" />
+    <Compile Include="Assets\Scripts\Features\IncrementCluster.cs" />
+    <Compile Include="Assets\Scripts\Features\DecrementCluster.cs" />
+    <Compile Include="Assets\Scripts\Features\ReCluster.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Resources\7\crouch-3.xml" />

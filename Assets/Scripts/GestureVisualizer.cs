@@ -71,6 +71,8 @@ public class GestureVisualizer : MonoBehaviour
     public List<GestureGameObject> searchResult = new List<GestureGameObject>();
     [HideInInspector]
     public bool adjustTranform = false;
+    [HideInInspector]
+    public int k = 0;
     #region Singleton
     public static GestureVisualizer instance;
     #endregion
@@ -99,6 +101,12 @@ public class GestureVisualizer : MonoBehaviour
         {
             leftController = leftHandDevices[0];
         }
+        Deploy.instance._DeployRig();
+    }
+
+    public void InitializeVisualization()
+    {
+        GestureAnalyser.instance.InitializeClusters(k);
         List<Gesture> gestures = GestureAnalyser.instance.GetGestures();
 
         //instantiate Cluster visualizations
@@ -109,7 +117,7 @@ public class GestureVisualizer : MonoBehaviour
             newClusterObj.name = "Cluster" + pair.Key.ToString();
             Transform clusterTrans = newClusterObj.GetComponent<Transform>().Find("ClusterVisualization"); ;
 
-            
+
             clusterTrans.gameObject.AddComponent<ClusterGameObject>();
             clusterTrans.gameObject.GetComponentInChildren<ClusterGameObject>().clusterID = pair.Value.clusterID;
 
@@ -175,14 +183,14 @@ public class GestureVisualizer : MonoBehaviour
                 x += 0.5f;
                 for (int i = 1; i < 21; i++)
                 {
-                    transforms[i].localPosition = p.joints[i-1].ToVector();
+                    transforms[i].localPosition = p.joints[i - 1].ToVector();
                 }
             }
             newGesVisTrans.GetComponent<Transform>().Find("SmallMultiples").gameObject.SetActive(false);
             //y = y + float.Parse("1.5");
         }
 
-  
+
         // instantiate barycentre visualization for each cluster
         foreach (KeyValuePair<int, GameObject> p in clustersObjDic)
         {
@@ -193,7 +201,7 @@ public class GestureVisualizer : MonoBehaviour
         foreach (KeyValuePair<int, GameObject> pair in clustersObjDic)
         {
             pair.Value.SetActive(true);
-            foreach(GestureGameObject gGO in pair.Value.GetComponentsInChildren<GestureGameObject>())
+            foreach (GestureGameObject gGO in pair.Value.GetComponentsInChildren<GestureGameObject>())
             {
                 gGO.ShowTracer();
                 if (gGO.gameObject.name != "AverageGesture")
@@ -226,7 +234,7 @@ public class GestureVisualizer : MonoBehaviour
         foreach (KeyValuePair<int, GameObject> pair in clustersObjDic)
         {
             List<GestureGameObject> temp = new List<GestureGameObject>(pair.Value.GetComponentsInChildren<GestureGameObject>(true));
-            foreach(GestureGameObject gGO in temp)
+            foreach (GestureGameObject gGO in temp)
             {
                 if (gGO.gameObject.name != "AverageGesture")
                 {
@@ -234,9 +242,7 @@ public class GestureVisualizer : MonoBehaviour
                 }
             }
         }
-        Deploy.instance._DeployRig();
     }
-
     public void ShowSearchResult(List<Gesture> result)
     {
         List<GestureGameObject> gestureGameObjects = new List<GestureGameObject>();
@@ -330,6 +336,19 @@ public class GestureVisualizer : MonoBehaviour
     public void DestroyClusterObjectById(int id)
     {
         Destroy(clustersObjDic[id]);
+    }
+
+    public void DestroyAllClusters()
+    {
+        foreach (KeyValuePair<int, GameObject> pair in clustersObjDic)
+        {
+            GameObject.Destroy(pair.Value);
+        }
+        
+        clustersObjDic.Clear();
+        clusterColorDic.Clear();
+        GestureAnalyser.instance.GetClusters().Clear();
+
     }
     private void Update()
     {

@@ -18,11 +18,14 @@ public class ClusterGameObject : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!baryCentreVis.GetComponent<GestureGameObject>().IsStacked())
+        if (!ReCluster.instance.reclusterOngoing)
         {
-            // keep bary centre visualization at the centroid of the cluster.
-            this.GetComponent<Transform>().localPosition = baryCentreVis.localPosition;
-            baryCentreVis.localScale = GetComponent<Transform>().localScale * (float)0.8;
+            if (!baryCentreVis.GetComponent<GestureGameObject>().IsStacked())
+            {
+                // keep bary centre visualization at the centroid of the cluster.
+                this.GetComponent<Transform>().localPosition = baryCentreVis.localPosition;
+                baryCentreVis.localScale = GetComponent<Transform>().localScale * (float)0.8;
+            }
         }
     }
     private void OnDestroy()
