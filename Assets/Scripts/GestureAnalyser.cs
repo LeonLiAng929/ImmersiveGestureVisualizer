@@ -316,12 +316,12 @@ public class GestureAnalyser : MonoBehaviour
         
         for (int i =0; i< gestureCount; i++)
         {
-            gestures[i].PCA_Coordinate = new Vector2(pythonResult[i][0], pythonResult[i][1]);
+            gestures[i].PCA_Coordinate = new Vector2(5 * pythonResult[i][0], 5 * pythonResult[i][1]);
         }
         for (int i = 0; i < centroidCount; i++)
         {
             Gesture centroid = clusters[i].GetBaryCentre();
-            centroid.PCA_Coordinate = new Vector2(10*pythonResult[i + gestureCount][0], 10*pythonResult[i + gestureCount][1]);
+            centroid.PCA_Coordinate = new Vector2(5*pythonResult[i + gestureCount][0], 5*pythonResult[i + gestureCount][1]);
             clusters[i].SetBaryCentre(centroid);
         }
     }
