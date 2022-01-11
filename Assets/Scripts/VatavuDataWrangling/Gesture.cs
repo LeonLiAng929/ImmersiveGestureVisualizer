@@ -11,6 +11,7 @@ public class Gesture
     public int id;
     public char trial;
     public int cluster;
+    public Vector2 PCA_Coordinate;
 
     private float localSimilarity; // DTW similarity score between this gesture and the average gesture of the cluster it belongs to.
     private float globalSimilarity; // DTW similarity score between this gesture and the average gesture of the entire dataset.
@@ -112,7 +113,7 @@ public class Gesture
     /// <summary>
     /// Resamples a whole-body gesture into a fixed number of n body poses uniformly spaced in time.
     /// </summary>
-    public List<Pose> Resample(int n)
+    public Gesture Resample(int n)
     {
         if (this.poses.Count == 0)
             return null;
@@ -143,7 +144,11 @@ public class Gesture
         if (set.Count == n - 1)
             set.Add(poses[poses.Count - 1]);
 
-        return set;
+        Gesture g = new Gesture();
+        g.MakeEqualTo(this);
+        g.num_of_poses = n;
+        g.poses = set;
+        return g;
     }
 
 
@@ -242,6 +247,21 @@ public class Gesture
             series.Add(serie);
         }
         return series;
+    }
+
+    public List<float> DataFlatteningForPCA()
+    {
+        List<float> li = new List<float>();
+        for (int i = 0; i < num_of_poses; i++)
+        {
+            foreach (Joint j in poses[i].joints)
+            {
+                li.Add(j.x);
+                li.Add(j.y);
+                li.Add(j.z);
+            }
+        }
+        return li;
     }
 
     public void SetLocalSimilarity(float s)

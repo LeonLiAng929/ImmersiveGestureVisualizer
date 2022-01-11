@@ -12,8 +12,9 @@ public class ChangeArrangement : MonoBehaviour
     public Material global;
     public Material local;
     public Material lineUp;
+    public Material PCA;
 
-    private int mode = 0; //0 = local, 1=global, 2 = lineUp
+    private int mode = 0; //0 = local, 1=global, 2 = lineUp, 3 = PCA
     // Start is called before the first frame update
     void Start()
     {
@@ -48,37 +49,17 @@ public class ChangeArrangement : MonoBehaviour
         }
         else if ( mode == 2)
         {
-            mode = 1;
+            mode = 3;
             gameObject.GetComponent<MeshRenderer>().material = lineUp;
             GestureVisualizer.instance.arrangementMode = 2;
             GestureVisualizer.instance.AdjustClusterPosition();
         }
-    }
-    
-    public void _Rearragne()
-    {
-        if (mode == 0)
-        {
-            mode = 2;
-            
-            GestureVisualizer.instance.arrangementMode = 0;
-            GestureVisualizer.instance.AdjustClusterPosition();
-
-        }
-        else if (mode == 1)
-        {
-            mode = 0;
-            
-            GestureVisualizer.instance.arrangementMode = 1;
-            GestureVisualizer.instance.AdjustClusterPosition();
-        }
-        else if (mode == 2)
+        else if (mode == 3)
         {
             mode = 1;
-            
-            GestureVisualizer.instance.arrangementMode = 2;
+            gameObject.GetComponent<MeshRenderer>().material = PCA;
+            GestureVisualizer.instance.arrangementMode = 3;
             GestureVisualizer.instance.AdjustClusterPosition();
         }
     }
-
 }

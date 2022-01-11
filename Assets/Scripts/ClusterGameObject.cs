@@ -268,4 +268,14 @@ public class ClusterGameObject : MonoBehaviour
             sorted[i].gameObject.transform.localRotation = Quaternion.AngleAxis(90, new Vector3(0, 1, 0)); 
         }
     }
+
+    public void PCA_Arrangement()
+    {
+        GameObject clusterGameObj = GestureVisualizer.instance.GetClusterGameObjectById(clusterID);
+        List<GestureGameObject> gestures = new List<GestureGameObject>(clusterGameObj.GetComponentsInChildren<GestureGameObject>(true));
+        foreach(GestureGameObject gGO in gestures)
+        {
+            gGO.gameObject.transform.localPosition = new Vector3(gGO.gesture.PCA_Coordinate.x, gGO.gameObject.transform.localPosition.y, gGO.gesture.PCA_Coordinate.y);
+        }
+    }
 }

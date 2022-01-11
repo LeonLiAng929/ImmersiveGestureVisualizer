@@ -5,7 +5,6 @@ using UnityEngine;
 public class Cluster
 {
     private Gesture baryCentre;
-
     private float consensus; // consensus of gestures in this cluster
     private float similarity; // similarity of avg gesture of this cluster to the avg gesture of the entire dataset. 
     public int clusterID;

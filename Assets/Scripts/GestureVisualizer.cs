@@ -106,7 +106,7 @@ public class GestureVisualizer : MonoBehaviour
 
     public void InitializeVisualization()
     {
-        GestureAnalyser.instance.InitializeClusters(k);
+        GestureAnalyser.instance.InitializeClusters_DBA(k);
         List<Gesture> gestures = GestureAnalyser.instance.GetGestures();
 
         //instantiate Cluster visualizations
@@ -170,7 +170,7 @@ public class GestureVisualizer : MonoBehaviour
             UpdateGlowingFieldColour(newGesVis);
 
             // instantiate small-multiples 
-            List<Pose> sampled = g.Resample(5);
+            List<Pose> sampled = g.Resample(5).poses;
             float x = 0.7f;
             int samplePoseIndex = 1;
             foreach (Pose p in sampled)
@@ -319,6 +319,13 @@ public class GestureVisualizer : MonoBehaviour
                 // line up gestures
                 clustersObjDic[i].transform.Find("ClusterVisualization").GetComponent<ClusterGameObject>().LineUp();
 
+            }
+        }
+        else if (arrangementMode == 3)
+        {
+            foreach (KeyValuePair<int, GameObject> pair in clustersObjDic)
+            {
+                pair.Value.transform.Find("ClusterVisualization").GetComponent<ClusterGameObject>().PCA_Arrangement();
             }
         }
         Dictionary<int, Cluster> clusters = GestureAnalyser.instance.GetClusters();
@@ -602,5 +609,10 @@ public class GestureVisualizer : MonoBehaviour
     public Dictionary<int, GameObject> GetClusterObjs()
     {
         return clustersObjDic;
+    }
+
+    public void PCA_Arrangement()
+    {
+
     }
 }

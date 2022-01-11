@@ -36,7 +36,12 @@ public class GestureAnalyser : MonoBehaviour
         }
 
     }
-    public void InitializeClusters(int _k)
+
+    private void Start()
+    {
+        //PCA_Arrangement();
+    }
+    public void InitializeClusters_DBA(int _k)
     {
         k = _k;
         //clustering
@@ -74,6 +79,7 @@ public class GestureAnalyser : MonoBehaviour
             }
         }
         CalculateGlobalConsensus();
+        PCA_Arrangement();
     }
     public int GetGestureCount()
     {
@@ -132,6 +138,10 @@ public class GestureAnalyser : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// used for converting barycentre caluculated in python to C#
+    /// </summary>
+    /// <returns></returns>
     public Gesture Python2CSharp()
     {
         Gesture temp = new Gesture();
@@ -284,5 +294,35 @@ public class GestureAnalyser : MonoBehaviour
             }
         }
         return results;
+    }
+
+    public void PCA_Arrangement()
+    {
+        List<Gesture> tempGesLi = new List<Gesture>();
+        foreach (Gesture g in gestures) {
+            tempGesLi.Add(g.Resample(10));
+        }
+        // get centroids
+        int centroidCount = clusters.Count;
+        for (int i =0;i<centroidCount;i++)
+        {
+            Gesture centroid = clusters[i].GetBaryCentre();
+            tempGesLi.Add(centroid.Resample(10));
+        }
+        CSharp2Python(tempGesLi); 
+        PythonRunner.RunFile("Assets/Scripts/PCA.py");
+
+        int gestureCount = gestures.Count;
+        
+        for (int i =0; i< gestureCount; i++)
+        {
+            gestures[i].PCA_Coordinate = new Vector2(pythonResult[i][0], pythonResult[i][1]);
+        }
+        for (int i = 0; i < centroidCount; i++)
+        {
+            Gesture centroid = clusters[i].GetBaryCentre();
+            centroid.PCA_Coordinate = new Vector2(10*pythonResult[i + gestureCount][0], 10*pythonResult[i + gestureCount][1]);
+            clusters[i].SetBaryCentre(centroid);
+        }
     }
 }
