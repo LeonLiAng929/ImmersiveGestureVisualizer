@@ -62,6 +62,7 @@
     <Compile Include="Assets\Scenes\TRTest.cs" />
     <Compile Include="Assets\Scripts\VatavuDataWrangling\Pose.cs" />
     <Compile Include="Assets\TubeRenderer\Examples\Assets\Herd.cs" />
+    <Compile Include="Assets\Scripts\Features\DecrementCluster.cs" />
     <Compile Include="Assets\test2.cs" />
     <Compile Include="Assets\VRRig.cs" />
     <Compile Include="Assets\ShaderTest.cs" />
@@ -113,17 +114,18 @@
     <Compile Include="Assets\VR Beginner\Scripts\Gameplay\HandPrefab.cs" />
     <Compile Include="Assets\Scripts\Features\Deploy.cs" />
     <Compile Include="Assets\Scripts\Features\DisplayTrajectoryFilter.cs" />
+    <Compile Include="Assets\Scripts\Features\IncrementCluster.cs" />
     <Compile Include="Assets\TubeRenderer\Runtime\Internals\RenderPipelineHelpers.cs" />
     <Compile Include="Assets\Scripts\TrajectoryTR.cs" />
     <Compile Include="Assets\Scripts\Trajectory.cs" />
     <Compile Include="Assets\Scripts\Features\ResetFilter.cs" />
     <Compile Include="Assets\Scripts\DrawSkeleton.cs" />
+    <Compile Include="Assets\Scripts\Features\ReCluster.cs" />
     <Compile Include="Assets\Scripts\Features\ShowConnection.cs" />
     <Compile Include="Assets\Scripts\TesttingScript\pressed.cs" />
     <Compile Include="Assets\Scripts\PlayerIconTracing.cs" />
-    <Compile Include="Assets\Scripts\Features\IncrementCluster.cs" />
-    <Compile Include="Assets\Scripts\Features\DecrementCluster.cs" />
-    <Compile Include="Assets\Scripts\Features\ReCluster.cs" />
+    <Compile Include="Assets\Scripts\Features\NextRationale.cs" />
+    <Compile Include="Assets\Scripts\Features\PrevRationale.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Resources\7\crouch-3.xml" />

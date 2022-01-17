@@ -73,6 +73,7 @@ public class GestureVisualizer : MonoBehaviour
     public bool adjustTranform = false;
     [HideInInspector]
     public int k = 0;
+    public int clusteringRationale = 0; // 0:DBA, 1:PCA
     #region Singleton
     public static GestureVisualizer instance;
     #endregion
@@ -106,7 +107,10 @@ public class GestureVisualizer : MonoBehaviour
 
     public void InitializeVisualization()
     {
-        GestureAnalyser.instance.InitializeClusters_DBA(k);
+        if (clusteringRationale == 0)
+            GestureAnalyser.instance.InitializeClusters_DBA(k);
+        else if (clusteringRationale == 1)
+            GestureAnalyser.instance.InitializeClusters_PCA(k);
         List<Gesture> gestures = GestureAnalyser.instance.GetGestures();
 
         //instantiate Cluster visualizations

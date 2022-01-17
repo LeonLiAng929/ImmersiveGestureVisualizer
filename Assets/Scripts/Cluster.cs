@@ -10,6 +10,10 @@ public class Cluster
     public int clusterID;
     private List<Gesture> gestures = new List<Gesture>();
 
+    public void SetBaryCentrePCA_Coord(Vector2 coord)
+    {
+        baryCentre.PCA_Coordinate = coord;
+    }
     public void AddGesture(Gesture g, bool init = false)
     {
         if (!gestures.Contains(g))

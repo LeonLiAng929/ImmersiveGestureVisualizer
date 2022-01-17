@@ -40,6 +40,8 @@ public class GestureAnalyser : MonoBehaviour
     private void Start()
     {
         //PCA_Arrangement();
+        //PythonRunner.RunFile("Assets/Scripts/K_Means_PCA.py");
+        
     }
     public void InitializeClusters_DBA(int _k)
     {
@@ -80,6 +82,53 @@ public class GestureAnalyser : MonoBehaviour
         }
         CalculateGlobalConsensus();
         PCA_Arrangement();
+    }
+
+    public void InitializeClusters_PCA(int _k)
+    {
+        k = _k;
+        PCA_Arrangement();
+        //clustering
+        PythonRunner.RunFile("Assets/Scripts/KmeansPCA.py");
+        List<List<float>> clusterCentres = new List<List<float>>();
+        foreach(List<float> coordinate in pythonResult)
+        {
+            clusterCentres.Add(coordinate);
+        }
+
+        //Calculate the barycentre for the dataset
+        CSharp2Python(gestures);
+        PythonRunner.RunFile("Assets/Scripts/BaryCentre.py");
+        averageGesture = Python2CSharp();
+        averageGesture.SetBoundingBox();
+        averageGesture.SetCentroid();
+
+        // initialize clusters
+        foreach (Gesture g in gestures)
+        {
+            Cluster temp = TryGetCluster(g.cluster);
+            temp.AddGesture(g, true);
+        }
+
+        // calculate barycenter for each cluster
+
+        foreach (KeyValuePair<int, Cluster> pair in clusters)
+        {
+            if (pair.Value.GestureCount() > 1)
+            {
+                //CalculateBaryCentre(pair.Value.GetGestures());
+                //pair.Value.SetBaryCentre(Python2CSharp());
+                pair.Value.UpdateBarycentre();
+                pair.Value.UpdateConsensus();
+            }
+            else
+            {
+                pair.Value.SetBaryCentre(pair.Value.GetGestures()[0]);
+                pair.Value.UpdateConsensus();
+            }
+            pair.Value.SetBaryCentrePCA_Coord(new Vector2(clusterCentres[pair.Key][0], clusterCentres[pair.Key][1]));
+        }
+        CalculateGlobalConsensus();
     }
     public int GetGestureCount()
     {
@@ -139,7 +188,7 @@ public class GestureAnalyser : MonoBehaviour
     }
 
     /// <summary>
-    /// used for converting barycentre caluculated in python to C#
+    /// used for converting barycentre caluculated in python back to C#
     /// </summary>
     /// <returns></returns>
     public Gesture Python2CSharp()
@@ -316,12 +365,12 @@ public class GestureAnalyser : MonoBehaviour
         
         for (int i =0; i< gestureCount; i++)
         {
-            gestures[i].PCA_Coordinate = new Vector2(5 * pythonResult[i][0], 5 * pythonResult[i][1]);
+            gestures[i].PCA_Coordinate = new Vector2(pythonResult[i][0], pythonResult[i][1]);
         }
         for (int i = 0; i < centroidCount; i++)
         {
             Gesture centroid = clusters[i].GetBaryCentre();
-            centroid.PCA_Coordinate = new Vector2(5*pythonResult[i + gestureCount][0], 5*pythonResult[i + gestureCount][1]);
+            centroid.PCA_Coordinate = new Vector2(pythonResult[i + gestureCount][0], pythonResult[i + gestureCount][1]);
             clusters[i].SetBaryCentre(centroid);
         }
     }
