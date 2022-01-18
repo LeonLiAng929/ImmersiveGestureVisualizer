@@ -278,4 +278,14 @@ public class ClusterGameObject : MonoBehaviour
             gGO.gameObject.transform.localPosition = new Vector3(gGO.gesture.PCA_Coordinate.x*5, gGO.gameObject.transform.localPosition.y, gGO.gesture.PCA_Coordinate.y*5);
         }
     }
+
+    public void MDS_Arrangement()
+    {
+        GameObject clusterGameObj = GestureVisualizer.instance.GetClusterGameObjectById(clusterID);
+        List<GestureGameObject> gestures = new List<GestureGameObject>(clusterGameObj.GetComponentsInChildren<GestureGameObject>(true));
+        foreach (GestureGameObject gGO in gestures)
+        {
+            gGO.gameObject.transform.localPosition = new Vector3(gGO.gesture.MDS_Coordinate.x * 5, gGO.gameObject.transform.localPosition.y, gGO.gesture.MDS_Coordinate.y * 5);
+        }
+    }
 }

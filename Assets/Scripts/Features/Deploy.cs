@@ -32,15 +32,35 @@ public class Deploy : MonoBehaviour
     {
         if (XRRig.transform.localEulerAngles.x == 90)
         {
-            if(!selectionIndicator.activeSelf)
+            if (!selectionIndicator.activeSelf)
+            {
                 selectionIndicator.SetActive(true);
+                foreach (KeyValuePair<int, GameObject> pair in GestureVisualizer.instance.clustersObjDic)
+                {
+                    foreach (GestureGameObject gGO in pair.Value.GetComponentsInChildren<GestureGameObject>(true))
+                    {
+                        gGO.gameObject.transform.Find("Capsule").localRotation = Quaternion.Euler(90, 0, 0);
+                        gGO.gameObject.transform.Find("Trajectory").localRotation = Quaternion.Euler(90, 0, 0);
+                    }
+                }
+            }
             if (avatar.activeSelf)
                 avatar.SetActive(false);
         }
         else
         {
             if (selectionIndicator.activeSelf)
+            {
                 selectionIndicator.SetActive(false);
+                foreach (KeyValuePair<int, GameObject> pair in GestureVisualizer.instance.clustersObjDic)
+                {
+                    foreach (GestureGameObject gGO in pair.Value.GetComponentsInChildren<GestureGameObject>(true))
+                    {
+                        gGO.gameObject.transform.Find("Capsule").localRotation = Quaternion.Euler(0, 0, 0);
+                        gGO.gameObject.transform.Find("Trajectory").localRotation = Quaternion.Euler(0, 0, 0);
+                    }
+                }
+            }
             if (!avatar.activeSelf)
                 avatar.SetActive(true);
         }
@@ -52,12 +72,30 @@ public class Deploy : MonoBehaviour
         {
             XRRig.transform.localPosition = previousLocation;
             XRRig.transform.localRotation = Quaternion.Euler(0, 0, 0);
+            GestureVisualizer.instance.deploying = false;
+            foreach (KeyValuePair<int, GameObject> pair in GestureVisualizer.instance.clustersObjDic)
+            {
+                foreach(GestureGameObject gGO in pair.Value.GetComponentsInChildren<GestureGameObject>(true))
+                {
+                    gGO.gameObject.transform.Find("Capsule").localRotation = Quaternion.Euler(0, 0, 0);
+                    gGO.gameObject.transform.Find("Trajectory").localRotation = Quaternion.Euler(0, 0, 0);
+                }
+            }
         }
         else
         {
             previousLocation = XRRig.transform.localPosition;
             XRRig.transform.localPosition = new Vector3(0, 20, 0);
             XRRig.transform.localRotation = Quaternion.Euler(90, 0, 0);
+            GestureVisualizer.instance.deploying = true;
+            foreach (KeyValuePair<int, GameObject> pair in GestureVisualizer.instance.clustersObjDic)
+            {
+                foreach (GestureGameObject gGO in pair.Value.GetComponentsInChildren<GestureGameObject>(true))
+                {
+                    gGO.gameObject.transform.Find("Capsule").localRotation = Quaternion.Euler(90, 0, 0);
+                    gGO.gameObject.transform.Find("Trajectory").localRotation = Quaternion.Euler(90, 0, 0);
+                }
+            }
         }
     }
 
@@ -65,6 +103,15 @@ public class Deploy : MonoBehaviour
     {
         XRRig.transform.localPosition = new Vector3(0, 20, 0);
         XRRig.transform.localRotation = Quaternion.Euler(90, 0, 0);
+        GestureVisualizer.instance.deploying = true;
+        foreach (KeyValuePair<int, GameObject> pair in GestureVisualizer.instance.clustersObjDic)
+        {
+            foreach (GestureGameObject gGO in pair.Value.GetComponentsInChildren<GestureGameObject>(true))
+            {
+                gGO.gameObject.transform.Find("Capsule").localRotation = Quaternion.Euler(90, 0, 0);
+                gGO.gameObject.transform.Find("Trajectory").localRotation = Quaternion.Euler(90, 0, 0);
+            }
+        }
     }
   
 }

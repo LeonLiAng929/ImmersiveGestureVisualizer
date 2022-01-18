@@ -46,7 +46,7 @@ public class GestureVisualizer : MonoBehaviour
     private List<Color> trajectoryColorSet = new List<Color>();
     private Dictionary<int, Color> clusterColorDic = new Dictionary<int, Color>();
     [HideInInspector]
-    public int arrangementMode = 1; // 0 = local, 1 = global, 2 = line-up
+    public int arrangementMode = 1; // 0 = local, 1 = global, 2 = line-up, 3=PCA, 4=MDS
     public InputDevice rightController;
     public InputDevice leftController;
     [HideInInspector]
@@ -73,7 +73,10 @@ public class GestureVisualizer : MonoBehaviour
     public bool adjustTranform = false;
     [HideInInspector]
     public int k = 0;
-    public int clusteringRationale = 0; // 0:DBA, 1:PCA
+    [HideInInspector]
+    public int clusteringRationale = 0; // 0:DBA, 1:PCA, 2:MDS
+    [HideInInspector]
+    public bool deploying = true;
     #region Singleton
     public static GestureVisualizer instance;
     #endregion
@@ -111,6 +114,8 @@ public class GestureVisualizer : MonoBehaviour
             GestureAnalyser.instance.InitializeClusters_DBA(k);
         else if (clusteringRationale == 1)
             GestureAnalyser.instance.InitializeClusters_PCA(k);
+        else if (clusteringRationale == 2)
+            GestureAnalyser.instance.InitializeClusters_MDS(k);
         List<Gesture> gestures = GestureAnalyser.instance.GetGestures();
 
         //instantiate Cluster visualizations
@@ -246,6 +251,18 @@ public class GestureVisualizer : MonoBehaviour
                 }
             }
         }
+
+        if (deploying)
+        {
+            foreach (KeyValuePair<int, GameObject> pair in GestureVisualizer.instance.clustersObjDic)
+            {
+                foreach (GestureGameObject gGO in pair.Value.GetComponentsInChildren<GestureGameObject>(true))
+                {
+                    gGO.gameObject.transform.Find("Capsule").localRotation = Quaternion.Euler(90, 0, 0);
+                    gGO.gameObject.transform.Find("Trajectory").localRotation = Quaternion.Euler(90, 0, 0);
+                }
+            }
+        }
     }
     public void ShowSearchResult(List<Gesture> result)
     {
@@ -330,6 +347,13 @@ public class GestureVisualizer : MonoBehaviour
             foreach (KeyValuePair<int, GameObject> pair in clustersObjDic)
             {
                 pair.Value.transform.Find("ClusterVisualization").GetComponent<ClusterGameObject>().PCA_Arrangement();
+            }
+        }
+        else if (arrangementMode == 4)
+        {
+            foreach (KeyValuePair<int, GameObject> pair in clustersObjDic)
+            {
+                pair.Value.transform.Find("ClusterVisualization").GetComponent<ClusterGameObject>().MDS_Arrangement();
             }
         }
         Dictionary<int, Cluster> clusters = GestureAnalyser.instance.GetClusters();

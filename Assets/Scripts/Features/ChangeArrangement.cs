@@ -13,6 +13,7 @@ public class ChangeArrangement : MonoBehaviour
     public Material local;
     public Material lineUp;
     public Material PCA;
+    public Material MDS;
 
     private int mode = 0; //0 = local, 1=global, 2 = lineUp, 3 = PCA
     // Start is called before the first frame update
@@ -56,9 +57,16 @@ public class ChangeArrangement : MonoBehaviour
         }
         else if (mode == 3)
         {
-            mode = 1;
+            mode = 4;
             gameObject.GetComponent<MeshRenderer>().material = PCA;
             GestureVisualizer.instance.arrangementMode = 3;
+            GestureVisualizer.instance.AdjustClusterPosition();
+        }
+        else if (mode == 4)
+        {
+            mode = 1;
+            gameObject.GetComponent<MeshRenderer>().material = MDS;
+            GestureVisualizer.instance.arrangementMode = 4;
             GestureVisualizer.instance.AdjustClusterPosition();
         }
     }

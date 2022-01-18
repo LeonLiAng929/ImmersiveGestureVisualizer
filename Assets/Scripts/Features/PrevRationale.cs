@@ -25,13 +25,18 @@ public class PrevRationale : MonoBehaviour
     {
         if (GestureVisualizer.instance.clusteringRationale == 0)
         {
-            GestureVisualizer.instance.clusteringRationale = 1;
-            text.text = "Rationale: \n" + "PCA";
+            GestureVisualizer.instance.clusteringRationale = 2;
+            text.text = "Rationale: \n" + "MDS";
         }
         else if(GestureVisualizer.instance.clusteringRationale == 1)
         {
             GestureVisualizer.instance.clusteringRationale = 0;
             text.text = "Rationale: \n" + "DBA";
+        }
+        else if (GestureVisualizer.instance.clusteringRationale == 2)
+        {
+            GestureVisualizer.instance.clusteringRationale = 1;
+            text.text = "Rationale: \n" + "PCA";
         }
     }
 }

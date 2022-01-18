@@ -14,7 +14,7 @@ public class DisplayMap : MonoBehaviour
     {
         selectionIndicator = transform.Find("SelectionIndicator").gameObject;
         simpleInteractable = GetComponent<XRSimpleInteractable>();
-        simpleInteractable.activated.AddListener(ShowMap);
+        simpleInteractable.selectExited.AddListener(ShowMap);
         init = gameObject.GetComponent<MeshRenderer>().material.color;
         map.SetActive(false);
         selectionIndicator.SetActive(false);
@@ -26,7 +26,7 @@ public class DisplayMap : MonoBehaviour
         
     }
 
-    public void ShowMap(ActivateEventArgs arg)
+    public void ShowMap(SelectExitEventArgs arg)
     {
         if (map.activeSelf)
         {

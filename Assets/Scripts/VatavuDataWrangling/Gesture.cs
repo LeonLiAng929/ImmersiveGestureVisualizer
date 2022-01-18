@@ -12,6 +12,7 @@ public class Gesture
     public char trial;
     public int cluster;
     public Vector2 PCA_Coordinate;
+    public Vector2 MDS_Coordinate;
 
     private float localSimilarity; // DTW similarity score between this gesture and the average gesture of the cluster it belongs to.
     private float globalSimilarity; // DTW similarity score between this gesture and the average gesture of the entire dataset.

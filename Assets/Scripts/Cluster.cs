@@ -14,6 +14,11 @@ public class Cluster
     {
         baryCentre.PCA_Coordinate = coord;
     }
+
+    public void SetBaryCentreMDS_Coord(Vector2 coord)
+    {
+        baryCentre.MDS_Coordinate = coord;
+    }
     public void AddGesture(Gesture g, bool init = false)
     {
         if (!gestures.Contains(g))

@@ -82,6 +82,7 @@ public class GestureAnalyser : MonoBehaviour
         }
         CalculateGlobalConsensus();
         PCA_Arrangement();
+        MDS_Arrangement();
     }
 
     public void InitializeClusters_PCA(int _k)
@@ -129,6 +130,55 @@ public class GestureAnalyser : MonoBehaviour
             pair.Value.SetBaryCentrePCA_Coord(new Vector2(clusterCentres[pair.Key][0], clusterCentres[pair.Key][1]));
         }
         CalculateGlobalConsensus();
+        MDS_Arrangement();
+    }
+
+    public void InitializeClusters_MDS(int _k)
+    {
+        k = _k;
+        MDS_Arrangement();
+        //clustering
+        PythonRunner.RunFile("Assets/Scripts/KmeansMDS.py");
+        List<List<float>> clusterCentres = new List<List<float>>();
+        foreach (List<float> coordinate in pythonResult)
+        {
+            clusterCentres.Add(coordinate);
+        }
+
+        //Calculate the barycentre for the dataset
+        CSharp2Python(gestures);
+        PythonRunner.RunFile("Assets/Scripts/BaryCentre.py");
+        averageGesture = Python2CSharp();
+        averageGesture.SetBoundingBox();
+        averageGesture.SetCentroid();
+
+        // initialize clusters
+        foreach (Gesture g in gestures)
+        {
+            Cluster temp = TryGetCluster(g.cluster);
+            temp.AddGesture(g, true);
+        }
+
+        // calculate barycenter for each cluster
+
+        foreach (KeyValuePair<int, Cluster> pair in clusters)
+        {
+            if (pair.Value.GestureCount() > 1)
+            {
+                //CalculateBaryCentre(pair.Value.GetGestures());
+                //pair.Value.SetBaryCentre(Python2CSharp());
+                pair.Value.UpdateBarycentre();
+                pair.Value.UpdateConsensus();
+            }
+            else
+            {
+                pair.Value.SetBaryCentre(pair.Value.GetGestures()[0]);
+                pair.Value.UpdateConsensus();
+            }
+            pair.Value.SetBaryCentreMDS_Coord(new Vector2(clusterCentres[pair.Key][0], clusterCentres[pair.Key][1]));
+        }
+        CalculateGlobalConsensus();
+        PCA_Arrangement();
     }
     public int GetGestureCount()
     {
@@ -371,6 +421,37 @@ public class GestureAnalyser : MonoBehaviour
         {
             Gesture centroid = clusters[i].GetBaryCentre();
             centroid.PCA_Coordinate = new Vector2(pythonResult[i + gestureCount][0], pythonResult[i + gestureCount][1]);
+            clusters[i].SetBaryCentre(centroid);
+        }
+    }
+
+    public void MDS_Arrangement()
+    {
+        List<Gesture> tempGesLi = new List<Gesture>();
+        foreach (Gesture g in gestures)
+        {
+            tempGesLi.Add(g.Resample(10));
+        }
+        // get centroids
+        int centroidCount = clusters.Count;
+        for (int i = 0; i < centroidCount; i++)
+        {
+            Gesture centroid = clusters[i].GetBaryCentre();
+            tempGesLi.Add(centroid.Resample(10));
+        }
+        CSharp2Python(tempGesLi);
+        PythonRunner.RunFile("Assets/Scripts/MDS.py");
+
+        int gestureCount = gestures.Count;
+
+        for (int i = 0; i < gestureCount; i++)
+        {
+            gestures[i].MDS_Coordinate = new Vector2(pythonResult[i][0], pythonResult[i][1]);
+        }
+        for (int i = 0; i < centroidCount; i++)
+        {
+            Gesture centroid = clusters[i].GetBaryCentre();
+            centroid.MDS_Coordinate = new Vector2(pythonResult[i + gestureCount][0], pythonResult[i + gestureCount][1]);
             clusters[i].SetBaryCentre(centroid);
         }
     }

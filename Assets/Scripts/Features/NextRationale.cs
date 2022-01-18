@@ -30,6 +30,11 @@ public class NextRationale : MonoBehaviour
         }
         else if(GestureVisualizer.instance.clusteringRationale == 1)
         {
+            GestureVisualizer.instance.clusteringRationale = 2;
+            text.text = "Rationale: \n" + "MDS";
+        }
+        else if (GestureVisualizer.instance.clusteringRationale == 2)
+        {
             GestureVisualizer.instance.clusteringRationale = 0;
             text.text = "Rationale: \n" + "DBA";
         }
