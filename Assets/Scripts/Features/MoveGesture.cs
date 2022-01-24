@@ -11,7 +11,7 @@ public class MoveGesture : MonoBehaviour
     void Start()
     {
         xRSimpleInteractable = GetComponent<XRSimpleInteractable>();
-        xRSimpleInteractable.activated.AddListener(MoveGes);
+        xRSimpleInteractable.selectExited.AddListener(MoveGes);
         selectionIndicator = transform.Find("SelectionIndicator").gameObject;
         selectionIndicator.SetActive(false);
     }
@@ -22,7 +22,7 @@ public class MoveGesture : MonoBehaviour
         gameObject.transform.LookAt(Camera.main.transform.position);
     }
 
-    private void MoveGes(ActivateEventArgs arg)
+    private void MoveGes(SelectExitEventArgs arg)
     {
         if (GestureVisualizer.instance.adjustTranform)
         {

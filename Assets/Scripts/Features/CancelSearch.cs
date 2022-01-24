@@ -12,7 +12,7 @@ public class CancelSearch : MonoBehaviour
     void Start()
     {
         xRSimpleInteractable = GetComponent<XRSimpleInteractable>();
-        xRSimpleInteractable.activated.AddListener(Resume);
+        xRSimpleInteractable.selectExited.AddListener(Resume);
         init = gameObject.GetComponent<MeshRenderer>().material.color;
         selectionIndicator = transform.Find("SelectionIndicator").gameObject;
         selectionIndicator.SetActive(false);
@@ -24,7 +24,7 @@ public class CancelSearch : MonoBehaviour
 
     }
 
-    private void Resume(ActivateEventArgs arg)
+    private void Resume(SelectExitEventArgs arg)
     {
         Debug.Log("Reset!");
         selectionIndicator.SetActive(!selectionIndicator.activeSelf);

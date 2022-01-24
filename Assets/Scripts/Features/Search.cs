@@ -13,12 +13,12 @@ public class Search : MonoBehaviour
     void Start()
     {
         simpleInteractable = GetComponent<XRSimpleInteractable>();
-        simpleInteractable.activated.AddListener(ConfirmSearch);
+        simpleInteractable.selectExited.AddListener(ConfirmSearch);
         selectionIndicator = transform.Find("SelectionIndicator").gameObject;
         selectionIndicator.SetActive(false);
     }
 
-    public void ConfirmSearch(ActivateEventArgs arg)
+    public void ConfirmSearch(SelectExitEventArgs arg)
     {
         selectionIndicator.SetActive(true);
 

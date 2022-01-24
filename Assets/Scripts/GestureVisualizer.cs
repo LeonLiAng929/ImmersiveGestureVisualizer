@@ -23,6 +23,12 @@ public class GestureVisualizer : MonoBehaviour
     [SerializeField]
     public GameObject clusterVisPrefab;
     [SerializeField]
+    public GameObject GesUiPrefab;
+    [SerializeField]
+    public Transform Ui;
+    [HideInInspector]
+    public List<GameObject> uiRefList = new List<GameObject>();
+    [SerializeField]
     public Material tubeRendererMat;
     [SerializeField]
     public GameObject TrajectoryFilterGameObject;
@@ -77,6 +83,8 @@ public class GestureVisualizer : MonoBehaviour
     public int clusteringRationale = 0; // 0:DBA, 1:PCA, 2:MDS
     [HideInInspector]
     public bool deploying = true;
+    private bool startup = true;
+    private Dictionary<string, int> uiLinkDic = new Dictionary<string, int>();
     #region Singleton
     public static GestureVisualizer instance;
     #endregion
@@ -86,6 +94,11 @@ public class GestureVisualizer : MonoBehaviour
         instance = this;
         proposedGes = new Gesture();
         
+    }
+
+    public Color GetColorByCluster(int i)
+    {
+        return clusterColorDic[i];
     }
     private void Start()
     {
@@ -106,6 +119,67 @@ public class GestureVisualizer : MonoBehaviour
             leftController = leftHandDevices[0];
         }
         Deploy.instance._DeployRig();
+        Initialize2DBoard();
+    }
+    public void Initialize2DBoard()
+    {
+        int n = GestureAnalyser.instance.GetGestures().Count;
+        for (int i = 0; i < n; i++)
+        {
+            uiRefList.Add(Instantiate(GesUiPrefab, Ui));
+        }
+        for (int i = 0; i < n; i++)
+        {
+            uiRefList[i].GetComponent<Transform>().localPosition = new Vector3((i % 8) * 0.1f, -(i / 8) * 0.1f, 0);
+        }
+        Ui.Find("Grab").localPosition = uiRefList[0].GetComponent<Transform>().localPosition - new Vector3(0.1f,0,0);
+    }
+    public void InitLink2DBoard()
+    {
+        List<GestureGameObject> gestureGameObjects = new List<GestureGameObject>();
+        foreach(KeyValuePair<int, GameObject> pair in clustersObjDic)
+        {
+            foreach (GestureGameObject gGO in pair.Value.GetComponentsInChildren<GestureGameObject>(true))
+            {
+                if (!gGO.averageGesture)
+                {
+                    gestureGameObjects.Add(gGO);
+                }
+            }
+        }
+        for(int i = 0; i < uiRefList.Count; i++)
+        {
+            uiRefList[i].GetComponent<Gesture2DObject>().gGO = gestureGameObjects[i];
+            uiLinkDic.Add(gestureGameObjects[i].gesture.id.ToString() + '-' + gestureGameObjects[i].gesture.trial, i);
+            uiRefList[i].GetComponent<MeshRenderer>().material.color = GetColorByCluster(gestureGameObjects[i].gesture.cluster);
+            gestureGameObjects[i].uiRef = uiRefList[i].GetComponent<Gesture2DObject>();
+            uiRefList[i].GetComponent<Gesture2DObject>().GesInfo.text = gestureGameObjects[i].gesture.id.ToString() + "-" + gestureGameObjects[i].gesture.trial;
+        }
+        startup = false;
+    }
+
+    public void Link2DBoard()
+    {
+        List<GestureGameObject> gestureGameObjects = new List<GestureGameObject>();
+        foreach (KeyValuePair<int, GameObject> pair in clustersObjDic)
+        {
+            foreach (GestureGameObject gGO in pair.Value.GetComponentsInChildren<GestureGameObject>(true))
+            {
+                if (!gGO.averageGesture)
+                {
+                    gestureGameObjects.Add(gGO);
+                }
+            }
+        }
+        for (int i = 0; i < uiRefList.Count; i++)
+        {
+            string key = gestureGameObjects[i].gesture.id.ToString() + '-' + gestureGameObjects[i].gesture.trial;
+            Gesture2DObject uiref = uiRefList[uiLinkDic[key]].GetComponent<Gesture2DObject>();
+            uiref.gGO = gestureGameObjects[i];
+            uiref.gameObject.GetComponent<MeshRenderer>().material.color = GetColorByCluster(gestureGameObjects[i].gesture.cluster);
+            gestureGameObjects[i].uiRef = uiref;
+            uiref.GesInfo.text = gestureGameObjects[i].gesture.id.ToString() + "-" + gestureGameObjects[i].gesture.trial;
+        }
     }
 
     public void InitializeVisualization()
@@ -136,7 +210,6 @@ public class GestureVisualizer : MonoBehaviour
             Color temp = rand;
             temp.a = (float)0.5;
             clusterTrans.gameObject.GetComponent<MeshRenderer>().material.color = temp;
-
             clustersObjDic.Add(pair.Key, newClusterObj);
         }
 
@@ -177,7 +250,6 @@ public class GestureVisualizer : MonoBehaviour
 
             InstantiateTrajectory(newGesVis, g);
             UpdateGlowingFieldColour(newGesVis);
-
             // instantiate small-multiples 
             List<Pose> sampled = g.Resample(5).poses;
             float x = 0.7f;
@@ -213,7 +285,7 @@ public class GestureVisualizer : MonoBehaviour
             foreach (GestureGameObject gGO in pair.Value.GetComponentsInChildren<GestureGameObject>())
             {
                 gGO.ShowTracer();
-                if (gGO.gameObject.name != "AverageGesture")
+                if (!gGO.averageGesture)
                 {
                     gGO.gameObject.SetActive(false);
                 }
@@ -238,6 +310,7 @@ public class GestureVisualizer : MonoBehaviour
         //tracerRef.SetActive(false);
         trajectoryPrefab.SetActive(false);
         gesVisPrefab.SetActive(false);
+        GesUiPrefab.SetActive(false);
         AdjustClusterPosition();
 
         foreach (KeyValuePair<int, GameObject> pair in clustersObjDic)
@@ -262,6 +335,14 @@ public class GestureVisualizer : MonoBehaviour
                     gGO.gameObject.transform.Find("Trajectory").localRotation = Quaternion.Euler(90, 0, 0);
                 }
             }
+        }
+        if (startup)
+        {
+            InitLink2DBoard();
+        }
+        else
+        {
+            Link2DBoard();
         }
     }
     public void ShowSearchResult(List<Gesture> result)
@@ -498,6 +579,7 @@ public class GestureVisualizer : MonoBehaviour
     {
         GameObject newGesVis = Instantiate(gesVisPrefab, clusterObj.GetComponent<Transform>());  
         newGesVis.SetActive(true);
+        newGesVis.GetComponent<GestureGameObject>().averageGesture = true;
         newGesVis.name = "AverageGesture";
         newGesVis.GetComponent<GestureGameObject>().gesture = GestureAnalyser.instance.GetClusterByID(clusterId).GetBaryCentre();
         Transform newGesVisTrans = newGesVis.GetComponent<Transform>();
@@ -609,10 +691,11 @@ public class GestureVisualizer : MonoBehaviour
         }
     }
 
-    public void UpdateGlowingFieldColour(GameObject gesVis)
+    public Color UpdateGlowingFieldColour(GameObject gesVis)
     {
         int id = gesVis.GetComponent<GestureGameObject>().gesture.cluster;
         gesVis.transform.Find("GlowingField").GetComponent<MeshRenderer>().material.color = clusterColorDic[id];
+        return clusterColorDic[id];
     }
 
     public void UpdateGestureColour(GameObject gesVis)

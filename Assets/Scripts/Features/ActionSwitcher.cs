@@ -76,6 +76,17 @@ public class ActionSwitcher : MonoBehaviour
             gameObject.GetComponent<MeshRenderer>().material.color = Color.white;
             selectionIndicator.SetActive(true);
         }
+        else
+        {
+            foreach (ActionSwitcher aswr in gameObject.transform.parent.GetComponentsInChildren<ActionSwitcher>())
+            {
+                aswr.gameObject.GetComponent<MeshRenderer>().material.color = aswr.init;
+                aswr.selectionIndicator.SetActive(false);
+                currentlyActive = Actions.Idle;
+                
+            }
+            Debug.Log(currentlyActive);
+        }
     }
 
     public Actions GetCurrentAction()
