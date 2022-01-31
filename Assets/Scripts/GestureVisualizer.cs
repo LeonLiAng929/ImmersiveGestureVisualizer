@@ -23,12 +23,6 @@ public class GestureVisualizer : MonoBehaviour
     [SerializeField]
     public GameObject clusterVisPrefab;
     [SerializeField]
-    public GameObject GesUiPrefab;
-    [SerializeField]
-    public Transform Ui;
-    [HideInInspector]
-    public List<GameObject> uiRefList = new List<GameObject>();
-    [SerializeField]
     public Material tubeRendererMat;
     [SerializeField]
     public GameObject TrajectoryFilterGameObject;
@@ -77,6 +71,15 @@ public class GestureVisualizer : MonoBehaviour
     public List<GestureGameObject> searchResult = new List<GestureGameObject>();
     [HideInInspector]
     public bool adjustTranform = false;
+
+
+    // for exocentric view and 2D penal
+    [SerializeField]
+    public GameObject GesUiPrefab;
+    [SerializeField]
+    public Transform Ui;
+    [HideInInspector]
+    public List<GameObject> uiRefList = new List<GameObject>();
     [HideInInspector]
     public int k = 0;
     [HideInInspector]
@@ -85,6 +88,9 @@ public class GestureVisualizer : MonoBehaviour
     public bool deploying = true;
     private bool startup = true;
     private Dictionary<string, int> uiLinkDic = new Dictionary<string, int>();
+
+
+
     #region Singleton
     public static GestureVisualizer instance;
     #endregion
@@ -318,7 +324,7 @@ public class GestureVisualizer : MonoBehaviour
             List<GestureGameObject> temp = new List<GestureGameObject>(pair.Value.GetComponentsInChildren<GestureGameObject>(true));
             foreach (GestureGameObject gGO in temp)
             {
-                if (gGO.gameObject.name != "AverageGesture")
+                if (!gGO.averageGesture)
                 {
                     gGO.gameObject.AddComponent<ShowConnection>();
                 }
@@ -336,12 +342,16 @@ public class GestureVisualizer : MonoBehaviour
                 }
             }
         }
+        
         if (startup)
         {
             InitLink2DBoard();
+            //Transform a = Instantiate(Ui, Ui.transform.parent)
         }
         else
         {
+            //Transform record = Instantiate(Ui, Ui.transform.parent);
+            //record.localPosition -= new Vector3(0.1f, 0.1f, 0.1f);
             Link2DBoard();
         }
     }

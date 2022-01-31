@@ -248,7 +248,7 @@ public class GestureGameObject : MonoBehaviour
     {
         if (animate)
         {
-            if (gameObject.name != "AverageGesture")
+            if (gameObject.name != "AverageGesture" && gameObject.name != "Preview")
             {
                 uiRef.AnimationIndicator.SetActive(false);
             }
@@ -268,12 +268,12 @@ public class GestureGameObject : MonoBehaviour
         }
         else
         {
-            if (gameObject.name != "AverageGesture")
+            if (gameObject.name != "AverageGesture" && gameObject.name != "Preview")
             {
                 uiRef.AnimationIndicator.SetActive(true);
             }
             animate = true;
-            if (gameObject.name != "AverageGesture")
+            if (gameObject.name != "AverageGesture" && gameObject.name != "Preview")
             {
                 timeIndicator.SetActive(true);
             }

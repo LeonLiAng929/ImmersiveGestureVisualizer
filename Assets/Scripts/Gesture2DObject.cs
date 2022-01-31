@@ -6,7 +6,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class Gesture2DObject : MonoBehaviour
 {
     [HideInInspector]
-    public GestureGameObject gGO;
+    public GestureGameObject gGO = null;
     public GameObject AnimationIndicator;
     public GameObject SlidimationIndicator;
     public GameObject SmallmultiplesIndicator;
@@ -16,6 +16,12 @@ public class Gesture2DObject : MonoBehaviour
     public GameObject ComparisonIndicator;
     public TextMesh GesInfo;
     public GameObject arrow;
+    private Transform preview = null;
+
+    public int PCACluster;
+    public int DBACluster;
+    public int MDSCluster;
+    
     public XRSimpleInteractable xRSimpleInteractable { get; private set; }
 
     // Start is called before the first frame update
@@ -23,6 +29,8 @@ public class Gesture2DObject : MonoBehaviour
     {
         xRSimpleInteractable = GetComponent<XRSimpleInteractable>();
         xRSimpleInteractable.selectExited.AddListener(PerformAction);
+        //xRSimpleInteractable.firstHoverEntered.AddListener(PreviewGesture);
+        //xRSimpleInteractable.lastHoverExited.AddListener(DestroyPreviewGesture);
         AnimationIndicator.SetActive(false);
         SlidimationIndicator.SetActive(false);
         SmallmultiplesIndicator.SetActive(false);
@@ -43,7 +51,32 @@ public class Gesture2DObject : MonoBehaviour
     {
         xRSimpleInteractable = GetComponent<XRSimpleInteractable>();
         xRSimpleInteractable.selectExited.AddListener(PerformAction);
+        xRSimpleInteractable.firstHoverEntered.AddListener(PreviewGesture);
 
+    }
+
+    public void PreviewGesture(HoverEnterEventArgs args)
+    {
+        if (gGO != null)
+        {
+            preview = Instantiate(gGO.gameObject.transform, transform);
+            preview.gameObject.name = "Preview";
+            preview.localPosition = transform.localPosition;
+            preview.localScale = transform.localScale;
+            preview.localRotation = transform.localRotation;
+            preview.GetComponent<GestureGameObject>().ActivateAnimate();
+            preview.Rotate(new Vector3(0, 0, 1));
+            gameObject.SetActive(false);
+        }
+    }
+
+    public void DestroyPreviewGesture(HoverExitEventArgs args)
+    {
+        if (gGO != null && preview != null)
+        {
+            Destroy(preview.gameObject);
+            gameObject.SetActive(true);
+        }
     }
 
     public void PerformAction(SelectExitEventArgs arg)
