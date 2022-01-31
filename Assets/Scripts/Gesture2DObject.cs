@@ -17,10 +17,6 @@ public class Gesture2DObject : MonoBehaviour
     public TextMesh GesInfo;
     public GameObject arrow;
     private Transform preview = null;
-
-    public int PCACluster;
-    public int DBACluster;
-    public int MDSCluster;
     
     public XRSimpleInteractable xRSimpleInteractable { get; private set; }
 
@@ -29,6 +25,7 @@ public class Gesture2DObject : MonoBehaviour
     {
         xRSimpleInteractable = GetComponent<XRSimpleInteractable>();
         xRSimpleInteractable.selectExited.AddListener(PerformAction);
+        xRSimpleInteractable.activated.AddListener(TeleportToObject);
         //xRSimpleInteractable.firstHoverEntered.AddListener(PreviewGesture);
         //xRSimpleInteractable.lastHoverExited.AddListener(DestroyPreviewGesture);
         AnimationIndicator.SetActive(false);
@@ -55,6 +52,12 @@ public class Gesture2DObject : MonoBehaviour
 
     }
 
+    public void TeleportToObject(ActivateEventArgs args)
+    {
+        GameObject rig = Deploy.instance.XRRig;
+        rig.transform.localPosition = gGO.gameObject.transform.localPosition - Vector3.forward;
+        rig.transform.localRotation = gGO.gameObject.transform.localRotation;
+    }
     public void PreviewGesture(HoverEnterEventArgs args)
     {
         if (gGO != null)
@@ -102,7 +105,7 @@ public class Gesture2DObject : MonoBehaviour
         }
         else if (curr == Actions.Idle)
         {
-            arrow.SetActive(!arrow.activeSelf);
+            //arrow.SetActive(!arrow.activeSelf);
             gGO.IdleSelect();
         }
     }

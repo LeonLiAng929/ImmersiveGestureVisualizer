@@ -23,19 +23,19 @@ public class PrevRationale : MonoBehaviour
 
     private void Prev(SelectExitEventArgs args)
     {
-        if (GestureVisualizer.instance.clusteringRationale == 0)
+        if (GestureVisualizer.instance.clusteringRationale == ClusteringRationales.DBA)
         {
-            GestureVisualizer.instance.clusteringRationale = 2;
+            GestureVisualizer.instance.clusteringRationale = ClusteringRationales.MDS;
             text.text = "Rationale: \n" + "MDS";
         }
-        else if(GestureVisualizer.instance.clusteringRationale == 1)
+        else if(GestureVisualizer.instance.clusteringRationale == ClusteringRationales.PCA)
         {
-            GestureVisualizer.instance.clusteringRationale = 0;
+            GestureVisualizer.instance.clusteringRationale = ClusteringRationales.DBA;
             text.text = "Rationale: \n" + "DBA";
         }
-        else if (GestureVisualizer.instance.clusteringRationale == 2)
+        else if (GestureVisualizer.instance.clusteringRationale == ClusteringRationales.MDS)
         {
-            GestureVisualizer.instance.clusteringRationale = 1;
+            GestureVisualizer.instance.clusteringRationale = ClusteringRationales.PCA;
             text.text = "Rationale: \n" + "PCA";
         }
     }

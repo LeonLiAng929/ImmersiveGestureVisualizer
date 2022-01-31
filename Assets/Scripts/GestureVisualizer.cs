@@ -77,17 +77,25 @@ public class GestureVisualizer : MonoBehaviour
     [SerializeField]
     public GameObject GesUiPrefab;
     [SerializeField]
-    public Transform Ui;
+    public GameObject UiPenalPrefab;
+    [SerializeField]
+    public Transform UiParent;
     [HideInInspector]
     public List<GameObject> uiRefList = new List<GameObject>();
     [HideInInspector]
     public int k = 0;
     [HideInInspector]
-    public int clusteringRationale = 0; // 0:DBA, 1:PCA, 2:MDS
+    public ClusteringRationales clusteringRationale = ClusteringRationales.DBA; // 0:DBA, 1:PCA, 2:MDS
     [HideInInspector]
     public bool deploying = true;
     private bool startup = true;
     private Dictionary<string, int> uiLinkDic = new Dictionary<string, int>();
+    [HideInInspector]
+    public List<GameObject> boardRecords = new List<GameObject>();
+    [HideInInspector]
+    public GameObject currBoard = null;
+    [HideInInspector]
+    public List<GestureGameObject> gestureGameObjs = new List<GestureGameObject>();
 
 
 
@@ -125,76 +133,139 @@ public class GestureVisualizer : MonoBehaviour
             leftController = leftHandDevices[0];
         }
         Deploy.instance._DeployRig();
-        Initialize2DBoard();
+        //Initialize2DBoard();
     }
     public void Initialize2DBoard()
     {
+        if(currBoard != null)
+        {
+            boardRecords.Add(currBoard);
+        }
+        uiRefList.Clear();
+        GameObject temp = Instantiate(UiPenalPrefab, UiParent);
+      
         int n = GestureAnalyser.instance.GetGestures().Count;
         for (int i = 0; i < n; i++)
         {
-            uiRefList.Add(Instantiate(GesUiPrefab, Ui));
+            uiRefList.Add(Instantiate(GesUiPrefab, temp.transform.Find("Contents")));
         }
         for (int i = 0; i < n; i++)
         {
             uiRefList[i].GetComponent<Transform>().localPosition = new Vector3((i % 8) * 0.1f, -(i / 8) * 0.1f, 0);
         }
-        Ui.Find("Grab").localPosition = uiRefList[0].GetComponent<Transform>().localPosition - new Vector3(0.1f,0,0);
+        temp.transform.Find("Grab").localPosition = uiRefList[0].GetComponent<Transform>().localPosition - new Vector3(0.1f,0,0);
+        GameObject grab = temp.transform.Find("Grab").gameObject;
+        grab.GetComponent<BoardControl>().boardInfo.text = "K=" + k.ToString() + "|Rationale:" + clusteringRationale.ToString();
+        grab.GetComponent<BoardControl>().boardInfo.gameObject.SetActive(false);
+        grab.GetComponent<MeshRenderer>().material.color = clusterColorDic[0];
+        
+        currBoard = temp;
+
     }
     public void InitLink2DBoard()
     {
-        List<GestureGameObject> gestureGameObjects = new List<GestureGameObject>();
+        gestureGameObjs.Clear();
         foreach(KeyValuePair<int, GameObject> pair in clustersObjDic)
         {
             foreach (GestureGameObject gGO in pair.Value.GetComponentsInChildren<GestureGameObject>(true))
             {
                 if (!gGO.averageGesture)
                 {
-                    gestureGameObjects.Add(gGO);
+                    gestureGameObjs.Add(gGO);
                 }
             }
         }
         for(int i = 0; i < uiRefList.Count; i++)
         {
-            uiRefList[i].GetComponent<Gesture2DObject>().gGO = gestureGameObjects[i];
-            uiLinkDic.Add(gestureGameObjects[i].gesture.id.ToString() + '-' + gestureGameObjects[i].gesture.trial, i);
-            uiRefList[i].GetComponent<MeshRenderer>().material.color = GetColorByCluster(gestureGameObjects[i].gesture.cluster);
-            gestureGameObjects[i].uiRef = uiRefList[i].GetComponent<Gesture2DObject>();
-            uiRefList[i].GetComponent<Gesture2DObject>().GesInfo.text = gestureGameObjects[i].gesture.id.ToString() + "-" + gestureGameObjects[i].gesture.trial;
+            uiRefList[i].GetComponent<Gesture2DObject>().gGO = gestureGameObjs[i];
+            uiLinkDic.Add(gestureGameObjs[i].gesture.id.ToString() + '-' + gestureGameObjs[i].gesture.trial, i);
+            uiRefList[i].GetComponent<MeshRenderer>().material.color = GetColorByCluster(gestureGameObjs[i].gesture.cluster);
+            gestureGameObjs[i].uiRef = uiRefList[i].GetComponent<Gesture2DObject>();
+            uiRefList[i].GetComponent<Gesture2DObject>().GesInfo.text = gestureGameObjs[i].gesture.id.ToString() + "-" + gestureGameObjs[i].gesture.trial;
         }
         startup = false;
     }
 
+    /// <summary>
+    /// link the current board to the gestures
+    /// </summary>
     public void Link2DBoard()
     {
-        List<GestureGameObject> gestureGameObjects = new List<GestureGameObject>();
+        gestureGameObjs.Clear();
         foreach (KeyValuePair<int, GameObject> pair in clustersObjDic)
         {
             foreach (GestureGameObject gGO in pair.Value.GetComponentsInChildren<GestureGameObject>(true))
             {
                 if (!gGO.averageGesture)
                 {
-                    gestureGameObjects.Add(gGO);
+                    gestureGameObjs.Add(gGO);
                 }
             }
         }
         for (int i = 0; i < uiRefList.Count; i++)
         {
-            string key = gestureGameObjects[i].gesture.id.ToString() + '-' + gestureGameObjects[i].gesture.trial;
+            string key = gestureGameObjs[i].gesture.id.ToString() + '-' + gestureGameObjs[i].gesture.trial;
             Gesture2DObject uiref = uiRefList[uiLinkDic[key]].GetComponent<Gesture2DObject>();
-            uiref.gGO = gestureGameObjects[i];
-            uiref.gameObject.GetComponent<MeshRenderer>().material.color = GetColorByCluster(gestureGameObjects[i].gesture.cluster);
-            gestureGameObjects[i].uiRef = uiref;
-            uiref.GesInfo.text = gestureGameObjects[i].gesture.id.ToString() + "-" + gestureGameObjects[i].gesture.trial;
+            uiref.gGO = gestureGameObjs[i];
+            uiref.gameObject.GetComponent<MeshRenderer>().material.color = GetColorByCluster(gestureGameObjs[i].gesture.cluster);
+            gestureGameObjs[i].uiRef = uiref;
+            uiref.GesInfo.text = gestureGameObjs[i].gesture.id.ToString() + "-" + gestureGameObjs[i].gesture.trial;
+        }
+        // re-link gestures to old boards
+        foreach (GameObject board in boardRecords)
+        {
+            Gesture2DObject[] oldUiRefList = board.GetComponentsInChildren<Gesture2DObject>(true);
+            for (int i = 0; i < uiRefList.Count; i++)
+            {
+                string key = gestureGameObjs[i].gesture.id.ToString() + '-' + gestureGameObjs[i].gesture.trial;
+                Gesture2DObject uiref = oldUiRefList[uiLinkDic[key]];
+                uiref.gGO = gestureGameObjs[i];
+                //uiref.GesInfo.text = gestureGameObjects[i].gesture.id.ToString() + "-" + gestureGameObjects[i].gesture.trial;
+            }
+        }
+
+    }
+
+    public void oldBoardIndicatorUpdate(Gesture2DObject reference)
+    {
+        string key = reference.gGO.gesture.id.ToString() + '-' + reference.gGO.gesture.trial;
+        foreach (GameObject board in boardRecords)
+        {
+            Gesture2DObject[] oldUiRefList = board.GetComponentsInChildren<Gesture2DObject>();
+            Gesture2DObject uiref = oldUiRefList[uiLinkDic[key]];
+            if(uiref.AnimationIndicator.activeSelf != reference.AnimationIndicator.activeSelf)
+                uiref.AnimationIndicator.SetActive(reference.AnimationIndicator.activeSelf);
+            if (uiref.ChangingClusterIndicator.activeSelf != reference.ChangingClusterIndicator.activeSelf)
+                uiref.ChangingClusterIndicator.SetActive(reference.ChangingClusterIndicator.activeSelf);
+            if (uiref.ComparisonIndicator.activeSelf != reference.ComparisonIndicator.activeSelf)
+                uiref.ComparisonIndicator.SetActive(reference.ComparisonIndicator.activeSelf);
+            if (uiref.HeatmapIndicator.activeSelf != reference.HeatmapIndicator.activeSelf)
+                uiref.HeatmapIndicator.SetActive(reference.HeatmapIndicator.activeSelf);
+            if (uiref.SlidimationIndicator.activeSelf != reference.SlidimationIndicator.activeSelf)
+                uiref.SlidimationIndicator.SetActive(reference.SlidimationIndicator.activeSelf);
+            if (uiref.SmallmultiplesIndicator.activeSelf != reference.SmallmultiplesIndicator.activeSelf)
+                uiref.SmallmultiplesIndicator.SetActive(reference.SmallmultiplesIndicator.activeSelf);
+            if (uiref.StackingIndicator.activeSelf != reference.StackingIndicator.activeSelf)
+                uiref.StackingIndicator.SetActive(reference.StackingIndicator.activeSelf);
+            if (uiref.arrow.activeSelf != reference.arrow.activeSelf)
+                uiref.arrow.SetActive(reference.arrow.activeSelf);
         }
     }
 
     public void InitializeVisualization()
     {
-        if (clusteringRationale == 0)
+        skeletonModel.SetActive(true);
+        trajectoryPrefab.SetActive(true);
+        gesVisPrefab.SetActive(true);
+        GesUiPrefab.SetActive(true);
+        UiPenalPrefab.SetActive(true);
+
+
+        if (clusteringRationale == ClusteringRationales.DBA)
             GestureAnalyser.instance.InitializeClusters_DBA(k);
-        else if (clusteringRationale == 1)
+        else if (clusteringRationale == ClusteringRationales.PCA)
             GestureAnalyser.instance.InitializeClusters_PCA(k);
-        else if (clusteringRationale == 2)
+        else if (clusteringRationale == ClusteringRationales.MDS)
             GestureAnalyser.instance.InitializeClusters_MDS(k);
         List<Gesture> gestures = GestureAnalyser.instance.GetGestures();
 
@@ -313,10 +384,10 @@ public class GestureVisualizer : MonoBehaviour
         //Destroy(trajectoryPrefab);
         //Destroy(gesVisPrefab);
         skeletonModel.SetActive(false);
-        //tracerRef.SetActive(false);
         trajectoryPrefab.SetActive(false);
         gesVisPrefab.SetActive(false);
         GesUiPrefab.SetActive(false);
+        UiPenalPrefab.SetActive(false);
         AdjustClusterPosition();
 
         foreach (KeyValuePair<int, GameObject> pair in clustersObjDic)
@@ -345,15 +416,29 @@ public class GestureVisualizer : MonoBehaviour
         
         if (startup)
         {
+            GesUiPrefab.SetActive(true);
+            UiPenalPrefab.SetActive(true);
+            Initialize2DBoard();
             InitLink2DBoard();
             //Transform a = Instantiate(Ui, Ui.transform.parent)
+            GesUiPrefab.SetActive(false);
+            UiPenalPrefab.SetActive(false);
         }
         else
         {
-            //Transform record = Instantiate(Ui, Ui.transform.parent);
-            //record.localPosition -= new Vector3(0.1f, 0.1f, 0.1f);
+            GesUiPrefab.SetActive(true);
+            UiPenalPrefab.SetActive(true);
+            Initialize2DBoard();
             Link2DBoard();
+            GesUiPrefab.SetActive(false);
+            UiPenalPrefab.SetActive(false);
         }
+    }
+
+    public void DestroyBoardRecord(GameObject board2Delete)
+    {
+        boardRecords.Remove(board2Delete);
+        Destroy(board2Delete);
     }
     public void ShowSearchResult(List<Gesture> result)
     {
