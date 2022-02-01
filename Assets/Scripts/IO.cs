@@ -5,6 +5,8 @@ using System.Xml;
 using System.IO;
 using System.Xml.Linq; //Needed for XDocument
 using System.Data;
+using System.Linq;
+
 public class IO
 {
     public XDocument xmlDoc; //create Xdocument. Will be used later to read XML file 
@@ -12,10 +14,10 @@ public class IO
 
     public List<Gesture> LoadXML(string fileName)
     {
-       List<Gesture> gestures = new List<Gesture>();   
-       for (int i = 1; i < 31; i++)
+        List<Gesture> gestures = new List<Gesture>();
+        for (int i = 1; i < 31; i++)
         {
-            string sourceDirectory = Application.dataPath + "/Resources/" + i.ToString()+"/";
+            string sourceDirectory = Application.dataPath + "/Resources/" + i.ToString() + "/";
 
             var txtFiles = Directory.EnumerateFiles(sourceDirectory, "*.xml");
 
@@ -25,9 +27,9 @@ public class IO
 
                 if (name.Contains(fileName))
                 {
-                    name = name.Substring(0, name.Length-4);
+                    name = name.Substring(0, name.Length - 4);
                     TextAsset xmlTextAsset = Resources.Load<TextAsset>(i.ToString() + "/" + name);
-                 
+
                     XmlDocument gestureDataXml = new XmlDocument();
                     gestureDataXml.LoadXml(xmlTextAsset.text);
 
@@ -67,57 +69,51 @@ public class IO
         }
         return gestures;
     }
-    /*
-    private static void ReadXML()
+
+    /// <summary>
+    /// Parse gesture file to list of handposes.
+    /// </summary>
+    /// <param name="text">csv text</param>
+    /// <returns></returns>
+    public Gesture LoadHandGesture(string fileName)
     {
-        for (int i = 1; i < 31; i++)
+        TextAsset sampleHandGesture = Resources.Load<TextAsset>("SampleHandGes");
+        string text = sampleHandGesture.text;
+        Gesture handGes = new Gesture();
+        List<string> lines = text.Split('\n').ToList();
+        handGes.num_of_poses = lines.Count;
+        handGes.trial = '1'; // hard-coded for now, change later.
+        handGes.id = 1;
+        handGes.gestureType = "HandGesture";
+        List<string> legends = lines[0].Split(',').ToList();
+        legends.RemoveAt(0);
+        lines.RemoveAt(0);
+        lines.RemoveAt(lines.Count - 1);
+        foreach (string row in lines)
         {
-            string fileName = Path.Combine(Application.dataPath + "/Resources/"+i.ToString()+"/angry like a bear-1.xml");
-        
-            DataTable newTable = new DataTable();
-            newTable.ReadXmlSchema(fileName);
-            newTable.ReadXml(fileName);
-
-            // Print out values in the table.
-            PrintValues(newTable, "New table " + i.ToString());
-        }
-    }
-
-    private static DataTable CreateTestTable(string tableName)
-    {
-        // Create a test DataTable with two columns and a few rows.
-        DataTable table = new DataTable(tableName);
-        DataColumn column = new DataColumn("id", typeof(System.Int32));
-        column.AutoIncrement = true;
-        table.Columns.Add(column);
-
-        column = new DataColumn("item", typeof(System.String));
-        table.Columns.Add(column);
-
-        // Add ten rows.
-        DataRow row;
-        for (int i = 0; i <= 9; i++)
-        {
-            row = table.NewRow();
-            row["item"] = "item " + i;
-            table.Rows.Add(row);
-        }
-
-        table.AcceptChanges();
-        return table;
-    }
-
-    private static void PrintValues(DataTable table, string label)
-    {
-        Debug.Log(label);
-        foreach (DataRow row in table.Rows)
-        {
-            foreach (DataColumn column in table.Columns)
+            List<string> points = row.Split(',').ToList();
+            Pose handPose = new Pose();
+            handPose.timestamp = int.Parse(points[0]);
+            points.RemoveAt(0);
+            if (points.Count != 63)
+                continue;
+            handPose.num_of_joints = points.Count / 3;
+            for (int i = 0; i < points.Count; i += 3)
             {
-                Debug.Log(row[column]);
+                Joint joint = new Joint();
+                joint.jointType = legends[i].Substring(0, 8);
+                joint.x = float.Parse(points[i].Trim());
+                joint.y = float.Parse(points[i + 1].Trim());
+                joint.z = float.Parse(points[i + 2].Trim());
+                handPose.joints.Add(joint);
             }
-            Debug.Log("");
+            handGes.poses.Add(handPose);
         }
+        handGes.SetBoundingBox();
+        handGes.SetCentroid();
+        handGes.NormalizeTimestamp();
+
+        return handGes;
     }
-    */
+
 }

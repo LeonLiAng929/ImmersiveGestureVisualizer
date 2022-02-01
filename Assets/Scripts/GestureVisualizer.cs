@@ -21,6 +21,8 @@ public class GestureVisualizer : MonoBehaviour
     [SerializeField]
     public GameObject skeletonModel;
     [SerializeField]
+    public GameObject handSkeletonModel;
+    [SerializeField]
     public GameObject clusterVisPrefab;
     [SerializeField]
     public Material tubeRendererMat;
@@ -134,6 +136,56 @@ public class GestureVisualizer : MonoBehaviour
         }
         Deploy.instance._DeployRig();
         //Initialize2DBoard();
+        InitialzeSampleHandGesture();
+    }
+
+    public void InitialzeSampleHandGesture()
+    {
+        Gesture handGesSample = new IO().LoadHandGesture("meh");
+        handGesSample.cluster = 0;
+        handGesSample.handGesture = true;
+        List<Gesture> gestures = new List<Gesture>();
+        
+        gestures.Add(handGesSample);
+        for (int j = 0; j < gestures[0].poses[0].num_of_joints; j++)
+        {
+            Color c = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
+            trajectoryColorSet.Add(c);
+        }
+        Color rand = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
+        clusterColorDic.Add(0, rand);
+
+        foreach (Gesture g in gestures)
+        {
+            // instantiate Gesture visualizations. A gesture visualziation has a trajectory view and a small-multiples view.
+            GameObject newGesVis = Instantiate(gesVisPrefab);
+            newGesVis.name = g.gestureType + g.id.ToString() + "-Trial" + g.trial.ToString();
+            newGesVis.GetComponent<GestureGameObject>().gesture = g;
+            newGesVis.GetComponent<GestureGameObject>().Initialize();
+            Transform newGesVisTrans = newGesVis.GetComponent<Transform>();
+
+            InstantiateTrajectory(newGesVis, g);
+            UpdateGlowingFieldColour(newGesVis);
+            // instantiate small-multiples 
+            List<Pose> sampled = g.Resample(5).poses;
+            float x = 0.7f;
+            int samplePoseIndex = 1;
+            foreach (Pose p in sampled)
+            {
+                GameObject skeleton = Instantiate(handSkeletonModel, newGesVisTrans.GetComponent<Transform>().Find("SmallMultiples").GetComponent<Transform>());
+                skeleton.name = g.gestureType + g.id.ToString() + "-Pose" + samplePoseIndex.ToString();
+                samplePoseIndex++;
+                Transform[] transforms = skeleton.GetComponentsInChildren<Transform>();
+                transforms[0].localPosition = new Vector3(0, 0, x);
+                x += 0.5f;
+                for (int i = 1; i < p.num_of_joints; i++)
+                {
+                    transforms[i].localPosition = p.joints[i - 1].ToVector();
+                }
+            }
+            newGesVisTrans.GetComponent<Transform>().Find("SmallMultiples").gameObject.SetActive(false);
+            //y = y + float.Parse("1.5");
+        }
     }
     public void Initialize2DBoard()
     {
@@ -339,7 +391,7 @@ public class GestureVisualizer : MonoBehaviour
                 Transform[] transforms = skeleton.GetComponentsInChildren<Transform>();
                 transforms[0].localPosition = new Vector3(0, 0, x);
                 x += 0.5f;
-                for (int i = 1; i < 21; i++)
+                for (int i = 1; i < p.num_of_joints; i++)
                 {
                     transforms[i].localPosition = p.joints[i - 1].ToVector();
                 }
@@ -701,7 +753,15 @@ public class GestureVisualizer : MonoBehaviour
 
         //instantiate skeletonReference for trajectories
         Transform trajTrans = traj.GetComponent<Transform>();
-        GameObject skeleton = Instantiate(skeletonModel, trajTrans);
+        GameObject skeleton;
+        if (g.handGesture)
+        {
+            skeleton = Instantiate(handSkeletonModel, trajTrans);
+        }
+        else
+        {
+            skeleton = Instantiate(skeletonModel, trajTrans);
+        }
         skeleton.SetActive(true);
         skeleton.name = "Skeleton";
         foreach (MeshRenderer mr in skeleton.GetComponentsInChildren<MeshRenderer>())

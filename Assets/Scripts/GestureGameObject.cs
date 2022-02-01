@@ -30,6 +30,7 @@ public class GestureGameObject : MonoBehaviour
     public GameObject arrow;
     int rotate = 0;
     int currPoseIndex = 0;
+    private int jointCount;
     // Update is called once per frame
 
     // a skeleton to link the animation and the slidimation with the small-multiples
@@ -46,7 +47,8 @@ public class GestureGameObject : MonoBehaviour
             timeIndicator.name = "TimeIndicator";
             Transform[] transforms = timeIndicator.GetComponentsInChildren<Transform>();
             transforms[0].localPosition = new Vector3(0, 0, 0.7f);
-            for (int i = 1; i < 21; i++)
+            jointCount = gesture.poses[0].num_of_joints;
+            for (int i = 1; i < jointCount; i++)
             {
                 transforms[i].localPosition = gesture.poses[0].joints[i - 1].ToVector();
             }
@@ -219,7 +221,7 @@ public class GestureGameObject : MonoBehaviour
 
         Transform[] transforms= GetComponent<Transform>().Find("Trajectory").Find("Skeleton").GetComponentsInChildren<Transform>();
         GameObject multiples = GetComponent<Transform>().Find("SmallMultiples").gameObject;
-        Transform[] timeIndicatorTrans = new Transform[21];
+        Transform[] timeIndicatorTrans = new Transform[jointCount];
         if (gameObject.name != "AverageGesture")
         {
             timeIndicatorTrans = timeIndicator.GetComponentsInChildren<Transform>();
@@ -298,12 +300,12 @@ public class GestureGameObject : MonoBehaviour
         GameObject skeleton = gameObject.GetComponentInChildren<TrajectoryTR>().skeletonRef;
         Transform[] transforms = skeleton.GetComponentsInChildren<Transform>();
 
-        Transform[] timeIndicatorTrans = new Transform[21];
+        Transform[] timeIndicatorTrans = new Transform[jointCount];
         if (gameObject.name != "AverageGesture")
         {
             timeIndicatorTrans = timeIndicator.GetComponentsInChildren<Transform>();
         }
-        for (int i = 1; i < 21; i++)
+        for (int i = 1; i < jointCount; i++)
         {
             transforms[i].localPosition = gesture.poses[currPoseIndex].joints[i - 1].ToVector();
             double distance = gesture.poses[currPoseIndex].timestamp / gesture.poses[gesture.poses.Count - 1].timestamp * 2.0f;
