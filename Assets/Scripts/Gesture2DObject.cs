@@ -16,6 +16,7 @@ public class Gesture2DObject : MonoBehaviour
     public GameObject ComparisonIndicator;
     public TextMesh GesInfo;
     public GameObject arrow;
+    
     private Transform preview = null;
     
     public XRSimpleInteractable xRSimpleInteractable { get; private set; }

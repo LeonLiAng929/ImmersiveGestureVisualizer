@@ -72,6 +72,7 @@
     <Compile Include="Assets\TubeRenderer\Examples\Assets\Starfish.cs" />
     <Compile Include="Assets\TubeRenderer\Examples\Assets\Skin.cs" />
     <Compile Include="Assets\Scripts\Features\StackingHeatMap.cs" />
+    <Compile Include="Assets\Scripts\ShowHideBoardContents.cs" />
     <Compile Include="Assets\Scripts\Features\DisplayMap.cs" />
     <Compile Include="Assets\TubeRenderer\Examples\Assets\Shared\ExampleHelpers.cs" />
     <Compile Include="Assets\Scripts\GestureTag.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="Assets\Scripts\Features\MoveGesture.cs" />
     <Compile Include="Assets\Scripts\Features\ActionSwitcher.cs" />
     <Compile Include="Assets\Scripts\Map.cs" />
+    <Compile Include="Assets\Scripts\Delete2DBoard.cs" />
     <Compile Include="Assets\TubeRenderer\Examples\Assets\Digestion.cs" />
     <Compile Include="Assets\Scripts\XRTag.cs" />
     <Compile Include="Assets\Scripts\GlowingField.cs" />
@@ -97,6 +99,7 @@
     <Compile Include="Assets\Scripts\GestureAnalyser.cs" />
     <Compile Include="Assets\TubeRenderer\Examples\Assets\Slide.cs" />
     <Compile Include="Assets\Scripts\Extension.cs" />
+    <Compile Include="Assets\Scripts\ClusteringRationales.cs" />
     <Compile Include="Assets\Scripts\Features\NextRationale.cs" />
     <Compile Include="Assets\Scripts\Features\ResumeFromComparison.cs" />
     <Compile Include="Assets\Scripts\SummonMap.cs" />
@@ -114,6 +117,7 @@
     <Compile Include="Assets\Scripts\TestCreateObjectsInCircle.cs" />
     <Compile Include="Assets\Scripts\Features\CancelSearch.cs" />
     <Compile Include="Assets\Scripts\Features\LookAtMe.cs" />
+    <Compile Include="Assets\Scripts\BoardControl.cs" />
     <Compile Include="Assets\Scripts\Obsolete\DBA.cs" />
     <Compile Include="Assets\Scripts\Features\PrevRationale.cs" />
     <Compile Include="Assets\VR Beginner\Scripts\Gameplay\HandPrefab.cs" />
@@ -131,10 +135,7 @@
     <Compile Include="Assets\Scripts\Features\ShowConnection.cs" />
     <Compile Include="Assets\Scripts\TesttingScript\pressed.cs" />
     <Compile Include="Assets\Scripts\PlayerIconTracing.cs" />
-    <Compile Include="Assets\Scripts\BoardControl.cs" />
-    <Compile Include="Assets\Scripts\ClusteringRationales.cs" />
-    <Compile Include="Assets\Scripts\Delete2DBoard.cs" />
-    <Compile Include="Assets\Scripts\ShowHideBoardContents.cs" />
+    <Compile Include="Assets\Scripts\BoardSnap.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Resources\7\crouch-3.xml" />

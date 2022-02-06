@@ -2604,7 +2604,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8676b2c36c12c4143bdc65e81c72bdc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offsetY: 0.15
+  offsetY: 0.1
   focus: 1
   tagSize: {x: 0.05, y: 0.05, z: 0.05}
   featuretagPrefab: {fileID: 7504907593663313336, guid: 8331cec399829f349b46317a5f271210,
@@ -3331,7 +3331,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8676b2c36c12c4143bdc65e81c72bdc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offsetY: 0.15
+  offsetY: 0.1
   focus: 1
   tagSize: {x: 0.05, y: 0.05, z: 0.05}
   featuretagPrefab: {fileID: 7504907593663313336, guid: 8331cec399829f349b46317a5f271210,
@@ -3532,7 +3532,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 272186280}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Options
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4655,7 +4655,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8676b2c36c12c4143bdc65e81c72bdc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offsetY: 0.15
+  offsetY: 0.1
   focus: 1
   tagSize: {x: 0.05, y: 0.05, z: 0.05}
   featuretagPrefab: {fileID: 7504907593663313336, guid: 8331cec399829f349b46317a5f271210,
@@ -7150,7 +7150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8676b2c36c12c4143bdc65e81c72bdc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offsetY: 0.15
+  offsetY: 0.1
   focus: 1
   tagSize: {x: 0.05, y: 0.05, z: 0.05}
   featuretagPrefab: {fileID: 7504907593663313336, guid: 8331cec399829f349b46317a5f271210,
@@ -8343,7 +8343,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8676b2c36c12c4143bdc65e81c72bdc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offsetY: 0.15
+  offsetY: 0.1
   focus: 1
   tagSize: {x: 0.05, y: 0.05, z: 0.05}
   featuretagPrefab: {fileID: 7504907593663313336, guid: 8331cec399829f349b46317a5f271210,
@@ -8733,7 +8733,7 @@ GameObject:
   - component: {fileID: 901543390}
   - component: {fileID: 901543389}
   - component: {fileID: 901543388}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Show/Hide Board
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11014,7 +11014,8 @@ GameObject:
   - component: {fileID: 1116910884}
   - component: {fileID: 1116910883}
   - component: {fileID: 1116910882}
-  m_Layer: 0
+  - component: {fileID: 1116910885}
+  m_Layer: 7
   m_Name: GlowingField
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11096,6 +11097,23 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1116910880}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1116910885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1116910880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sharedProfile: {fileID: 11400000, guid: 66c33502bf4ccfa4ba229d8a41012bbb, type: 2}
+  isGlobal: 0
+  blendDistance: 0
+  weight: 1
+  priority: 0
 --- !u!1 &1137933222
 GameObject:
   m_ObjectHideFlags: 0
@@ -11804,7 +11822,8 @@ GameObject:
   - component: {fileID: 1204643443}
   - component: {fileID: 1204643442}
   - component: {fileID: 1204643441}
-  m_Layer: 0
+  - component: {fileID: 1204643445}
+  m_Layer: 7
   m_Name: Origin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11822,7 +11841,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &1204643442
@@ -11888,6 +11907,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1204643445
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1204643440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sharedProfile: {fileID: 11400000, guid: 66c33502bf4ccfa4ba229d8a41012bbb, type: 2}
+  isGlobal: 0
+  blendDistance: 0
+  weight: 1
+  priority: 0
 --- !u!4 &1204946585 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 474934590818528309, guid: 320b1c2af77554f99a1658df4a6d3d5c,
@@ -12106,7 +12142,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8676b2c36c12c4143bdc65e81c72bdc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offsetY: 0.15
+  offsetY: 0.1
   focus: 1
   tagSize: {x: 0.05, y: 0.05, z: 0.05}
   featuretagPrefab: {fileID: 7504907593663313336, guid: 8331cec399829f349b46317a5f271210,
@@ -12729,7 +12765,7 @@ GameObject:
   - component: {fileID: 1288066398}
   - component: {fileID: 1288066397}
   - component: {fileID: 1288066396}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: DeleteBoard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13579,7 +13615,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8676b2c36c12c4143bdc65e81c72bdc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offsetY: 0.15
+  offsetY: 0.1
   focus: 1
   tagSize: {x: 0.05, y: 0.05, z: 0.05}
   featuretagPrefab: {fileID: 7504907593663313336, guid: 8331cec399829f349b46317a5f271210,
@@ -16231,7 +16267,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8676b2c36c12c4143bdc65e81c72bdc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offsetY: 0.15
+  offsetY: 0.1
   focus: 1
   tagSize: {x: 0.05, y: 0.05, z: 0.05}
   featuretagPrefab: {fileID: 7504907593663313336, guid: 8331cec399829f349b46317a5f271210,
@@ -17760,7 +17796,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8676b2c36c12c4143bdc65e81c72bdc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offsetY: 0.15
+  offsetY: 0.1
   focus: 1
   tagSize: {x: 0.05, y: 0.05, z: 0.05}
   featuretagPrefab: {fileID: 7504907593663313336, guid: 8331cec399829f349b46317a5f271210,
@@ -18483,9 +18519,11 @@ GameObject:
   - component: {fileID: 1714456095}
   - component: {fileID: 1714456094}
   - component: {fileID: 1714456097}
-  m_Layer: 7
+  - component: {fileID: 1714456098}
+  - component: {fileID: 1714456099}
+  m_Layer: 0
   m_Name: Grab
-  m_TagString: Untagged
+  m_TagString: BoardHandle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -18582,6 +18620,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boardInfo: {fileID: 218876058}
   ControlObjects: {fileID: 272186279}
+--- !u!114 &1714456098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1714456092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9b169da9584f4640bf1067451d28947, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!54 &1714456099
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1714456092}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!1 &1714739113
 GameObject:
   m_ObjectHideFlags: 0
@@ -19267,7 +19333,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8676b2c36c12c4143bdc65e81c72bdc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offsetY: 0.15
+  offsetY: 0.1
   focus: 1
   tagSize: {x: 0.05, y: 0.05, z: 0.05}
   featuretagPrefab: {fileID: 7504907593663313336, guid: 8331cec399829f349b46317a5f271210,
@@ -20044,7 +20110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8676b2c36c12c4143bdc65e81c72bdc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offsetY: 0.15
+  offsetY: 0.1
   focus: 1
   tagSize: {x: 0.05, y: 0.05, z: 0.05}
   featuretagPrefab: {fileID: 7504907593663313336, guid: 8331cec399829f349b46317a5f271210,
@@ -21769,7 +21835,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8676b2c36c12c4143bdc65e81c72bdc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offsetY: 0.15
+  offsetY: 0.1
   focus: 1
   tagSize: {x: 0.05, y: 0.05, z: 0.05}
   featuretagPrefab: {fileID: 7504907593663313336, guid: 8331cec399829f349b46317a5f271210,

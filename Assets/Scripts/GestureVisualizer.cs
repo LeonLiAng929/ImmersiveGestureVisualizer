@@ -132,6 +132,7 @@ public class GestureVisualizer : MonoBehaviour
         {
             leftController = leftHandDevices[0];
         }
+        //InitializeClusterColor();
         Deploy.instance._DeployRig();
         //Initialize2DBoard();
     }
@@ -177,7 +178,9 @@ public class GestureVisualizer : MonoBehaviour
         }
         for(int i = 0; i < uiRefList.Count; i++)
         {
-            uiRefList[i].GetComponent<Gesture2DObject>().gGO = gestureGameObjs[i];
+            Gesture2DObject uiRef = uiRefList[i].GetComponent<Gesture2DObject>();
+            uiRef.gGO = gestureGameObjs[i];
+         
             uiLinkDic.Add(gestureGameObjs[i].gesture.id.ToString() + '-' + gestureGameObjs[i].gesture.trial, i);
             uiRefList[i].GetComponent<MeshRenderer>().material.color = GetColorByCluster(gestureGameObjs[i].gesture.cluster);
             gestureGameObjs[i].uiRef = uiRefList[i].GetComponent<Gesture2DObject>();
@@ -252,6 +255,21 @@ public class GestureVisualizer : MonoBehaviour
         }
     }
 
+    public void InitializeClusterColor()
+    {
+        for (int i = 0; i < k; i++)
+        {
+            if (!clusterColorDic.ContainsKey(i))
+            {
+                Color rand = Random.ColorHSV(0f, 1f, 1f, 1f, 1f, 1f);
+                while (clusterColorDic.ContainsValue(rand))
+                {
+                    rand = Random.ColorHSV(0f, 1f, 1f, 1f, 0.25f, 1f);
+                }
+                clusterColorDic.Add(i, rand);
+            }
+        }
+    }
     public void InitializeVisualization()
     {
         skeletonModel.SetActive(true);
@@ -282,10 +300,9 @@ public class GestureVisualizer : MonoBehaviour
             clusterTrans.gameObject.GetComponentInChildren<ClusterGameObject>().clusterID = pair.Value.clusterID;
 
             // initialize a random color for each cluster and the gestures belonging to it.
-            Color rand = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
-            clusterColorDic.Add(pair.Key, rand);
-            Color temp = rand;
-            temp.a = (float)0.5;
+            InitializeClusterColor();           
+            Color temp = clusterColorDic[pair.Key];
+            temp.a = (float)0.3;
             clusterTrans.gameObject.GetComponent<MeshRenderer>().material.color = temp;
             clustersObjDic.Add(pair.Key, newClusterObj);
         }
@@ -557,9 +574,7 @@ public class GestureVisualizer : MonoBehaviour
         }
         
         clustersObjDic.Clear();
-        clusterColorDic.Clear();
         GestureAnalyser.instance.GetClusters().Clear();
-
     }
     private void Update()
     {
