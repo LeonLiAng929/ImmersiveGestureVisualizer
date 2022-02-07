@@ -159,6 +159,7 @@ public class GestureVisualizer : MonoBehaviour
         {
             // instantiate Gesture visualizations. A gesture visualziation has a trajectory view and a small-multiples view.
             GameObject newGesVis = Instantiate(gesVisPrefab);
+            newGesVis.transform.localPosition += newGesVis.transform.forward;
             newGesVis.name = g.gestureType + g.id.ToString() + "-Trial" + g.trial.ToString();
             newGesVis.GetComponent<GestureGameObject>().gesture = g;
             newGesVis.GetComponent<GestureGameObject>().Initialize();
@@ -178,9 +179,10 @@ public class GestureVisualizer : MonoBehaviour
                 Transform[] transforms = skeleton.GetComponentsInChildren<Transform>();
                 transforms[0].localPosition = new Vector3(0, 0, x);
                 x += 0.5f;
-                for (int i = 1; i < p.num_of_joints; i++)
+                for (int i = 1; i < p.num_of_joints+1; i++)
                 {
                     transforms[i].localPosition = p.joints[i - 1].ToVector();
+                    Debug.Log(i - 1);
                 }
             }
             newGesVisTrans.GetComponent<Transform>().Find("SmallMultiples").gameObject.SetActive(false);
@@ -232,7 +234,7 @@ public class GestureVisualizer : MonoBehaviour
             uiRefList[i].GetComponent<Gesture2DObject>().gGO = gestureGameObjs[i];
             uiLinkDic.Add(gestureGameObjs[i].gesture.id.ToString() + '-' + gestureGameObjs[i].gesture.trial, i);
             uiRefList[i].GetComponent<MeshRenderer>().material.color = GetColorByCluster(gestureGameObjs[i].gesture.cluster);
-            gestureGameObjs[i].uiRef = uiRefList[i].GetComponent<Gesture2DObject>();
+            //gestureGameObjs[i].uiRef = uiRefList[i].GetComponent<Gesture2DObject>();
             uiRefList[i].GetComponent<Gesture2DObject>().GesInfo.text = gestureGameObjs[i].gesture.id.ToString() + "-" + gestureGameObjs[i].gesture.trial;
         }
         startup = false;
@@ -260,7 +262,7 @@ public class GestureVisualizer : MonoBehaviour
             Gesture2DObject uiref = uiRefList[uiLinkDic[key]].GetComponent<Gesture2DObject>();
             uiref.gGO = gestureGameObjs[i];
             uiref.gameObject.GetComponent<MeshRenderer>().material.color = GetColorByCluster(gestureGameObjs[i].gesture.cluster);
-            gestureGameObjs[i].uiRef = uiref;
+            //gestureGameObjs[i].uiRef = uiref;
             uiref.GesInfo.text = gestureGameObjs[i].gesture.id.ToString() + "-" + gestureGameObjs[i].gesture.trial;
         }
         // re-link gestures to old boards
@@ -391,7 +393,7 @@ public class GestureVisualizer : MonoBehaviour
                 Transform[] transforms = skeleton.GetComponentsInChildren<Transform>();
                 transforms[0].localPosition = new Vector3(0, 0, x);
                 x += 0.5f;
-                for (int i = 1; i < p.num_of_joints; i++)
+                for (int i = 1; i < p.num_of_joints+1; i++)
                 {
                     transforms[i].localPosition = p.joints[i - 1].ToVector();
                 }

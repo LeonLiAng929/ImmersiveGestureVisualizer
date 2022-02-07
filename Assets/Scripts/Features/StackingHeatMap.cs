@@ -32,7 +32,7 @@ public class StackingHeatMap : MonoBehaviour
             on = true;
             foreach (GameObject obj in stackedGes)
             {
-                obj.GetComponent<GestureGameObject>().uiRef.HeatmapIndicator.SetActive(true);
+                //obj.GetComponent<GestureGameObject>().uiRef.HeatmapIndicator.SetActive(true);
                 foreach (MeshRenderer mr in obj.transform.Find("Trajectory").Find("LineRanderers").GetComponentsInChildren<MeshRenderer>(true))
                 {
                     Color matColor = mr.material.color;
@@ -49,7 +49,7 @@ public class StackingHeatMap : MonoBehaviour
             on = false;
             foreach (GameObject obj in stackedGes)
             {
-                obj.GetComponent<GestureGameObject>().uiRef.HeatmapIndicator.SetActive(false);
+                //obj.GetComponent<GestureGameObject>().uiRef.HeatmapIndicator.SetActive(false);
                 foreach (MeshRenderer mr in obj.transform.Find("Trajectory").Find("LineRanderers").GetComponentsInChildren<MeshRenderer>(true))
                 {
                     Color matColor = mr.material.color;

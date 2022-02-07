@@ -123,6 +123,7 @@
     <Compile Include="Assets\VR Beginner\Scripts\Gameplay\HandPrefab.cs" />
     <Compile Include="Assets\Scripts\Features\Deploy.cs" />
     <Compile Include="Assets\Scripts\Gesture2DObject.cs" />
+    <Compile Include="Assets\Scripts\DrawHandSkeleton.cs" />
     <Compile Include="Assets\Scripts\Features\DisplayTrajectoryFilter.cs" />
     <Compile Include="Assets\Scripts\Features\IncrementCluster.cs" />
     <Compile Include="Assets\TubeRenderer\Runtime\Internals\RenderPipelineHelpers.cs" />
@@ -135,7 +136,6 @@
     <Compile Include="Assets\Scripts\Features\ShowConnection.cs" />
     <Compile Include="Assets\Scripts\TesttingScript\pressed.cs" />
     <Compile Include="Assets\Scripts\PlayerIconTracing.cs" />
-    <Compile Include="Assets\Scripts\DrawHandSkeleton.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Resources\7\crouch-3.xml" />
