@@ -356,8 +356,10 @@ public class GestureVisualizer : MonoBehaviour
                 Transform[] transforms = skeleton.GetComponentsInChildren<Transform>();
                 transforms[0].localPosition = new Vector3(0, 0, x);
                 x += 0.5f;
-                for (int i = 1; i < 21; i++)
+                
+                for (int i = 1; i < p.num_of_joints + 1; i++)
                 {
+                    
                     transforms[i].localPosition = p.joints[i - 1].ToVector();
                 }
             }
