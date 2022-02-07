@@ -41,89 +41,109 @@ public class DrawHandSkeleton : MonoBehaviour
 
     void UpdateSkeleton()
     {
-        //update neck
-        // Debug.Log(trans.Find("Head"));
-        Vector3[] neck = { trans.Find("Head").position, trans.Find("ShoulderCenter").position };
-        lineRenderers[0].SetPositions(neck);
-        //update arms
-        Vector3[] leftarm = { trans.Find("ShoulderCenter").position,
-            trans.Find("ShoulderLeft").position,
-            trans.Find("ElbowLeft").position,
-            trans.Find("WristLeft").position,
-            trans.Find("HandLeft").position};
+        //update palm
 
-        Vector3[] rightarm = { trans.Find("ShoulderCenter").position,
-            trans.Find("ShoulderRight").position,
-            trans.Find("ElbowRight").position,
-            trans.Find("WristRight").position,
-            trans.Find("HandRight").position};
+        Vector3[] palm = { trans.Find("17").position,
+            trans.Find("13").position,
+            trans.Find("9").position,
+            trans.Find("5").position,
+            trans.Find("2").position};
+        lineRenderers[0].SetPositions(palm);
+        //update Thumb
+        Vector3[] thumb = { trans.Find("4").position,
+            trans.Find("3").position,
+            trans.Find("2").position,
+            trans.Find("1").position,
+            trans.Find("0").position};
 
-        lineRenderers[1].SetPositions(leftarm);
-        lineRenderers[2].SetPositions(rightarm);
+        lineRenderers[1].SetPositions(thumb);
 
-        // update spine
-        Vector3[] spine = { trans.Find("ShoulderCenter").position,
-            trans.Find("Spine").position,
-            trans.Find("HipCenter").position};
-        lineRenderers[3].SetPositions(spine);
 
-        //update legs
-        Vector3[] leftleg = { trans.Find("HipCenter").position,
-            trans.Find("HipLeft").position,
-            trans.Find("KneeLeft").position,
-            trans.Find("AnkleLeft").position,
-            trans.Find("FootLeft").position};
+        // update index
+        Vector3[] index = { trans.Find("5").position,
+            trans.Find("6").position,
+            trans.Find("7").position,
+            trans.Find("8").position
+        };
+        lineRenderers[2].SetPositions(index); 
 
-        Vector3[] rightleg = { trans.Find("HipCenter").position,
-            trans.Find("HipRight").position,
-            trans.Find("KneeRight").position,
-            trans.Find("AnkleRight").position,
-            trans.Find("FootRight").position};
-        lineRenderers[4].SetPositions(leftleg);
-        lineRenderers[5].SetPositions(rightleg);
+        //update middle
+        Vector3[] middle = { trans.Find("9").position,
+            trans.Find("10").position,
+            trans.Find("11").position,
+            trans.Find("12").position};
+        lineRenderers[3].SetPositions(middle);
+        //update ring
+        Vector3[] ring = { trans.Find("13").position,
+            trans.Find("14").position,
+            trans.Find("15").position,
+            trans.Find("16").position};
+
+
+        lineRenderers[4].SetPositions(ring);
+
+        //update little
+        Vector3[] little = { trans.Find("0").position,
+            trans.Find("17").position,
+            trans.Find("18").position,
+            trans.Find("19").position,
+            trans.Find("20").position};
+
+
+        lineRenderers[5].SetPositions(little);
     }
 
     void DrawHumanSkeleton()
     {
-        //draw neck
-       // Debug.Log(trans.Find("Head"));
-        Vector3[] a = { trans.Find("Head").position, trans.Find("ShoulderCenter").position};
-        lineRenderers.Add(Draw(a));
-        //draw arms
-        Vector3[] leftarm = { trans.Find("ShoulderCenter").position,
-            trans.Find("ShoulderLeft").position,
-            trans.Find("ElbowLeft").position,
-            trans.Find("WristLeft").position,
-            trans.Find("HandLeft").position};
+        //draw palm
+       
+        Vector3[] palm = { trans.Find("17").position,
+            trans.Find("13").position,
+            trans.Find("9").position,
+            trans.Find("5").position,
+            trans.Find("2").position};
+        lineRenderers.Add(Draw(palm));
+        //draw Thumb
+        Vector3[] thumb = { trans.Find("4").position,
+            trans.Find("3").position,
+            trans.Find("2").position,
+            trans.Find("1").position,
+            trans.Find("0").position}; 
 
-        Vector3[] rightarm = { trans.Find("ShoulderCenter").position,
-            trans.Find("ShoulderRight").position,
-            trans.Find("ElbowRight").position,
-            trans.Find("WristRight").position,
-            trans.Find("HandRight").position};
+        lineRenderers.Add(Draw(thumb));
+    
 
-        lineRenderers.Add(Draw(leftarm));
-        lineRenderers.Add(Draw(rightarm));
+        // draw index
+        Vector3[] index = { trans.Find("5").position,
+            trans.Find("6").position,
+            trans.Find("7").position,
+            trans.Find("8").position
+        };
+        lineRenderers.Add(Draw(index));
 
-        // draw spine
-        Vector3[] spine = { trans.Find("ShoulderCenter").position,
-            trans.Find("Spine").position,
-            trans.Find("HipCenter").position};
-        lineRenderers.Add(Draw(spine));
+        //draw middle
+        Vector3[] middle = { trans.Find("9").position,
+            trans.Find("10").position,
+            trans.Find("11").position,
+            trans.Find("12").position};
+        lineRenderers.Add(Draw(middle));
+        //draw ring
+        Vector3[] ring = { trans.Find("13").position,
+            trans.Find("14").position,
+            trans.Find("15").position,
+            trans.Find("16").position};
 
-        //draw legs
-        Vector3[] leftleg = { trans.Find("HipCenter").position,
-            trans.Find("HipLeft").position,
-            trans.Find("KneeLeft").position,
-            trans.Find("AnkleLeft").position,
-            trans.Find("FootLeft").position};
+        
+        lineRenderers.Add(Draw(ring));
 
-        Vector3[] rightleg = { trans.Find("HipCenter").position,
-            trans.Find("HipRight").position,
-            trans.Find("KneeRight").position,
-            trans.Find("AnkleRight").position,
-            trans.Find("FootRight").position};
-        lineRenderers.Add(Draw(leftleg));
-        lineRenderers.Add(Draw(rightleg));
+        //draw little
+        Vector3[] little = { trans.Find("0").position,
+            trans.Find("17").position,
+            trans.Find("18").position,
+            trans.Find("19").position,
+            trans.Find("20").position};
+
+
+        lineRenderers.Add(Draw(little));
     }
 }

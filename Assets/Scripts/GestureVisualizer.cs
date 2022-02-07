@@ -182,7 +182,6 @@ public class GestureVisualizer : MonoBehaviour
                 for (int i = 1; i < p.num_of_joints+1; i++)
                 {
                     transforms[i].localPosition = p.joints[i - 1].ToVector();
-                    Debug.Log(i - 1);
                 }
             }
             newGesVisTrans.GetComponent<Transform>().Find("SmallMultiples").gameObject.SetActive(false);

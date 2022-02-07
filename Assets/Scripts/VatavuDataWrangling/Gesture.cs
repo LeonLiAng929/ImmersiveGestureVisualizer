@@ -131,6 +131,7 @@ public class Gesture
                 // interpolate two body postures
                 double t = I / timeDiff;
                 Pose posture = new Pose();
+                posture.num_of_joints = poses[i].joints.Count;
                 for (int j = 0; j < poses[i].joints.Count; j++)
                     posture.joints.Add(new Joint(float.Parse(((1 - t) * set[set.Count - 1].joints[j].x + t * poses[i].joints[j].x).ToString()),
                         float.Parse(((1 - t) * set[set.Count - 1].joints[j].y + t * poses[i].joints[j].y).ToString()),

@@ -1683,7 +1683,7 @@ GameObject:
   - component: {fileID: 65391398}
   - component: {fileID: 65391397}
   m_Layer: 0
-  m_Name: Joint(0)
+  m_Name: 0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4011,7 +4011,7 @@ GameObject:
   - component: {fileID: 265015529}
   - component: {fileID: 265015528}
   m_Layer: 0
-  m_Name: Joint (4)
+  m_Name: 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5924,7 +5924,7 @@ GameObject:
   - component: {fileID: 446619980}
   - component: {fileID: 446619979}
   m_Layer: 0
-  m_Name: Joint (18)
+  m_Name: 18
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6541,7 +6541,7 @@ GameObject:
   - component: {fileID: 503043255}
   - component: {fileID: 503043254}
   m_Layer: 0
-  m_Name: Joint (7)
+  m_Name: 7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7895,7 +7895,7 @@ GameObject:
   - component: {fileID: 599941985}
   - component: {fileID: 599941984}
   m_Layer: 0
-  m_Name: Joint (10)
+  m_Name: 10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8222,7 +8222,7 @@ GameObject:
   - component: {fileID: 631951958}
   - component: {fileID: 631951957}
   m_Layer: 0
-  m_Name: Joint (3)
+  m_Name: 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8528,7 +8528,7 @@ GameObject:
   - component: {fileID: 647564457}
   - component: {fileID: 647564456}
   m_Layer: 0
-  m_Name: Joint (11)
+  m_Name: 11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9381,9 +9381,9 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 727359853}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8be09b91d044d0a4bad5157fc048782c, type: 3}
+  m_Script: {fileID: 11500000, guid: 9d32a01cfc0df6d4ca5df001ba276caf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   lr: {fileID: 153601442700774210, guid: 665bb9d5fb53b43469595ad86706eb0a, type: 3}
@@ -10820,7 +10820,7 @@ GameObject:
   - component: {fileID: 912744905}
   - component: {fileID: 912744904}
   m_Layer: 0
-  m_Name: Joint (9)
+  m_Name: 9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12491,7 +12491,7 @@ GameObject:
   - component: {fileID: 1058853186}
   - component: {fileID: 1058853185}
   m_Layer: 0
-  m_Name: Joint (1)
+  m_Name: 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13303,7 +13303,7 @@ GameObject:
   - component: {fileID: 1140229810}
   - component: {fileID: 1140229809}
   m_Layer: 0
-  m_Name: Joint (5)
+  m_Name: 5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14551,7 +14551,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cfef8df51240c84da393475911772db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiRef: {fileID: 0}
   rightController: {fileID: 1378976130}
   xRSimpleInteractable: {fileID: 1261460699}
   selected: 0
@@ -17608,7 +17607,7 @@ GameObject:
   - component: {fileID: 1502658768}
   - component: {fileID: 1502658767}
   m_Layer: 0
-  m_Name: Joint (17)
+  m_Name: 17
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17798,7 +17797,7 @@ GameObject:
   - component: {fileID: 1507146309}
   - component: {fileID: 1507146308}
   m_Layer: 0
-  m_Name: Joint (15)
+  m_Name: 15
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20013,7 +20012,7 @@ GameObject:
   - component: {fileID: 1623224605}
   - component: {fileID: 1623224604}
   m_Layer: 0
-  m_Name: Joint (19)
+  m_Name: 19
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21395,7 +21394,7 @@ GameObject:
   - component: {fileID: 1697555299}
   - component: {fileID: 1697555298}
   m_Layer: 0
-  m_Name: Joint (20)
+  m_Name: 20
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21496,7 +21495,7 @@ GameObject:
   - component: {fileID: 1706423496}
   - component: {fileID: 1706423495}
   m_Layer: 0
-  m_Name: Joint (16)
+  m_Name: 16
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21591,7 +21590,7 @@ GameObject:
   - component: {fileID: 1707995124}
   - component: {fileID: 1707995123}
   m_Layer: 0
-  m_Name: Joint (8)
+  m_Name: 8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -22728,7 +22727,7 @@ GameObject:
   - component: {fileID: 1774612027}
   - component: {fileID: 1774612026}
   m_Layer: 0
-  m_Name: Joint (2)
+  m_Name: 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23149,7 +23148,7 @@ GameObject:
   - component: {fileID: 1799713763}
   - component: {fileID: 1799713762}
   m_Layer: 0
-  m_Name: Joint (13)
+  m_Name: 13
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24086,7 +24085,7 @@ GameObject:
   - component: {fileID: 1869230420}
   - component: {fileID: 1869230419}
   m_Layer: 0
-  m_Name: Joint (6)
+  m_Name: 6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24569,7 +24568,7 @@ GameObject:
   - component: {fileID: 1876411599}
   - component: {fileID: 1876411598}
   m_Layer: 0
-  m_Name: Joint (12)
+  m_Name: 12
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27631,7 +27630,7 @@ GameObject:
   - component: {fileID: 2112871814}
   - component: {fileID: 2112871813}
   m_Layer: 0
-  m_Name: Joint (14)
+  m_Name: 14
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

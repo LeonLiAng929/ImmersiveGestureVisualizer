@@ -43,7 +43,14 @@ public class GestureGameObject : MonoBehaviour
         if (gameObject.name != "AverageGesture" && gameObject.name != "Gesture")
         {
             GameObject multiples = GetComponent<Transform>().Find("SmallMultiples").gameObject;
-            timeIndicator = Instantiate(GestureVisualizer.instance.skeletonModel, multiples.transform);
+            if (gesture.handGesture)
+            {
+                timeIndicator = Instantiate(GestureVisualizer.instance.handSkeletonModel, multiples.transform);
+            }
+            else
+            {
+                timeIndicator = Instantiate(GestureVisualizer.instance.skeletonModel, multiples.transform);
+            }
             timeIndicator.name = "TimeIndicator";
             Transform[] transforms = timeIndicator.GetComponentsInChildren<Transform>();
             transforms[0].localPosition = new Vector3(0, 0, 0.7f);
