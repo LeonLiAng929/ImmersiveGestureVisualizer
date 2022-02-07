@@ -2,14 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine;
+using System;
 
 public class BoardSnap : MonoBehaviour
 {
     protected XRGrabInteractable xRGrab;
+    public GameObject SnapOptions;
+    public Vector2 lengthByWidth = new Vector2(); //e.g. (2,3) means the board is 2f of length and 3f of width;
     // Start is called before the first frame update
     void Start()
     {
         xRGrab = transform.parent.gameObject.GetComponent<XRGrabInteractable>();
+        SnapOptions.SetActive(false);
+        SetBoundingBox();
     }
 
     private void OnCollisionEnter(Collision other)
@@ -26,6 +31,41 @@ public class BoardSnap : MonoBehaviour
     
     public void DisplaySnapOptions()
     {
-        Debug.Log("haha");
+        SnapOptions.SetActive(true);
+    }
+
+    public void HideSnapOptions()
+    {
+        SnapOptions.SetActive(false);
+    }
+
+    public void SetBoundingBox()
+    {
+        float minX = float.PositiveInfinity;
+        float maxX = float.NegativeInfinity;
+        float minY = float.PositiveInfinity;
+        float maxY = float.NegativeInfinity;
+
+        Gesture2DObject[] uiRefList = transform.parent.Find("Contents").GetComponentsInChildren<Gesture2DObject>(true);
+        foreach (Gesture2DObject obj in uiRefList)
+        {
+            if (obj.transform.localPosition.x < minX)
+            {
+                minX = obj.transform.localPosition.x;
+            }
+            if (obj.transform.localPosition.x > maxX)
+            {
+                maxX = obj.transform.localPosition.x;
+            }
+            if (obj.transform.localPosition.y < minY)
+            {
+                minY = obj.transform.localPosition.y;
+            }
+            if (obj.transform.localPosition.y > maxY)
+            {
+                maxY = obj.transform.localPosition.y;
+            }
+        }
+        lengthByWidth = new Vector2(Math.Abs(maxX - minX), Math.Abs(maxY - minY));
     }
 }

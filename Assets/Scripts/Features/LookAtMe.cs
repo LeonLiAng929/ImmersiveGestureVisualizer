@@ -24,11 +24,11 @@ public class LookAtMe : MonoBehaviour
 
     public void OnHovered(HoverEnterEventArgs arg)
     {
-        gameObject.transform.parent.GetComponent<Revolving>().hovered = true;
+        //gameObject.transform.parent.GetComponent<Revolving>().hovered = true;
     }
 
     public void OnHoverExit(HoverExitEventArgs arg)
     {
-        gameObject.transform.parent.GetComponent<Revolving>().hovered = false;
+        //gameObject.transform.parent.GetComponent<Revolving>().hovered = false;
     }
 }

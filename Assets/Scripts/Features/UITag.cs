@@ -26,21 +26,17 @@ public class UITag : XRTag
         //simpleInteractable.firstHoverEntered.AddListener(OnHovered);
         //simpleInteractable.lastHoverExited.AddListener(OnHoverExit);
         textTag.SetActive(true);
+        textTag.transform.localPosition = new Vector3(-0.01f, 0.48f, 0);
+        textTag.transform.Rotate(new Vector3(0, 180, 0), Space.Self);
+
     }
     
 
     // Update is called once per frame
     void Update()
     {
-        if (focus)
-        {
-            textTag.transform.LookAt(user.position);
+        //textTag.transform.LookAt(Camera.main.transform, -1*textTag.transform.up);
 
-            Quaternion temp = textTag.transform.localRotation;
-            temp.y = 180;
-            textTag.transform.localRotation = temp;
-        }
-       
-        textTag.transform.position = gameObject.transform.position + new Vector3(0,offsetY,0);
+        //textTag.transform.localPosition = textTag.transform.up.normalized * offsetY;
     }
 }

@@ -32,12 +32,15 @@ public class StackingHeatMap : MonoBehaviour
             on = true;
             foreach (GameObject obj in stackedGes)
             {
-                obj.GetComponent<GestureGameObject>().uiRef.HeatmapIndicator.SetActive(true);
+                if(!obj.GetComponent<GestureGameObject>().averageGesture)
+                    obj.GetComponent<GestureGameObject>().uiRef.HeatmapIndicator.SetActive(true);
                 foreach (MeshRenderer mr in obj.transform.Find("Trajectory").Find("LineRanderers").GetComponentsInChildren<MeshRenderer>(true))
                 {
                     Color matColor = mr.material.color;
                     mr.material = HeatMapMat;
-                    mr.material.color = matColor;
+                    int clusterID = obj.GetComponent<GestureGameObject>().gesture.cluster;
+                    Color clusterColor = GestureVisualizer.instance.GetColorByCluster(clusterID);
+                    mr.material.color = clusterColor;
                     //mr.material.shader = Shader.Find("Custom/Overdraw");
                 }
             }
@@ -47,14 +50,19 @@ public class StackingHeatMap : MonoBehaviour
         else
         {
             on = false;
+            List<Color> colorSet = GestureVisualizer.instance.trajectoryColorSet;
             foreach (GameObject obj in stackedGes)
             {
-                obj.GetComponent<GestureGameObject>().uiRef.HeatmapIndicator.SetActive(false);
-                foreach (MeshRenderer mr in obj.transform.Find("Trajectory").Find("LineRanderers").GetComponentsInChildren<MeshRenderer>(true))
+                if (!obj.GetComponent<GestureGameObject>().averageGesture)
+                    obj.GetComponent<GestureGameObject>().uiRef.HeatmapIndicator.SetActive(false);
+                MeshRenderer[] mrs = obj.transform.Find("Trajectory").Find("LineRanderers").GetComponentsInChildren<MeshRenderer>(true);
+                
+                for(int i =0;i< mrs.Length;i++)
                 {
-                    Color matColor = mr.material.color;
-                    mr.material = RegularMat;
-                    mr.material.color = matColor;
+                    //Color matColor = mr.material.color;
+                    mrs[i].material = RegularMat;
+                    mrs[i].material.color = colorSet[i];
+                    
                     //mr.material.shader = Shader.Find("Standard");
                 }
             }

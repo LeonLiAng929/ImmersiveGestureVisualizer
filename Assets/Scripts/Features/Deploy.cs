@@ -72,7 +72,6 @@ public class Deploy : MonoBehaviour
         {
             XRRig.transform.localPosition = previousLocation;
             XRRig.transform.localRotation = Quaternion.Euler(0, 0, 0);
-            GestureVisualizer.instance.deploying = false;
             foreach (KeyValuePair<int, GameObject> pair in GestureVisualizer.instance.clustersObjDic)
             {
                 foreach(GestureGameObject gGO in pair.Value.GetComponentsInChildren<GestureGameObject>(true))
@@ -87,7 +86,6 @@ public class Deploy : MonoBehaviour
             previousLocation = XRRig.transform.localPosition;
             XRRig.transform.localPosition = new Vector3(0, 20, 0);
             XRRig.transform.localRotation = Quaternion.Euler(90, 0, 0);
-            GestureVisualizer.instance.deploying = true;
             foreach (KeyValuePair<int, GameObject> pair in GestureVisualizer.instance.clustersObjDic)
             {
                 foreach (GestureGameObject gGO in pair.Value.GetComponentsInChildren<GestureGameObject>(true))
@@ -103,7 +101,6 @@ public class Deploy : MonoBehaviour
     {
         XRRig.transform.localPosition = new Vector3(0, 20, 0);
         XRRig.transform.localRotation = Quaternion.Euler(90, 0, 0);
-        GestureVisualizer.instance.deploying = true;
         foreach (KeyValuePair<int, GameObject> pair in GestureVisualizer.instance.clustersObjDic)
         {
             foreach (GestureGameObject gGO in pair.Value.GetComponentsInChildren<GestureGameObject>(true))
@@ -114,4 +111,13 @@ public class Deploy : MonoBehaviour
         }
     }
   
+    public bool IsDeploying()
+    {
+        if (XRRig.transform.localEulerAngles.x == 90)
+        { return true; }
+        else
+        {
+           return false;
+        }
+    }
 }

@@ -10,12 +10,12 @@ public class Revolving : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        List<LookAtMe> uniqueFeatures = new List<LookAtMe>(gameObject.GetComponentsInChildren<LookAtMe>(true));
-        if (uniqueFeatures.Contains(gameObject.GetComponent<LookAtMe>()))
-            uniqueFeatures.Remove(gameObject.GetComponent<LookAtMe>());
-        LookAtMe confirm = null;
-        LookAtMe reject = null;
-        foreach(LookAtMe button in uniqueFeatures)
+        List<NewLookAt> uniqueFeatures = new List<NewLookAt>(gameObject.GetComponentsInChildren<NewLookAt>(true));
+        if (uniqueFeatures.Contains(gameObject.GetComponent<NewLookAt>()))
+            uniqueFeatures.Remove(gameObject.GetComponent<NewLookAt>());
+        NewLookAt confirm = null;
+        NewLookAt reject = null;
+        foreach(NewLookAt button in uniqueFeatures)
         {
             if (button.gameObject.name == "Confirm")
             {
@@ -30,7 +30,7 @@ public class Revolving : MonoBehaviour
         uniqueFeatures.Remove(confirm);
         uniqueFeatures.Remove(reject);
 
-        foreach(LookAtMe tag in uniqueFeatures)
+        foreach(NewLookAt tag in uniqueFeatures)
         {
             featureTrans.Add(tag.gameObject.transform);
         }

@@ -43,7 +43,8 @@ public class GestureVisualizer : MonoBehaviour
 
     [HideInInspector]
     public Dictionary<int, GameObject> clustersObjDic = new Dictionary<int, GameObject>();
-    private List<Color> trajectoryColorSet = new List<Color>();
+    [HideInInspector]
+    public List<Color> trajectoryColorSet = new List<Color>();
     private Dictionary<int, Color> clusterColorDic = new Dictionary<int, Color>();
     [HideInInspector]
     public int arrangementMode = 1; // 0 = local, 1 = global, 2 = line-up, 3=PCA, 4=MDS
@@ -87,7 +88,6 @@ public class GestureVisualizer : MonoBehaviour
     [HideInInspector]
     public ClusteringRationales clusteringRationale = ClusteringRationales.DBA; // 0:DBA, 1:PCA, 2:MDS
     [HideInInspector]
-    public bool deploying = true;
     private bool startup = true;
     private Dictionary<string, int> uiLinkDic = new Dictionary<string, int>();
     [HideInInspector]
@@ -419,7 +419,7 @@ public class GestureVisualizer : MonoBehaviour
             }
         }
 
-        if (deploying)
+        if (Deploy.instance.IsDeploying())
         {
             foreach (KeyValuePair<int, GameObject> pair in GestureVisualizer.instance.clustersObjDic)
             {
