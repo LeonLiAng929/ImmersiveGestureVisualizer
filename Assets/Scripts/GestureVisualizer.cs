@@ -133,6 +133,31 @@ public class GestureVisualizer : MonoBehaviour
             leftController = leftHandDevices[0];
         }
         //InitializeClusterColor();
+
+        //Generate trajectory colors and assign them to trajectory filter
+        TrajectoryFilter[] filters = TrajectoryFilterGameObject.GetComponentsInChildren<TrajectoryFilter>(true);
+        for (int j = 0; j < GestureAnalyser.instance.GetGestures()[0].poses[0].num_of_joints; j++)
+        {
+            Color c = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
+            trajectoryColorSet.Add(c);
+            filters[j].gameObject.GetComponent<MeshRenderer>().material.color = c;
+            filters[j].init = c;
+        }
+
+
+        // initialize colors for user proposed trajectories
+        proposedGestureObj.transform.Find("WristLeft").GetComponent<MeshRenderer>().material.color = trajectoryColorSet[6];
+        proposedGestureObj.transform.Find("ElbowLeft").GetComponent<MeshRenderer>().material.color = trajectoryColorSet[5];
+        proposedGestureObj.transform.Find("ShoulderLeft").GetComponent<MeshRenderer>().material.color = trajectoryColorSet[4];
+        proposedGestureObj.transform.Find("WristRight").GetComponent<MeshRenderer>().material.color = trajectoryColorSet[10];
+        proposedGestureObj.transform.Find("ElbowRight").GetComponent<MeshRenderer>().material.color = trajectoryColorSet[9];
+        proposedGestureObj.transform.Find("ShoulderRight").GetComponent<MeshRenderer>().material.color = trajectoryColorSet[8];
+        proposedGestureObj.transform.Find("WristLeft").GetComponent<TubeRenderer>().points = new Vector3[] { };
+        proposedGestureObj.transform.Find("ElbowLeft").GetComponent<TubeRenderer>().points = new Vector3[] { };
+        proposedGestureObj.transform.Find("ShoulderLeft").GetComponent<TubeRenderer>().points = new Vector3[] { };
+        proposedGestureObj.transform.Find("WristRight").GetComponent<TubeRenderer>().points = new Vector3[] { };
+        proposedGestureObj.transform.Find("ElbowRight").GetComponent<TubeRenderer>().points = new Vector3[] { };
+        proposedGestureObj.transform.Find("ShoulderRight").GetComponent<TubeRenderer>().points = new Vector3[] { };
         Deploy.instance._DeployRig();
         //Initialize2DBoard();
     }
@@ -270,6 +295,51 @@ public class GestureVisualizer : MonoBehaviour
             }
         }
     }
+
+    /// <summary>
+    /// Used along side with ChangeCluster feature, analysts can instantiate a new cluster of 0 objects and then
+    /// use ChangeCluster to add gestures to it. 
+    /// </summary>
+    public GameObject InstantiateNewCluster()
+    {
+        int id;
+        if(freeId.Count != 0)
+        {
+            id = freeId[0];
+            freeId.RemoveAt(0);
+        }
+        else{
+            id = k;
+            IncrementCluster.instance._Increment();
+        }
+
+        GestureAnalyser.instance.TryGetCluster(id);
+        clusterVisPrefab.SetActive(true);
+        GameObject newClusterObj = Instantiate(clusterVisPrefab);
+        clusterVisPrefab.SetActive(false);
+        newClusterObj.name = "Cluster" + id.ToString();
+        Transform clusterTrans = newClusterObj.GetComponent<Transform>().Find("ClusterVisualization"); ;
+
+        clusterTrans.gameObject.AddComponent<ClusterGameObject>();
+        clusterTrans.gameObject.GetComponentInChildren<ClusterGameObject>().clusterID = id;
+        clusterTrans.gameObject.GetComponentInChildren<ClusterGameObject>().baryCentreVis = null;
+
+        // initialize a random color for each cluster and the gestures belonging to it.
+        InitializeClusterColor();
+        Color temp = clusterColorDic[id];
+        temp.a = (float)0.3;
+        clusterTrans.gameObject.GetComponent<MeshRenderer>().material.color = temp;
+        if (clustersObjDic.ContainsKey(id))
+        {
+            clustersObjDic[id] = newClusterObj;
+        }
+        else
+        {
+            clustersObjDic.Add(id, newClusterObj);
+        }
+        
+        return clustersObjDic[id];
+    }
     public void InitializeVisualization()
     {
         skeletonModel.SetActive(true);
@@ -277,7 +347,6 @@ public class GestureVisualizer : MonoBehaviour
         gesVisPrefab.SetActive(true);
         GesUiPrefab.SetActive(true);
         UiPenalPrefab.SetActive(true);
-
 
         if (clusteringRationale == ClusteringRationales.DBA)
             GestureAnalyser.instance.InitializeClusters_DBA(k);
@@ -308,30 +377,6 @@ public class GestureVisualizer : MonoBehaviour
         }
 
         //float y = 0;
-
-        //Generate trajectory colors and assign them to trajectory filter
-        TrajectoryFilter[] filters = TrajectoryFilterGameObject.GetComponentsInChildren<TrajectoryFilter>(true);
-        for (int j = 0; j < gestures[0].poses[0].num_of_joints; j++)
-        {
-            Color c = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
-            trajectoryColorSet.Add(c);
-            filters[j].gameObject.GetComponent<MeshRenderer>().material.color = c;
-            filters[j].init = c;
-        }
-
-        // initialize colors for user proposed trajectories
-        proposedGestureObj.transform.Find("WristLeft").GetComponent<MeshRenderer>().material.color = trajectoryColorSet[6];
-        proposedGestureObj.transform.Find("ElbowLeft").GetComponent<MeshRenderer>().material.color = trajectoryColorSet[5];
-        proposedGestureObj.transform.Find("ShoulderLeft").GetComponent<MeshRenderer>().material.color = trajectoryColorSet[4];
-        proposedGestureObj.transform.Find("WristRight").GetComponent<MeshRenderer>().material.color = trajectoryColorSet[10];
-        proposedGestureObj.transform.Find("ElbowRight").GetComponent<MeshRenderer>().material.color = trajectoryColorSet[9];
-        proposedGestureObj.transform.Find("ShoulderRight").GetComponent<MeshRenderer>().material.color = trajectoryColorSet[8];
-        proposedGestureObj.transform.Find("WristLeft").GetComponent<TubeRenderer>().points = new Vector3[] { };
-        proposedGestureObj.transform.Find("ElbowLeft").GetComponent<TubeRenderer>().points = new Vector3[] { };
-        proposedGestureObj.transform.Find("ShoulderLeft").GetComponent<TubeRenderer>().points = new Vector3[] { };
-        proposedGestureObj.transform.Find("WristRight").GetComponent<TubeRenderer>().points = new Vector3[] { };
-        proposedGestureObj.transform.Find("ElbowRight").GetComponent<TubeRenderer>().points = new Vector3[] { };
-        proposedGestureObj.transform.Find("ShoulderRight").GetComponent<TubeRenderer>().points = new Vector3[] { };
 
         foreach (Gesture g in gestures)
         {
@@ -388,7 +433,7 @@ public class GestureVisualizer : MonoBehaviour
             }
         }
 
-        ArrangeLocationForGestures();
+        /*ArrangeLocationForGestures();
 
         // set size for the clusters in the scene
         foreach (KeyValuePair<int, GameObject> p in clustersObjDic)
@@ -396,7 +441,7 @@ public class GestureVisualizer : MonoBehaviour
             ClusterGameObject a = p.Value.GetComponentInChildren<ClusterGameObject>();
             float count = Mathf.Sqrt(clusters[p.Key].GestureCount());
             a.InitializeClusterVisualizationScale(new Vector3(count, count, count));
-        }
+        }*/
 
         //Destroy(tracerRef);
         //Destroy(skeletonModel);
@@ -763,7 +808,7 @@ public class GestureVisualizer : MonoBehaviour
             float radius = gestureObjs[i].gesture.GetGlobalSimilarity();
             Vector3 newPos = location + new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * radius * 2;
             //newPos.y = yPosition;
-            gestureObjs[i].allocatedPos = newPos;
+            //gestureObjs[i].allocatedPos = newPos;
             gestureObjs[i].GetComponent<Transform>().localPosition = newPos;
             gestureObjs[i].GetComponent<Transform>().localRotation = new Quaternion(0, 0, 0, 0);
         }
@@ -834,8 +879,4 @@ public class GestureVisualizer : MonoBehaviour
         return clustersObjDic;
     }
 
-    public void PCA_Arrangement()
-    {
-
-    }
 }

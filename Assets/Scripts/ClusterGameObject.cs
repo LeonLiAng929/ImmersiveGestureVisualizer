@@ -6,19 +6,23 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class ClusterGameObject : MonoBehaviour
 {
     public int clusterID;
-    public Transform baryCentreVis;
+    public Transform baryCentreVis = null;
     private XRSimpleInteractable interactable = null;
     
     // Start is called before the first frame update
     void Start()
     {
-        
+        if (interactable == null)
+        {
+            interactable = GetComponent<XRSimpleInteractable>();
+            interactable.selectExited.AddListener(PerformAction);
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!ReCluster.instance.reclusterOngoing)
+        if ((!ReCluster.instance.reclusterOngoing) && (baryCentreVis != null))
         {
             if (!baryCentreVis.GetComponent<GestureGameObject>().IsStacked())
             {
@@ -39,22 +43,16 @@ public class ClusterGameObject : MonoBehaviour
         Transform trans = GetComponent<Transform>();
         trans.localScale = scale;
 
-        if (interactable == null)
-        {
-            interactable = GetComponent<XRSimpleInteractable>();
-            interactable.selectExited.AddListener(PerformAction);
-        }
-
-        if (scale.y > 1 && GestureVisualizer.instance.arrangementMode == 1)
+        if (scale.y > 1)
         {
             Vector3 size = baryCentreVis.GetComponent<GestureGameObject>().gesture.GetBoundingBoxSize();
             float initHeight = size.y;
             float currHeight = size.y * scale.y;
             Vector3 temp = baryCentreVis.transform.localPosition;
-            temp.y += (currHeight - initHeight)/2;
+            temp.y = (currHeight - initHeight)/2;
             //Debug.Log(baryCentreVis.parent.name + "init: " + baryCentreVis.transform.localPosition.ToString() + " now: " + temp.ToString());
             baryCentreVis.transform.localPosition = temp;
-            baryCentreVis.GetComponent<GestureGameObject>().allocatedPos = temp;
+            //baryCentreVis.GetComponent<GestureGameObject>().allocatedPos = temp;
         }
     }
 
@@ -119,6 +117,8 @@ public class ClusterGameObject : MonoBehaviour
         Cluster c = GestureAnalyser.instance.GetClusterByID(clusterID);
         List<GameObject> selectedGestures = GestureVisualizer.instance.selectedGestures;
         List<GameObject> originalClusterObjs = new List<GameObject>();
+        List<Gesture> gestureLi = new List<Gesture>();
+        List<Cluster> originalClusterLi = new List<Cluster>();
         foreach (GameObject gGO in selectedGestures)
         {
             Cluster original = GestureAnalyser.instance.GetClusterByID(gGO.GetComponent<GestureGameObject>().gesture.cluster);
@@ -129,33 +129,45 @@ public class ClusterGameObject : MonoBehaviour
             }
             GameObject obj = GestureVisualizer.instance.GetClusterGameObjectById(original.clusterID);
             gGO.transform.parent = gameObject.transform.parent;
-            original.RemoveGesture(gGO.GetComponent<GestureGameObject>().gesture);
-            c.AddGesture(gGO.GetComponent<GestureGameObject>().gesture);
+            
+            gestureLi.Add(gGO.GetComponent<GestureGameObject>().gesture);
             if (!originalClusterObjs.Contains(obj))
             {
                 originalClusterObjs.Add(obj);
             }
         }
-        foreach(GameObject g in originalClusterObjs)
+        c.AddGesture(gestureLi);
+        foreach (GameObject originalClusterObject in originalClusterObjs)
         {
-            if (g != null)
+            ClusterGameObject clusterObj = originalClusterObject.GetComponentInChildren<ClusterGameObject>();
+            Cluster original = GestureAnalyser.instance.GetClusterByID(clusterObj.clusterID);
+            original.RemoveGesture(gestureLi);
+        }
+        foreach (GameObject originalClusterObject in originalClusterObjs)
+        {
+            ClusterGameObject clusterObj = originalClusterObject.GetComponentInChildren<ClusterGameObject>();
+            Cluster original = GestureAnalyser.instance.GetClusterByID(clusterObj.clusterID);
+            if (original.GestureCount() >0)
             {
-                ClusterGameObject clusterObj = g.GetComponentInChildren<ClusterGameObject>();
+                //ClusterGameObject clusterObj = originalClusterObject.GetComponentInChildren<ClusterGameObject>();
                 Destroy(clusterObj.baryCentreVis.gameObject);
-                GestureVisualizer.instance.InstantiateAverageGestureVis(g, clusterObj.clusterID);
+                GestureVisualizer.instance.InstantiateAverageGestureVis(originalClusterObject, clusterObj.clusterID);
                 //clusterObj.UpdateClusterVisualizationScale();
-                ClusterTag ctag = g.GetComponentInChildren<ClusterTag>(true);
+                ClusterTag ctag = originalClusterObject.GetComponentInChildren<ClusterTag>(true);
                 ctag.UpdateTag();
-                GestureTag[] gestureTags = g.GetComponentsInChildren<GestureTag>(true);
+                GestureTag[] gestureTags = originalClusterObject.GetComponentsInChildren<GestureTag>(true);
                 foreach(GestureTag gtag in gestureTags)
                 {
                     gtag.UpdateTag();
                 }
             }
         }
-        Destroy(baryCentreVis.gameObject);
+        if (baryCentreVis != null)
+        {
+            Destroy(baryCentreVis.gameObject);
+        }
         GestureVisualizer.instance.InstantiateAverageGestureVis(gameObject.transform.parent.gameObject, clusterID);
-        /*GestureVisualizer.instance.ArrangeLocationForGestures();
+        /*
         foreach (GameObject g in originalClusterObjs)
         {
             if (g != null)
@@ -175,7 +187,6 @@ public class ClusterGameObject : MonoBehaviour
         }
         GestureVisualizer.instance.AdjustClusterPosition();
         //ChangeArrangement.instance._Rearragne();
-        //GestureVisualizer.instance.AdjustClusterPosition();
         //GestureVisualizer.instance.EmptySelected();   Disabled to show where the newly assigned gestures are in the new cluster.
     }
     public void StackAll()
@@ -208,12 +219,8 @@ public class ClusterGameObject : MonoBehaviour
             float angle = i * angleSection;
             
             float radius = gestureObjs[i].gesture.GetLocalSimilarity();
-            //Vector3 newPos = location + new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * radius;
             Vector3 newPos = location + new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * radius;
-            //newPos.y = yPosition;
-            //Instantiate(gestureObj, newPos, gestureObj.rotation);
             gestureObjs[i].GetComponent<Transform>().localPosition = newPos;
-            
         }
     }
 
@@ -228,7 +235,6 @@ public class ClusterGameObject : MonoBehaviour
         Vector3 temp = baryTrans.localPosition;
         temp.y = 0;
         InstantiateInCircle(gestures, temp);
-        //InstantiateInCircle(gestures, new Vector3(0,0,0));
     } 
     
     public List<GestureGameObject> Sort()

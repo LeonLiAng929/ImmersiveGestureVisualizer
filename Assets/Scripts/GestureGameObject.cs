@@ -23,7 +23,6 @@ public class GestureGameObject : MonoBehaviour
     private float currTime = 0;
     private int counter = 0;
     private float prevTimestamp;
-    public Vector3 allocatedPos;
     public Vector3 initPos;
     public Vector3 sizeB4Stack;
     public Quaternion lastQuat;
@@ -39,7 +38,7 @@ public class GestureGameObject : MonoBehaviour
     {
         arrow = gameObject.transform.Find("Arrow").gameObject;
         arrow.SetActive(false);
-        if (gameObject.name != "AverageGesture" && gameObject.name != "Gesture")
+        if (!averageGesture && gameObject.name != "Gesture")
         {
             GameObject multiples = GetComponent<Transform>().Find("SmallMultiples").gameObject;
             timeIndicator = Instantiate(GestureVisualizer.instance.skeletonModel, multiples.transform);
@@ -124,7 +123,7 @@ public class GestureGameObject : MonoBehaviour
             List<GameObject> selectionList = GestureVisualizer.instance.selectedGestures;
             if (selected)
             {
-                if (gameObject.name != "AverageGesture")
+                if (!averageGesture)
                 {
                     uiRef.ComparisonIndicator.SetActive(false);
                     GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
@@ -143,7 +142,7 @@ public class GestureGameObject : MonoBehaviour
             }
             else
             {
-                if (gameObject.name != "AverageGesture")
+                if (!averageGesture)
                 {
                     uiRef.ComparisonIndicator.SetActive(true);
                     GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
@@ -220,7 +219,7 @@ public class GestureGameObject : MonoBehaviour
         Transform[] transforms= GetComponent<Transform>().Find("Trajectory").Find("Skeleton").GetComponentsInChildren<Transform>();
         GameObject multiples = GetComponent<Transform>().Find("SmallMultiples").gameObject;
         Transform[] timeIndicatorTrans = new Transform[21];
-        if (gameObject.name != "AverageGesture")
+        if (!averageGesture)
         {
             timeIndicatorTrans = timeIndicator.GetComponentsInChildren<Transform>();
         }
@@ -238,7 +237,7 @@ public class GestureGameObject : MonoBehaviour
                 transforms[i].localPosition = interpolation;
                
                 double distance = currTime / gesture.poses[gesture.poses.Count - 1].timestamp * 2.0f;
-                if (gameObject.name != "AverageGesture")
+                if (!averageGesture)
                 {
                     timeIndicatorTrans[i].localPosition = interpolation;
                     timeIndicator.transform.localPosition = new Vector3(0, 0, 0.7f) + new Vector3(0, 0, (float)distance);
@@ -251,7 +250,7 @@ public class GestureGameObject : MonoBehaviour
     {
         if (animate)
         {
-            if (gameObject.name != "AverageGesture" && gameObject.name != "Preview")
+            if (!averageGesture && gameObject.name != "Preview")
             {
                 uiRef.AnimationIndicator.SetActive(false);
                 GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
@@ -272,13 +271,13 @@ public class GestureGameObject : MonoBehaviour
         }
         else
         {
-            if (gameObject.name != "AverageGesture" && gameObject.name != "Preview")
+            if (!averageGesture && gameObject.name != "Preview")
             {
                 uiRef.AnimationIndicator.SetActive(true);
                 GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
             }
             animate = true;
-            if (gameObject.name != "AverageGesture" && gameObject.name != "Preview")
+            if (!averageGesture && gameObject.name != "Preview")
             {
                 timeIndicator.SetActive(true);
             }
@@ -299,7 +298,7 @@ public class GestureGameObject : MonoBehaviour
         Transform[] transforms = skeleton.GetComponentsInChildren<Transform>();
 
         Transform[] timeIndicatorTrans = new Transform[21];
-        if (gameObject.name != "AverageGesture")
+        if (!averageGesture)
         {
             timeIndicatorTrans = timeIndicator.GetComponentsInChildren<Transform>();
         }
@@ -307,7 +306,7 @@ public class GestureGameObject : MonoBehaviour
         {
             transforms[i].localPosition = gesture.poses[currPoseIndex].joints[i - 1].ToVector();
             double distance = gesture.poses[currPoseIndex].timestamp / gesture.poses[gesture.poses.Count - 1].timestamp * 2.0f;
-            if (gameObject.name != "AverageGesture")
+            if (!averageGesture)
             {
                 timeIndicatorTrans[i].localPosition = gesture.poses[currPoseIndex].joints[i - 1].ToVector();
                 timeIndicator.transform.localPosition = new Vector3(0, 0, 0.7f) + new Vector3(0, 0, (float)distance);
@@ -371,7 +370,7 @@ public class GestureGameObject : MonoBehaviour
     {
         if (swing)
         {
-            if (gameObject.name != "AverageGesture")
+            if (!averageGesture)
             {
                 timeIndicator.SetActive(false);
             }
@@ -383,7 +382,7 @@ public class GestureGameObject : MonoBehaviour
                 mr.material.color = temp;
             }
             swing = false;
-            if (gameObject.name != "AverageGesture")
+            if (!averageGesture)
             {
                 uiRef.SlidimationIndicator.SetActive(false);
                 GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
@@ -391,7 +390,7 @@ public class GestureGameObject : MonoBehaviour
         }
         else
         {
-            if (gameObject.name != "AverageGesture")
+            if (!averageGesture)
             {
                 timeIndicator.SetActive(true);
             }
@@ -403,7 +402,7 @@ public class GestureGameObject : MonoBehaviour
                 mr.material.color = temp;
             }
             swing = true;
-            if (gameObject.name != "AverageGesture")
+            if (!averageGesture)
             {
                 uiRef.SlidimationIndicator.SetActive(true);
                 GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
@@ -415,19 +414,13 @@ public class GestureGameObject : MonoBehaviour
         List<GameObject> selectionList = GestureVisualizer.instance.selectedGestures;
         if (selected)
         {
-            if (gameObject.name != "AverageGesture")
-            {
-                uiRef.ChangingClusterIndicator.SetActive(false);
-                GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
-            }
             selected = false;
-            uiRef.GetComponent<MeshRenderer>().material.color = GestureVisualizer.instance.UpdateGlowingFieldColour(gameObject) ;
-            if (gameObject.name == "AverageGesture")
+            if (averageGesture)
             {
                 GestureGameObject[] children = gameObject.transform.parent.GetComponentsInChildren<GestureGameObject>(true);
                 foreach (GestureGameObject gGO in children)
                 {
-                    if (gGO.gameObject.name != "AverageGesture")
+                    if (!gGO.averageGesture)
                     {
                         if (selectionList.Contains(gGO.gameObject))
                         {
@@ -440,28 +433,25 @@ public class GestureGameObject : MonoBehaviour
             }
             else
             {
+                uiRef.ChangingClusterIndicator.SetActive(false);
+                GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+                uiRef.GetComponent<MeshRenderer>().material.color = GestureVisualizer.instance.UpdateGlowingFieldColour(gameObject);
                 if (selectionList.Contains(gameObject))
                     selectionList.Remove(gameObject);
             }
 
         }
         else
-        {
-            if (gameObject.name != "AverageGesture")
-            {
-                uiRef.ChangingClusterIndicator.SetActive(true);
-                GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
-            }
+        { 
             selected = true;
             gameObject.transform.Find("GlowingField").GetComponent<MeshRenderer>().material.color = Color.white; 
-            uiRef.GetComponent<MeshRenderer>().material.color = Color.white;
 
-            if (gameObject.name == "AverageGesture")
+            if (averageGesture)
             {
                 GestureGameObject[] children = gameObject.transform.parent.GetComponentsInChildren<GestureGameObject>(true);
                 foreach(GestureGameObject gGO in children)
                 {
-                    if (gGO.gameObject.name != "AverageGesture")
+                    if (!gGO.averageGesture)
                     {
                         if (!selectionList.Contains(gGO.gameObject))
                         {
@@ -474,6 +464,9 @@ public class GestureGameObject : MonoBehaviour
             }
             else
             {
+                uiRef.ChangingClusterIndicator.SetActive(true);
+                GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+                uiRef.GetComponent<MeshRenderer>().material.color = Color.white;
                 if (!selectionList.Contains(gameObject))
                     selectionList.Add(gameObject);
             }
@@ -484,7 +477,7 @@ public class GestureGameObject : MonoBehaviour
         GameObject multiples = GetComponent<Transform>().Find("SmallMultiples").gameObject;
         bool isActive = !multiples.activeSelf;
         multiples.SetActive(isActive);
-        if (gameObject.name != "AverageGesture")
+        if (!averageGesture)
         {
             uiRef.SmallmultiplesIndicator.SetActive(isActive);
             GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
@@ -499,7 +492,7 @@ public class GestureGameObject : MonoBehaviour
     public void StackGesture()
     {
         stacked = true;
-        if (gameObject.name != "AverageGesture")
+        if (!averageGesture)
         {
             uiRef.StackingIndicator.SetActive(true);
             GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
@@ -510,7 +503,7 @@ public class GestureGameObject : MonoBehaviour
             initPos = gameObject.transform.localPosition;
             gameObject.transform.localPosition = new Vector3(0, 0, 0);
             stackedList.Add(gameObject);
-            if (gameObject.name == "AverageGesture")
+            if (averageGesture)
             {
                 sizeB4Stack = gameObject.transform.localScale;
                 gameObject.transform.localScale = new Vector3(1, 1, 1);
@@ -534,7 +527,7 @@ public class GestureGameObject : MonoBehaviour
         stacked = false;
 
         gameObject.transform.localPosition = initPos;
-        if (gameObject.name != "AverageGesture")
+        if (!averageGesture)
         {
             uiRef.StackingIndicator.SetActive(false);
             GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
@@ -547,7 +540,7 @@ public class GestureGameObject : MonoBehaviour
     public void RevertComparing()
     {
         selected = false;
-        if (gameObject.name != "AverageGesture")
+        if (!averageGesture)
         {
             uiRef.ComparisonIndicator.SetActive(false);
             GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);

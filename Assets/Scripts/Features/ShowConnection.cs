@@ -28,7 +28,7 @@ public class ShowConnection : MonoBehaviour
         //{
           //  currArrangement = GestureVisualizer.instance.arrangementMode;
             path[0] = transform.Find("Capsule").position;
-            path[1] = transform.parent.Find("AverageGesture").Find("Capsule").position;
+            path[1] = transform.parent.Find("ClusterVisualization").position;
             path[0] += new Vector3(0, -path[0].y, 0) + new Vector3(0, 0.01f, 0);
             path[1] += new Vector3(0, -path[1].y, 0) + new Vector3(0, 0.01f, 0);
             lr.SetPositions(path);
