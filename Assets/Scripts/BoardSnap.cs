@@ -7,6 +7,7 @@ using System;
 public class BoardSnap : MonoBehaviour
 {
     protected XRGrabInteractable xRGrab;
+    public GameObject background;
     public GameObject SnapOptions;
     public Vector2 lengthByWidth = new Vector2(); //e.g. (2,3) means the board is 2f of length and 3f of width;
     // Start is called before the first frame update
@@ -14,7 +15,6 @@ public class BoardSnap : MonoBehaviour
     {
         xRGrab = transform.parent.gameObject.GetComponent<XRGrabInteractable>();
         SnapOptions.SetActive(false);
-        SetBoundingBox();
     }
 
     private void OnCollisionEnter(Collision other)
@@ -67,5 +67,10 @@ public class BoardSnap : MonoBehaviour
             }
         }
         lengthByWidth = new Vector2(Math.Abs(maxX - minX), Math.Abs(maxY - minY));
+    }
+
+    public void ApplyBackground()
+    {
+        background.transform.localScale = new Vector3(lengthByWidth.x + 0.1f, lengthByWidth.y +0.1f, 1); 
     }
 }

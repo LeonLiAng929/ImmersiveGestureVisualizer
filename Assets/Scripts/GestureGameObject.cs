@@ -20,6 +20,7 @@ public class GestureGameObject : MonoBehaviour
     private bool stacked = false;
     public bool selected = false;
     public bool averageGesture = false;
+    public bool previoulyInAnimationMode = false;
     private float currTime = 0;
     private int counter = 0;
     private float prevTimestamp;
@@ -40,12 +41,14 @@ public class GestureGameObject : MonoBehaviour
         arrow.SetActive(false);
         if (!averageGesture && gameObject.name != "Gesture")
         {
+            int jointCount = gesture.poses[0].num_of_joints;
             GameObject multiples = GetComponent<Transform>().Find("SmallMultiples").gameObject;
             timeIndicator = Instantiate(GestureVisualizer.instance.skeletonModel, multiples.transform);
             timeIndicator.name = "TimeIndicator";
             Transform[] transforms = timeIndicator.GetComponentsInChildren<Transform>();
             transforms[0].localPosition = new Vector3(0, 0, 0.7f);
-            for (int i = 1; i < 21; i++)
+
+            for (int i = 1; i < jointCount +1; i++)
             {
                 transforms[i].localPosition = gesture.poses[0].joints[i - 1].ToVector();
             }
@@ -65,6 +68,14 @@ public class GestureGameObject : MonoBehaviour
         if (swing)
         {
             SwingConditionUpdate();
+        }
+        if(ActionSwitcher.instance.GetCurrentAction() == Actions.Idle)
+        {
+            if (previoulyInAnimationMode)
+            {
+                previoulyInAnimationMode = false;
+                QuitAnimationMode();
+            }
         }
 
     }
@@ -96,10 +107,9 @@ public class GestureGameObject : MonoBehaviour
     public void PerformAction(SelectExitEventArgs arg)
     {
         Actions curr = ActionSwitcher.instance.GetCurrentAction();
-        if (curr == Actions.Animate){ ActivateAnimate();  }
+        if (curr == Actions.Animate){ previoulyInAnimationMode = true; ActivateAnimate();  }
         else if(curr == Actions.ChangeCluster){ ChangeCluster();  }
         else if(curr == Actions.ShowSmallMultiples) { ShowSmallMultiples();  }
-        //else if(curr == Actions.Slidimation) { ShowTracer();  }
         else if (curr == Actions.Slidimation) { ActivateSwinging(); 
             GestureVisualizer.instance.rightController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.deviceRotation, out lastQuat); }
         else if(curr == Actions.StackGestures) { StackGesture();}
@@ -193,8 +203,9 @@ public class GestureGameObject : MonoBehaviour
     }
     public void AnimationModeReset()
     {
-        Transform[] transforms = GetComponent<Transform>().Find("Trajectory").Find("Skeleton").GetComponentsInChildren<Transform>();
 
+        Transform[] transforms = GetComponent<Transform>().Find("Trajectory").Find("Skeleton").GetComponentsInChildren<Transform>();
+        ResetTrajectories();
         for (int i = 1; i < gesture.poses[0].num_of_joints+1; i++)
         {   
             transforms[i].localPosition = gesture.poses[0].joints[i - 1].ToVector();
@@ -204,6 +215,25 @@ public class GestureGameObject : MonoBehaviour
         counter = 0;
         init = 1;
         //UpdateCounter();
+    }
+
+    public void QuitAnimationMode()
+    {
+        Transform[] transforms = GetComponent<Transform>().Find("Trajectory").Find("Skeleton").GetComponentsInChildren<Transform>();
+        ResetTrajectories();
+        for (int i = 1; i < gesture.poses[0].num_of_joints + 1; i++)
+        {
+            transforms[i].localPosition = gesture.poses[0].joints[i - 1].ToVector();
+        }
+        timer = 0f;
+        currTime = 0;
+        counter = 0;
+        init = 1;
+        //UpdateCounter();
+        GameObject trajObj = transform.Find("Trajectory").gameObject;
+        TrajectoryTR traj = trajObj.GetComponent<TrajectoryTR>();
+        traj.DrawTrajectory(GestureVisualizer.instance.trajectoryColorSet);
+
     }
     public void Animate()
     {
@@ -218,7 +248,8 @@ public class GestureGameObject : MonoBehaviour
 
         Transform[] transforms= GetComponent<Transform>().Find("Trajectory").Find("Skeleton").GetComponentsInChildren<Transform>();
         GameObject multiples = GetComponent<Transform>().Find("SmallMultiples").gameObject;
-        Transform[] timeIndicatorTrans = new Transform[21];
+        int jointCount = gesture.poses[0].num_of_joints;
+        Transform[] timeIndicatorTrans = new Transform[jointCount+1];
         if (!averageGesture)
         {
             timeIndicatorTrans = timeIndicator.GetComponentsInChildren<Transform>();
@@ -227,7 +258,7 @@ public class GestureGameObject : MonoBehaviour
         {
             Vector3 start_pos = transforms[i].localPosition;
             Vector3 end_pos = gesture.poses[counter].joints[i-1].ToVector();
-
+            string jointType = gesture.poses[counter].joints[i - 1].jointType;
             if (currTime - prevTimestamp > 0)
             {
                 float ratio = (Extension.SecondsToMs(timer) - prevTimestamp) / (currTime - prevTimestamp);
@@ -235,6 +266,7 @@ public class GestureGameObject : MonoBehaviour
                 Vector3 interpolation = Vector3.Lerp(start_pos, end_pos, ratio);
 
                 transforms[i].localPosition = interpolation;
+                UpdateTrajectoryByType(jointType, interpolation);
                
                 double distance = currTime / gesture.poses[gesture.poses.Count - 1].timestamp * 2.0f;
                 if (!averageGesture)
@@ -246,6 +278,25 @@ public class GestureGameObject : MonoBehaviour
         }
     }
 
+    public void UpdateTrajectoryByType(string type, Vector3 joint)
+    {
+        TubeRenderer tr = gameObject.transform.Find("Trajectory").Find("LineRanderers").Find(type).GetComponent<TubeRenderer>();
+        Vector3[] old = tr.points;
+        Vector3[] update = new Vector3[] { joint };
+        Vector3[] newPoints = new Vector3[old.Length + update.Length];
+        old.CopyTo(newPoints, 0);
+        update.CopyTo(newPoints, old.Length);
+        tr.points = newPoints;
+    }
+
+    public void ResetTrajectories()
+    {
+        TubeRenderer[] trs = gameObject.transform.Find("Trajectory").GetComponentsInChildren<TubeRenderer>();
+        foreach (TubeRenderer tr in trs)
+        {
+            tr.points = new Vector3[] { };
+        }
+    }
     public void ActivateAnimate()
     {
         if (animate)
@@ -296,13 +347,13 @@ public class GestureGameObject : MonoBehaviour
     {
         GameObject skeleton = gameObject.GetComponentInChildren<TrajectoryTR>().skeletonRef;
         Transform[] transforms = skeleton.GetComponentsInChildren<Transform>();
-
-        Transform[] timeIndicatorTrans = new Transform[21];
+        int jointCount = gesture.poses[0].num_of_joints;
+        Transform[] timeIndicatorTrans = new Transform[jointCount+1];
         if (!averageGesture)
         {
             timeIndicatorTrans = timeIndicator.GetComponentsInChildren<Transform>();
         }
-        for (int i = 1; i < 21; i++)
+        for (int i = 1; i < jointCount+1; i++)
         {
             transforms[i].localPosition = gesture.poses[currPoseIndex].joints[i - 1].ToVector();
             double distance = gesture.poses[currPoseIndex].timestamp / gesture.poses[gesture.poses.Count - 1].timestamp * 2.0f;

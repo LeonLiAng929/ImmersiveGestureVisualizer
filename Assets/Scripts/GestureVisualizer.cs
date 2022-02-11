@@ -158,7 +158,7 @@ public class GestureVisualizer : MonoBehaviour
         proposedGestureObj.transform.Find("WristRight").GetComponent<TubeRenderer>().points = new Vector3[] { };
         proposedGestureObj.transform.Find("ElbowRight").GetComponent<TubeRenderer>().points = new Vector3[] { };
         proposedGestureObj.transform.Find("ShoulderRight").GetComponent<TubeRenderer>().points = new Vector3[] { };
-        Deploy.instance._DeployRig();
+        //Deploy.instance._DeployRig();
         //Initialize2DBoard();
     }
     public void Initialize2DBoard()
@@ -184,7 +184,8 @@ public class GestureVisualizer : MonoBehaviour
         grab.GetComponent<BoardControl>().boardInfo.text = "K=" + k.ToString() + "|Rationale:" + clusteringRationale.ToString();
         grab.GetComponent<BoardControl>().boardInfo.gameObject.SetActive(false);
         grab.GetComponent<MeshRenderer>().material.color = clusterColorDic[0];
-        
+        grab.GetComponent<BoardSnap>().SetBoundingBox();
+        grab.GetComponent<BoardSnap>().ApplyBackground();
         currBoard = temp;
 
     }
