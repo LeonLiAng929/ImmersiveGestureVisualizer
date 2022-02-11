@@ -16,6 +16,8 @@ public class Gesture2DObject : MonoBehaviour
     public GameObject ComparisonIndicator;
     public TextMesh GesInfo;
     public GameObject arrow;
+
+    public GameObject TwoDModel;
     
     private Transform preview = null;
     
@@ -49,10 +51,26 @@ public class Gesture2DObject : MonoBehaviour
     {
         xRSimpleInteractable = GetComponent<XRSimpleInteractable>();
         xRSimpleInteractable.selectExited.AddListener(PerformAction);
-        xRSimpleInteractable.firstHoverEntered.AddListener(PreviewGesture);
+        //xRSimpleInteractable.firstHoverEntered.AddListener(PreviewGesture);
 
     }
 
+    public void Initialize2DGesture()
+    {
+        Gesture TwoDimensionalGesture = gGO.gesture;
+        Transform[] transforms = TwoDModel.GetComponentsInChildren<Transform>();
+        for (int i = 1; i < transforms.Length; i++)
+        {
+            Vector3 pos = TwoDimensionalGesture.poses[0].joints[i - 1].ToVector();
+
+            transforms[i].localPosition = pos - new Vector3(0,0,pos.z);
+        }
+        MeshRenderer[] mrs = TwoDModel.GetComponentsInChildren<MeshRenderer>();
+        foreach (MeshRenderer mr in mrs)
+        {
+            mr.material.color = GestureVisualizer.instance.GetColorByCluster(gGO.gesture.cluster);
+        }
+    }
     public void TeleportToObject(ActivateEventArgs args)
     {
         GameObject rig = Deploy.instance.XRRig;

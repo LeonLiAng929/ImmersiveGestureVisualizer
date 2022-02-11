@@ -7,7 +7,10 @@ public class DrawSkeleton : MonoBehaviour
     [SerializeField]
     public GameObject lr;
     //protected Transform skeletonRendererContainer;
-
+    [SerializeField]
+    public float startWidth=0.035f;
+    [SerializeField]
+    public float endWidth=0.035f;
     protected Transform trans;
     protected List<LineRenderer> lineRenderers = new List<LineRenderer>();
     // Start is called before the first frame update
@@ -15,7 +18,7 @@ public class DrawSkeleton : MonoBehaviour
     {
         trans = GetComponent<Transform>();
      
-        lr.GetComponent<LineRenderer>().SetWidth(0.035f, 0.035f);
+        lr.GetComponent<LineRenderer>().SetWidth(startWidth, endWidth);
       
         DrawHumanSkeleton();
     }

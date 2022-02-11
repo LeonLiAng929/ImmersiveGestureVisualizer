@@ -71,6 +71,6 @@ public class BoardSnap : MonoBehaviour
 
     public void ApplyBackground()
     {
-        background.transform.localScale = new Vector3(lengthByWidth.x + 0.1f, lengthByWidth.y +0.1f, 1); 
+        background.transform.localScale = new Vector3(lengthByWidth.x + 0.24f, lengthByWidth.y +0.24f, 1); 
     }
 }

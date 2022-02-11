@@ -14,6 +14,7 @@ public class UITag : XRTag
     //public GameObject featuretagPrefab;
     // private GameObject textTag;
     // Start is called before the first frame update
+    public bool TrajectoryFileter = false;
     [SerializeField]
     protected GameObject featuretagPrefab;
     void Start()
@@ -26,8 +27,17 @@ public class UITag : XRTag
         //simpleInteractable.firstHoverEntered.AddListener(OnHovered);
         //simpleInteractable.lastHoverExited.AddListener(OnHoverExit);
         textTag.SetActive(true);
-        textTag.transform.localPosition = new Vector3(-0.01f, 0.48f, 0);
-        textTag.transform.Rotate(new Vector3(0, 180, 0), Space.Self);
+        if (!TrajectoryFileter)
+        {
+            textTag.transform.localPosition = new Vector3(-0.01f, 0.48f, 0);
+            textTag.transform.Rotate(new Vector3(0, 180, 0), Space.Self);
+        }
+        else
+        {
+            simpleInteractable.firstHoverEntered.AddListener(OnHovered);
+            simpleInteractable.lastHoverExited.AddListener(OnHoverExit);
+            textTag.SetActive(false);
+        }
 
     }
     

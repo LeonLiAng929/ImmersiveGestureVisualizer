@@ -285,4 +285,17 @@ public class Gesture
         return globalSimilarity;
     }
 
+    public Gesture TwoDimensionalGestureData()
+    {
+        Gesture g = new Gesture();
+        g.MakeEqualTo(this);
+        foreach (Pose p in g.poses)
+        {
+            foreach (Joint d in p.joints)
+            {
+                d.z = 0;
+            }
+        }
+        return g;
+    }
 }

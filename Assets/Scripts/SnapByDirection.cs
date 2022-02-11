@@ -10,7 +10,6 @@ public class SnapByDirection : MonoBehaviour
     public GameObject SnapOptions;
     Color initColor;
     public int direction;
-    Quaternion temp = new Quaternion();
 
     // Start is called before the first frame update
     void Start()

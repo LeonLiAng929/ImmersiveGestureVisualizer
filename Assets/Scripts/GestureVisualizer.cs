@@ -206,7 +206,7 @@ public class GestureVisualizer : MonoBehaviour
         {
             Gesture2DObject uiRef = uiRefList[i].GetComponent<Gesture2DObject>();
             uiRef.gGO = gestureGameObjs[i];
-         
+            uiRef.Initialize2DGesture();
             uiLinkDic.Add(gestureGameObjs[i].gesture.id.ToString() + '-' + gestureGameObjs[i].gesture.trial, i);
             uiRefList[i].GetComponent<MeshRenderer>().material.color = GetColorByCluster(gestureGameObjs[i].gesture.cluster);
             gestureGameObjs[i].uiRef = uiRefList[i].GetComponent<Gesture2DObject>();
@@ -238,6 +238,7 @@ public class GestureVisualizer : MonoBehaviour
             uiref.gGO = gestureGameObjs[i];
             uiref.gameObject.GetComponent<MeshRenderer>().material.color = GetColorByCluster(gestureGameObjs[i].gesture.cluster);
             gestureGameObjs[i].uiRef = uiref;
+            uiref.Initialize2DGesture();
             uiref.GesInfo.text = gestureGameObjs[i].gesture.id.ToString() + "-" + gestureGameObjs[i].gesture.trial;
         }
         // re-link gestures to old boards

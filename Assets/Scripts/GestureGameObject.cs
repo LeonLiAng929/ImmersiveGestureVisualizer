@@ -107,10 +107,11 @@ public class GestureGameObject : MonoBehaviour
     public void PerformAction(SelectExitEventArgs arg)
     {
         Actions curr = ActionSwitcher.instance.GetCurrentAction();
-        if (curr == Actions.Animate){ previoulyInAnimationMode = true; ActivateAnimate();  }
+        if (curr == Actions.Animate){ActivateAnimate();  }
         else if(curr == Actions.ChangeCluster){ ChangeCluster();  }
         else if(curr == Actions.ShowSmallMultiples) { ShowSmallMultiples();  }
-        else if (curr == Actions.Slidimation) { ActivateSwinging(); 
+        else if (curr == Actions.Slidimation) {
+            previoulyInAnimationMode = true;  ActivateSwinging(); 
             GestureVisualizer.instance.rightController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.deviceRotation, out lastQuat); }
         else if(curr == Actions.StackGestures) { StackGesture();}
         else if (curr == Actions.CloseComparison) { if (arg.interactor.gameObject.name == "LeftHand Controller")
@@ -205,7 +206,6 @@ public class GestureGameObject : MonoBehaviour
     {
 
         Transform[] transforms = GetComponent<Transform>().Find("Trajectory").Find("Skeleton").GetComponentsInChildren<Transform>();
-        ResetTrajectories();
         for (int i = 1; i < gesture.poses[0].num_of_joints+1; i++)
         {   
             transforms[i].localPosition = gesture.poses[0].joints[i - 1].ToVector();
@@ -220,10 +220,13 @@ public class GestureGameObject : MonoBehaviour
     public void QuitAnimationMode()
     {
         Transform[] transforms = GetComponent<Transform>().Find("Trajectory").Find("Skeleton").GetComponentsInChildren<Transform>();
+        Transform[] twoDSkeletonTrans = uiRef.TwoDModel.GetComponentsInChildren<Transform>();
         ResetTrajectories();
         for (int i = 1; i < gesture.poses[0].num_of_joints + 1; i++)
         {
-            transforms[i].localPosition = gesture.poses[0].joints[i - 1].ToVector();
+            Vector3 pos = gesture.poses[0].joints[i - 1].ToVector();
+            transforms[i].localPosition = pos;
+            twoDSkeletonTrans[i].localPosition = pos - new Vector3(0,0,pos.z);
         }
         timer = 0f;
         currTime = 0;
@@ -239,6 +242,7 @@ public class GestureGameObject : MonoBehaviour
     {
         if (init == 1)
         {
+            ResetTrajectories();
             init = 0;
         }
         else
@@ -247,7 +251,8 @@ public class GestureGameObject : MonoBehaviour
         }
 
         Transform[] transforms= GetComponent<Transform>().Find("Trajectory").Find("Skeleton").GetComponentsInChildren<Transform>();
-        GameObject multiples = GetComponent<Transform>().Find("SmallMultiples").gameObject;
+        //GameObject multiples = GetComponent<Transform>().Find("SmallMultiples").gameObject;
+        Transform[] twoDSkeletonTrans = uiRef.TwoDModel.GetComponentsInChildren<Transform>();
         int jointCount = gesture.poses[0].num_of_joints;
         Transform[] timeIndicatorTrans = new Transform[jointCount+1];
         if (!averageGesture)
@@ -267,7 +272,7 @@ public class GestureGameObject : MonoBehaviour
 
                 transforms[i].localPosition = interpolation;
                 UpdateTrajectoryByType(jointType, interpolation);
-               
+                twoDSkeletonTrans[i].localPosition = interpolation - new Vector3(0,0,interpolation.z);
                 double distance = currTime / gesture.poses[gesture.poses.Count - 1].timestamp * 2.0f;
                 if (!averageGesture)
                 {
@@ -299,6 +304,7 @@ public class GestureGameObject : MonoBehaviour
     }
     public void ActivateAnimate()
     {
+        previoulyInAnimationMode = true;
         if (animate)
         {
             if (!averageGesture && gameObject.name != "Preview")
@@ -336,7 +342,7 @@ public class GestureGameObject : MonoBehaviour
             foreach (MeshRenderer mr in gameObject.transform.Find("Trajectory").Find("LineRanderers").GetComponentsInChildren<MeshRenderer>())
             {
                 Color temp = mr.material.color;
-                temp.a = 0.25f;
+                temp.a = 0.5f;
                 mr.material.color = temp;
             }
         }
@@ -349,13 +355,16 @@ public class GestureGameObject : MonoBehaviour
         Transform[] transforms = skeleton.GetComponentsInChildren<Transform>();
         int jointCount = gesture.poses[0].num_of_joints;
         Transform[] timeIndicatorTrans = new Transform[jointCount+1];
+        Transform[] twoDSkeletonTrans = uiRef.TwoDModel.GetComponentsInChildren<Transform>();
         if (!averageGesture)
         {
             timeIndicatorTrans = timeIndicator.GetComponentsInChildren<Transform>();
         }
         for (int i = 1; i < jointCount+1; i++)
         {
-            transforms[i].localPosition = gesture.poses[currPoseIndex].joints[i - 1].ToVector();
+            Vector3 pos = gesture.poses[currPoseIndex].joints[i - 1].ToVector();
+            transforms[i].localPosition = pos;
+            twoDSkeletonTrans[i].localPosition = pos - new Vector3(0, 0, pos.z);
             double distance = gesture.poses[currPoseIndex].timestamp / gesture.poses[gesture.poses.Count - 1].timestamp * 2.0f;
             if (!averageGesture)
             {
