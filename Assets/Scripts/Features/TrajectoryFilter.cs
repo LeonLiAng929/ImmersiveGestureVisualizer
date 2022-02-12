@@ -5,14 +5,16 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class TrajectoryFilter : MonoBehaviour
 {
+    [HideInInspector]
     public Color init;
     private XRSimpleInteractable xRSimpleInteractable;
+    [HideInInspector]
     public bool shown = true;
     // Start is called before the first frame update
     void Start()
     {
         xRSimpleInteractable = GetComponent<XRSimpleInteractable>();
-        xRSimpleInteractable.activated.AddListener(Filter);
+        xRSimpleInteractable.selectExited.AddListener(Filter);
     }
    
     // Update is called once per frame
@@ -21,7 +23,7 @@ public class TrajectoryFilter : MonoBehaviour
         
     }
 
-    private void Filter(ActivateEventArgs arg)
+    private void Filter(SelectExitEventArgs arg)
     {
         if (shown)
         {

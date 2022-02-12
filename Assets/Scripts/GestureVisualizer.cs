@@ -186,6 +186,7 @@ public class GestureVisualizer : MonoBehaviour
         grab.GetComponent<MeshRenderer>().material.color = clusterColorDic[0];
         grab.GetComponent<BoardSnap>().SetBoundingBox();
         grab.GetComponent<BoardSnap>().ApplyBackground();
+        temp.transform.localPosition += temp.transform.forward;
         currBoard = temp;
 
     }
@@ -463,12 +464,17 @@ public class GestureVisualizer : MonoBehaviour
             {
                 if (!gGO.averageGesture)
                 {
-                    gGO.gameObject.AddComponent<ShowConnection>();
+                    GameObject connection = new GameObject("Connection");
+                    connection.transform.parent = gGO.gameObject.transform;
+                    connection.AddComponent<ShowConnection>();
+                    connection.SetActive(false);
+                    //gGO.gameObject.AddComponent<ShowConnection>();
                 }
             }
         }
-
-        if (Deploy.instance.IsDeploying())
+        
+        
+        /*if (Deploy.instance.IsDeploying())
         {
             foreach (KeyValuePair<int, GameObject> pair in GestureVisualizer.instance.clustersObjDic)
             {
@@ -478,7 +484,7 @@ public class GestureVisualizer : MonoBehaviour
                     gGO.gameObject.transform.Find("Trajectory").localRotation = Quaternion.Euler(90, 0, 0);
                 }
             }
-        }
+        }*/
         
         if (startup)
         {

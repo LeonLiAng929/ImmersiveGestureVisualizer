@@ -79,6 +79,16 @@ public class ClusterGameObject : MonoBehaviour
         else if (curr == Actions.Slidimation) { SwingAll(); }
     }
 
+    public void DisplayConnection()
+    {
+        GameObject clusterGameObj = GestureVisualizer.instance.GetClusterGameObjectById(clusterID);
+
+        List<GestureGameObject> gestures = new List<GestureGameObject>(clusterGameObj.GetComponentsInChildren<GestureGameObject>());
+        foreach (GestureGameObject gGO in gestures)
+        {
+            gGO.DisplayConnection();
+        }
+    }
     public void SwingAll()
     {
         GameObject clusterGameObj = GestureVisualizer.instance.GetClusterGameObjectById(clusterID);

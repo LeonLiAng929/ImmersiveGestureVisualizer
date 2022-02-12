@@ -104,6 +104,14 @@ public class GestureGameObject : MonoBehaviour
         xRSimpleInteractable.selectExited.RemoveAllListeners();
     }
 
+    public void DisplayConnection()
+    {
+        if (!averageGesture)
+        {
+            GameObject connection = transform.Find("Connection").gameObject;
+            connection.SetActive(!connection.activeSelf);
+        }
+    }
     public void PerformAction(SelectExitEventArgs arg)
     {
         Actions curr = ActionSwitcher.instance.GetCurrentAction();

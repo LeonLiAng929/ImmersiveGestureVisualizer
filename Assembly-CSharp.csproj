@@ -135,10 +135,11 @@
     <Compile Include="Assets\Scripts\Features\ResetFilter.cs" />
     <Compile Include="Assets\Scripts\DrawSkeleton.cs" />
     <Compile Include="Assets\Scripts\Features\ReCluster.cs" />
+    <Compile Include="Assets\Scripts\Features\NewCluster.cs" />
     <Compile Include="Assets\Scripts\Features\ShowConnection.cs" />
     <Compile Include="Assets\Scripts\TesttingScript\pressed.cs" />
     <Compile Include="Assets\Scripts\PlayerIconTracing.cs" />
-    <Compile Include="Assets\Scripts\Features\NewCluster.cs" />
+    <Compile Include="Assets\Scripts\Features\DisplayConnection.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Resources\7\crouch-3.xml" />

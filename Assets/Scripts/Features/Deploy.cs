@@ -30,7 +30,7 @@ public class Deploy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (XRRig.transform.localEulerAngles.x == 90)
+        /*if (XRRig.transform.localEulerAngles.x == 90)
         {
             if (!selectionIndicator.activeSelf)
             {
@@ -63,7 +63,7 @@ public class Deploy : MonoBehaviour
             }
             if (!avatar.activeSelf)
                 avatar.SetActive(true);
-        }
+        }*/
     }
 
     public void DeployRig(SelectExitEventArgs args)

@@ -58,12 +58,12 @@ public class Gesture2DObject : MonoBehaviour
     public void Initialize2DGesture()
     {
         Gesture TwoDimensionalGesture = gGO.gesture;
-        Transform[] transforms = TwoDModel.GetComponentsInChildren<Transform>();
-        for (int i = 1; i < transforms.Length; i++)
+        MeshRenderer[] transforms = TwoDModel.GetComponentsInChildren<MeshRenderer>();
+        for (int i = 0; i < transforms.Length; i++)
         {
-            Vector3 pos = TwoDimensionalGesture.poses[0].joints[i - 1].ToVector();
+            Vector3 pos = TwoDimensionalGesture.poses[0].joints[i].ToVector();
 
-            transforms[i].localPosition = pos - new Vector3(0,0,pos.z);
+            transforms[i].transform.localPosition = pos - new Vector3(0,0,pos.z);
         }
         MeshRenderer[] mrs = TwoDModel.GetComponentsInChildren<MeshRenderer>();
         foreach (MeshRenderer mr in mrs)
