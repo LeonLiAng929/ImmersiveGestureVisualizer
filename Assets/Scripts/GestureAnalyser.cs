@@ -49,9 +49,10 @@ public class GestureAnalyser : MonoBehaviour
         foreach (Gesture g in gestures)
         {
             Cluster temp = TryGetCluster(g.cluster);
-            temp.AddGesture(g, true);
+            List<Gesture> gli = new List<Gesture>();
+            gli.Add(g);
+            temp.AddGesture(gli, true);
         }
-
         // calculate barycenter for each cluster
 
         foreach (KeyValuePair<int, Cluster> pair in clusters)

@@ -4,49 +4,64 @@ using UnityEngine;
 
 public class Cluster
 {
-    private Gesture baryCentre;
-
-    private float consensus; // consensus of gestures in this cluster
-    private float similarity; // similarity of avg gesture of this cluster to the avg gesture of the entire dataset. 
+    private Gesture baryCentre = null;
+    private float consensus = -1; // consensus of gestures in this cluster
+    private float similarity = -1; // similarity of avg gesture of this cluster to the avg gesture of the entire dataset. 
     public int clusterID;
     private List<Gesture> gestures = new List<Gesture>();
 
-    public void AddGesture(Gesture g, bool init = false)
+    public void AddGesture(List<Gesture> gestureList, bool init = false)
     {
-        if (!gestures.Contains(g))
+        foreach (Gesture g in gestureList)
         {
-            g.cluster = clusterID;
-            gestures.Add(g);
-            if (!init)
+            if (!gestures.Contains(g))
             {
-                UpdateBarycentre();
-                UpdateConsensus();
+                g.cluster = clusterID;
+                gestures.Add(g);
             }
         }
-    }
-
-    public void RemoveGesture(Gesture g)
-    {
-        if (gestures.Contains(g))
+        if (!init)
         {
-            gestures.Remove(g);
             if (gestures.Count > 1)
             {
                 UpdateBarycentre();
                 UpdateConsensus();
             }
-            else if(gestures.Count == 1)
+            else if (gestures.Count == 1)
             {
                 SetBaryCentre(GetGestures()[0]);
                 UpdateConsensus();
             }
-            else
+        }
+    }
+
+    public void RemoveGesture(List<Gesture> gLi)
+    {
+        foreach (Gesture g in gLi)
+        {
+            if (gestures.Contains(g))
             {
-                // destroy the cluster
-                GestureVisualizer.instance.freeId.Add(clusterID);
-                GestureVisualizer.instance.DestroyClusterObjectById(clusterID);
-                
+                gestures.Remove(g);
             }
+        }
+        if (gestures.Count > 1)
+        {
+            UpdateBarycentre();
+            UpdateConsensus();
+        }
+        else if (gestures.Count == 1)
+        {
+            SetBaryCentre(GetGestures()[0]);
+            UpdateConsensus();
+        }
+        else
+        {
+            // destroy the cluster
+            GestureVisualizer.instance.freeId.Add(clusterID);
+            GestureVisualizer.instance.DestroyClusterObjectById(clusterID);
+            baryCentre = null;
+            consensus = -1;
+
         }
     }
 
@@ -123,7 +138,12 @@ public class Cluster
 
     public float GetSimilarity()
     {
-        return baryCentre.GetGlobalSimilarity();
+        if (baryCentre == null)
+        {
+            return similarity;
+        }
+        else
+            return baryCentre.GetGlobalSimilarity();
     }
 
 }

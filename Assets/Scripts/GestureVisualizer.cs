@@ -203,8 +203,6 @@ public class GestureVisualizer : MonoBehaviour
             }
         }
 
-        ArrangeLocationForGestures();
-
         // set size for the clusters in the scene
         foreach (KeyValuePair<int, GameObject> p in clustersObjDic)
         {
@@ -290,15 +288,15 @@ public class GestureVisualizer : MonoBehaviour
         {
             ArrangeLocationForGestures();
         }
-        else if(arrangementMode == 0)
+        else if (arrangementMode == 0)
         {
-            foreach(KeyValuePair<int,GameObject> pair in clustersObjDic)
+            foreach (KeyValuePair<int, GameObject> pair in clustersObjDic)
             {
                 ClusterGameObject cobj = pair.Value.transform.Find("ClusterVisualization").GetComponent<ClusterGameObject>();
                 cobj.ArrangeLocationForChildren();
             }
         }
-        else if(arrangementMode == 2)
+        else if (arrangementMode == 2)
         {
             List<int> rank = GestureAnalyser.instance.Sort();
             int distance = 3;
@@ -315,14 +313,30 @@ public class GestureVisualizer : MonoBehaviour
             }
         }
         Dictionary<int, Cluster> clusters = GestureAnalyser.instance.GetClusters();
+
         // set size for the clusters in the scene
-        foreach (KeyValuePair<int, GameObject> p in clustersObjDic)
+        if (arrangementMode == 4 || arrangementMode == 3)
         {
-            if (p.Value != null)
+            foreach (KeyValuePair<int, GameObject> p in clustersObjDic)
             {
-                ClusterGameObject a = p.Value.GetComponentInChildren<ClusterGameObject>();
-                float count = Mathf.Sqrt(clusters[p.Key].GestureCount());
-                a.InitializeClusterVisualizationScale(new Vector3(count, count, count));
+                if (p.Value != null)
+                {
+                    ClusterGameObject a = p.Value.GetComponentInChildren<ClusterGameObject>();
+                    float count = Mathf.Sqrt(Mathf.Sqrt(clusters[p.Key].GestureCount()));
+                    a.InitializeClusterVisualizationScale(new Vector3(count, count, count));
+                }
+            }
+        }
+        else
+        {
+            foreach (KeyValuePair<int, GameObject> p in clustersObjDic)
+            {
+                if (p.Value != null)
+                {
+                    ClusterGameObject a = p.Value.GetComponentInChildren<ClusterGameObject>();
+                    float count = Mathf.Sqrt(Mathf.Sqrt(clusters[p.Key].GestureCount()));
+                    a.InitializeClusterVisualizationScale(new Vector3(count, count, count));
+                }
             }
         }
     }
