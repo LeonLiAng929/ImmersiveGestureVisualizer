@@ -42,6 +42,8 @@ public class ClusterGameObject : MonoBehaviour
         // set cluster size 
         Transform trans = GetComponent<Transform>();
         trans.localScale = scale;
+        Vector3 pos = baryCentreVis.transform.localPosition;
+        baryCentreVis.transform.localPosition = new Vector3(pos.x, 0, pos.z);
 
         if (scale.y > 1)
         {
@@ -67,13 +69,7 @@ public class ClusterGameObject : MonoBehaviour
         Actions curr = ActionSwitcher.instance.GetCurrentAction();
         if (curr == Actions.StackGestures) { StackAll(); }
         else if (curr == Actions.UnfoldCluster) { UnfoldCluster(); }
-        else if (curr == Actions.ChangeCluster) { ChangeCluster();
-            int original = GestureVisualizer.instance.arrangementMode;
-            GestureVisualizer.instance.arrangementMode = 1;
-            GestureVisualizer.instance.AdjustClusterPosition();
-            GestureVisualizer.instance.arrangementMode = original;
-            GestureVisualizer.instance.AdjustClusterPosition();
-        }
+        else if (curr == Actions.ChangeCluster) { ChangeCluster(); }
         else if (curr == Actions.Animate) { ActivateAnimate(); }
         else if (curr == Actions.ShowSmallMultiples) { ShowSmallMultiples(); }
         else if (curr == Actions.Slidimation) { SwingAll(); }
@@ -102,10 +98,10 @@ public class ClusterGameObject : MonoBehaviour
     public void ShowSmallMultiples()
     {
         GameObject clusterGameObj = GestureVisualizer.instance.GetClusterGameObjectById(clusterID);
-        GestureGameObject averageGes = clusterGameObj.GetComponent<Transform>().Find("AverageGesture").gameObject.GetComponent<GestureGameObject>();
+        //GestureGameObject averageGes = clusterGameObj.GetComponent<Transform>().Find("AverageGesture").gameObject.GetComponent<GestureGameObject>();
 
         List<GestureGameObject> gestures = new List<GestureGameObject>(clusterGameObj.GetComponentsInChildren<GestureGameObject>(true));
-        gestures.Remove(averageGes);
+        //gestures.Remove(averageGes);
         foreach(GestureGameObject gGO in gestures)
         {
             gGO.ShowSmallMultiples();
@@ -291,7 +287,7 @@ public class ClusterGameObject : MonoBehaviour
         List<GestureGameObject> gestures = new List<GestureGameObject>(clusterGameObj.GetComponentsInChildren<GestureGameObject>(true));
         foreach(GestureGameObject gGO in gestures)
         {
-            gGO.gameObject.transform.localPosition = new Vector3(gGO.gesture.PCA_Coordinate.x*5, gGO.gameObject.transform.localPosition.y, gGO.gesture.PCA_Coordinate.y*5);
+            gGO.gameObject.transform.localPosition = new Vector3(gGO.gesture.PCA_Coordinate.x*10, gGO.gameObject.transform.localPosition.y, gGO.gesture.PCA_Coordinate.y*10);
         }
     }
 

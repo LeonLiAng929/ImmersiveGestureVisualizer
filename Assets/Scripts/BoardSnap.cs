@@ -10,6 +10,10 @@ public class BoardSnap : MonoBehaviour
     public GameObject background;
     public GameObject SnapOptions;
     public Vector2 lengthByWidth = new Vector2(); //e.g. (2,3) means the board is 2f of length and 3f of width;
+    float minX = float.PositiveInfinity;
+    float maxX = float.NegativeInfinity;
+    float minY = float.PositiveInfinity;
+    float maxY = float.NegativeInfinity;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,9 +23,9 @@ public class BoardSnap : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        if (xRGrab.isSelected)
+        if (other.gameObject.name == "Grab")
         {
-            if (other.gameObject.name=="Grab")
+            if (xRGrab.isSelected)
             {
                 other.gameObject.GetComponent<BoardSnap>().DisplaySnapOptions();
             }
@@ -41,10 +45,7 @@ public class BoardSnap : MonoBehaviour
 
     public void SetBoundingBox()
     {
-        float minX = float.PositiveInfinity;
-        float maxX = float.NegativeInfinity;
-        float minY = float.PositiveInfinity;
-        float maxY = float.NegativeInfinity;
+        
 
         Gesture2DObject[] uiRefList = transform.parent.Find("Contents").GetComponentsInChildren<Gesture2DObject>(true);
         foreach (Gesture2DObject obj in uiRefList)
@@ -71,6 +72,8 @@ public class BoardSnap : MonoBehaviour
 
     public void ApplyBackground()
     {
-        background.transform.localScale = new Vector3(lengthByWidth.x + 0.24f, lengthByWidth.y +0.24f, 1); 
+        background.transform.localScale = new Vector3(lengthByWidth.x + 0.24f, lengthByWidth.y +0.24f, 1);
+        Vector3 temp = background.transform.localPosition;
+        background.transform.localPosition = new Vector3(temp.x, maxY - lengthByWidth.y / 2, temp.z);
     }
 }

@@ -45,7 +45,7 @@ public class ClusterTag : XRTag
         if (cluster.GestureCount() > 0)
         {
             textTagTrans.LookAt(2 * textTagTrans.position - Camera.main.gameObject.transform.position);
-            textTag.transform.position = gameObject.transform.position + new Vector3(0, offsetY * Mathf.Sqrt(cluster.GestureCount()), 0);
+            textTag.transform.position = gameObject.transform.position + new Vector3(0, offsetY * Mathf.Sqrt(Mathf.Sqrt(cluster.GestureCount())), 0);
         }
     }
 }

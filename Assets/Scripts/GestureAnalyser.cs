@@ -24,8 +24,10 @@ public class GestureAnalyser : MonoBehaviour
         // loading and wranglng raw data
         IO xmlLoader = new IO();
 
-        //temporarily hardcoded to angrylike a bear.
-        gestures = xmlLoader.LoadXML("angry like a bear");
+        //temporarily hardcoded to angry like a bear.
+        //scratch like a cat
+        //draw circle
+        gestures = xmlLoader.LoadXML("draw circle");
 
         foreach (Gesture g in gestures)
         {
@@ -47,7 +49,16 @@ public class GestureAnalyser : MonoBehaviour
     {
         k = _k;
         //clustering
-        PythonRunner.RunFile("Assets/Scripts/K_MeanClustering.py");
+        if(k == 1) { 
+            foreach(Gesture g in gestures)
+            {
+                g.cluster = 0;
+            }
+        }
+        else
+        {
+           PythonRunner.RunFile("Assets/Scripts/K_MeanClustering.py");
+        }
 
         //Calculate the barycentre for the dataset
         CSharp2Python(gestures);
@@ -92,7 +103,17 @@ public class GestureAnalyser : MonoBehaviour
         k = _k;
         PCA_Arrangement();
         //clustering
-        PythonRunner.RunFile("Assets/Scripts/KmeansPCA.py");
+        if (k == 1)
+        {
+            foreach (Gesture g in gestures)
+            {
+                g.cluster = 0;
+            }
+        }
+        else
+        {
+            PythonRunner.RunFile("Assets/Scripts/KmeansPCA.py");
+        }
         List<List<float>> clusterCentres = new List<List<float>>();
         foreach(List<float> coordinate in pythonResult)
         {
@@ -142,7 +163,17 @@ public class GestureAnalyser : MonoBehaviour
         k = _k;
         MDS_Arrangement();
         //clustering
-        PythonRunner.RunFile("Assets/Scripts/KmeansMDS.py");
+        if (k == 1)
+        {
+            foreach (Gesture g in gestures)
+            {
+                g.cluster = 0;
+            }
+        }
+        else
+        {
+            PythonRunner.RunFile("Assets/Scripts/KmeansMDS.py");
+        }
         List<List<float>> clusterCentres = new List<List<float>>();
         foreach (List<float> coordinate in pythonResult)
         {

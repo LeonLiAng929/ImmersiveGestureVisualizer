@@ -47,7 +47,7 @@ public class GestureVisualizer : MonoBehaviour
     public List<Color> trajectoryColorSet = new List<Color>();
     private Dictionary<int, Color> clusterColorDic = new Dictionary<int, Color>();
     [HideInInspector]
-    public int arrangementMode = 1; // 0 = local, 1 = global, 2 = line-up, 3=PCA, 4=MDS
+    public int arrangementMode = 3; // 0 = local, 1 = global, 2 = line-up, 3=PCA, 4=MDS
     public InputDevice rightController;
     public InputDevice leftController;
     [HideInInspector]
@@ -84,7 +84,7 @@ public class GestureVisualizer : MonoBehaviour
     [HideInInspector]
     public List<GameObject> uiRefList = new List<GameObject>();
     [HideInInspector]
-    public int k = 0;
+    public int k = 1;
     [HideInInspector]
     public ClusteringRationales clusteringRationale = ClusteringRationales.DBA; // 0:DBA, 1:PCA, 2:MDS
     [HideInInspector]
@@ -160,6 +160,9 @@ public class GestureVisualizer : MonoBehaviour
         proposedGestureObj.transform.Find("ShoulderRight").GetComponent<TubeRenderer>().points = new Vector3[] { };
         //Deploy.instance._DeployRig();
         //Initialize2DBoard();
+        k = 1;
+        arrangementMode = 3;
+        InitializeVisualization();
     }
     public void Initialize2DBoard()
     {
@@ -262,7 +265,7 @@ public class GestureVisualizer : MonoBehaviour
         string key = reference.gGO.gesture.id.ToString() + '-' + reference.gGO.gesture.trial;
         foreach (GameObject board in boardRecords)
         {
-            Gesture2DObject[] oldUiRefList = board.GetComponentsInChildren<Gesture2DObject>();
+            Gesture2DObject[] oldUiRefList = board.GetComponentsInChildren<Gesture2DObject>(true);
             Gesture2DObject uiref = oldUiRefList[uiLinkDic[key]];
             if(uiref.AnimationIndicator.activeSelf != reference.AnimationIndicator.activeSelf)
                 uiref.AnimationIndicator.SetActive(reference.AnimationIndicator.activeSelf);
@@ -605,14 +608,30 @@ public class GestureVisualizer : MonoBehaviour
             }
         }
         Dictionary<int, Cluster> clusters = GestureAnalyser.instance.GetClusters();
+
         // set size for the clusters in the scene
-        foreach (KeyValuePair<int, GameObject> p in clustersObjDic)
+        if (arrangementMode == 4 || arrangementMode == 3)
         {
-            if (p.Value != null)
+            foreach (KeyValuePair<int, GameObject> p in clustersObjDic)
             {
-                ClusterGameObject a = p.Value.GetComponentInChildren<ClusterGameObject>();
-                float count = Mathf.Sqrt(clusters[p.Key].GestureCount());
-                a.InitializeClusterVisualizationScale(new Vector3(count, count, count));
+                if (p.Value != null)
+                {
+                    ClusterGameObject a = p.Value.GetComponentInChildren<ClusterGameObject>();
+                    float count = Mathf.Sqrt(Mathf.Sqrt(clusters[p.Key].GestureCount()));
+                    a.InitializeClusterVisualizationScale(new Vector3(count, count, count));
+                }
+            }
+        }
+        else
+        {
+            foreach (KeyValuePair<int, GameObject> p in clustersObjDic)
+            {
+                if (p.Value != null)
+                {
+                    ClusterGameObject a = p.Value.GetComponentInChildren<ClusterGameObject>();
+                    float count = Mathf.Sqrt(Mathf.Sqrt(clusters[p.Key].GestureCount()));
+                    a.InitializeClusterVisualizationScale(new Vector3(count, count, count));
+                }
             }
         }
     }
@@ -753,6 +772,27 @@ public class GestureVisualizer : MonoBehaviour
 
         InstantiateTrajectory(newGesVis, GestureAnalyser.instance.GetClusterByID(a.clusterID).GetBaryCentre());
         UpdateGlowingFieldColour(newGesVis);
+        // instantiate small-multiples 
+        Gesture g = newGesVis.GetComponent<GestureGameObject>().gesture;
+        List<Pose> sampled = g.Resample(5).poses;
+        float x = 0.7f;
+        int samplePoseIndex = 1;
+        foreach (Pose p in sampled)
+        {
+            GameObject skeleton = Instantiate(skeletonModel, newGesVisTrans.GetComponent<Transform>().Find("SmallMultiples").GetComponent<Transform>());
+            skeleton.name = g.gestureType + g.id.ToString() + "-Pose" + samplePoseIndex.ToString();
+            samplePoseIndex++;
+            Transform[] transforms = skeleton.GetComponentsInChildren<Transform>();
+            transforms[0].localPosition = new Vector3(0, 0, x);
+            x += 0.5f;
+
+            for (int i = 1; i < p.num_of_joints + 1; i++)
+            {
+
+                transforms[i].localPosition = p.joints[i - 1].ToVector();
+            }
+        }
+        newGesVisTrans.GetComponent<Transform>().Find("SmallMultiples").gameObject.SetActive(false);
         newGesVis.GetComponent<GestureGameObject>().Initialize();
     }
     public void InstantiateTrajectory(GameObject gestureVis, Gesture g)

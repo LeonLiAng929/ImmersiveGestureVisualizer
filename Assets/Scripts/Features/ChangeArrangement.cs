@@ -15,13 +15,13 @@ public class ChangeArrangement : MonoBehaviour
     public Material PCA;
     public Material MDS;
 
-    private int mode = 0; //0 = local, 1=global, 2 = lineUp, 3 = PCA
+    private int mode = 3; //0 = local, 1=global, 2 = lineUp, 3 = PCA
     // Start is called before the first frame update
     void Start()
     {
         xRSimpleInteractable = GetComponent<XRSimpleInteractable>();
         xRSimpleInteractable.selectExited.AddListener(Rearrange);
-        gameObject.GetComponent<MeshRenderer>().material = global;
+        gameObject.GetComponent<MeshRenderer>().material = PCA;
         instance = this;
     }
 

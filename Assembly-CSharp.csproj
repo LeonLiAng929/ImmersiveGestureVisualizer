@@ -96,6 +96,7 @@
     <Compile Include="Assets\TubeRenderer\Examples\Assets\Volume.cs" />
     <Compile Include="Assets\Scripts\TrajectoryTracer.cs" />
     <Compile Include="Assets\Scripts\Features\UITag.cs" />
+    <Compile Include="Assets\Scripts\Features\DisplayConnection.cs" />
     <Compile Include="Assets\Scripts\GestureAnalyser.cs" />
     <Compile Include="Assets\TubeRenderer\Examples\Assets\Slide.cs" />
     <Compile Include="Assets\Scripts\Extension.cs" />
@@ -139,7 +140,6 @@
     <Compile Include="Assets\Scripts\Features\ShowConnection.cs" />
     <Compile Include="Assets\Scripts\TesttingScript\pressed.cs" />
     <Compile Include="Assets\Scripts\PlayerIconTracing.cs" />
-    <Compile Include="Assets\Scripts\Features\DisplayConnection.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Resources\7\crouch-3.xml" />
@@ -513,6 +513,7 @@
     <None Include="Assets\Resources\6\jump-3.xml" />
     <None Include="Assets\Resources\10\draw square-2.xml" />
     <None Include="Assets\Resources\9\draw flower-3.xml" />
+    <None Include="Assets\Materials\Unlit_TransparentColor.shader" />
     <None Include="Assets\Resources\12\scratch like a cat-2.xml" />
     <None Include="Assets\Resources\11\angry like a bear-3.xml" />
     <None Include="Assets\Resources\29\draw square-3.xml" />

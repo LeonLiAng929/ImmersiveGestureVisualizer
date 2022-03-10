@@ -28,7 +28,7 @@ public class DecrementCluster : MonoBehaviour
 
     private void Decrement(SelectExitEventArgs args)
     {
-        if (GestureVisualizer.instance.k > 0)
+        if (GestureVisualizer.instance.k > 1)
         {
             GestureVisualizer.instance.k -= 1;
             text.text = "No. of Clusters: \n" + GestureVisualizer.instance.k.ToString();
