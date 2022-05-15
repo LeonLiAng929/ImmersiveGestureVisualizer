@@ -35,8 +35,8 @@ flattened = np.asarray(flattened)
 mds = MDS(n_components=2)
 #mds.fit(flattened)
 output = mds.fit_transform(flattened)
-print(output.shape)
-print(output)
+#print(output.shape)
+#print(output)
 gestureAnalyzer.InitializePythonResult(len(output), len(output[0]))
 
 for i in range(0, len(output)):

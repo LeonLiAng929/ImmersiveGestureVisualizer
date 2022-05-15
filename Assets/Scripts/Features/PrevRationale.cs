@@ -25,17 +25,17 @@ public class PrevRationale : MonoBehaviour
     {
         if (GestureVisualizer.instance.clusteringRationale == ClusteringRationales.DBA)
         {
-            GestureVisualizer.instance.clusteringRationale = ClusteringRationales.MDS;
+            GestureVisualizer.instance.clusteringRationale = ClusteringRationales.K_Means_MDS;
             text.text = "Rationale: \n" + "MDS";
         }
-        else if(GestureVisualizer.instance.clusteringRationale == ClusteringRationales.PCA)
+        else if(GestureVisualizer.instance.clusteringRationale == ClusteringRationales.K_Means_PCA)
         {
             GestureVisualizer.instance.clusteringRationale = ClusteringRationales.DBA;
             text.text = "Rationale: \n" + "DBA";
         }
-        else if (GestureVisualizer.instance.clusteringRationale == ClusteringRationales.MDS)
+        else if (GestureVisualizer.instance.clusteringRationale == ClusteringRationales.K_Means_MDS)
         {
-            GestureVisualizer.instance.clusteringRationale = ClusteringRationales.PCA;
+            GestureVisualizer.instance.clusteringRationale = ClusteringRationales.K_Means_PCA;
             text.text = "Rationale: \n" + "PCA";
         }
     }

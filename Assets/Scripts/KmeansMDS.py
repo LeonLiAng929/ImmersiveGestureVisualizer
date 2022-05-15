@@ -24,14 +24,14 @@ for g in gestures:
     dataset_to_train.append(coord)
 
 dataset_to_train = np.asarray(dataset_to_train)
-print(dataset_to_train.shape)
+#print(dataset_to_train.shape)
 
 #dataset_to_train = to_time_series_dataset(dataset_to_train)
 #print(dataset_to_train.shape)
 
 kmeans = KMeans(n_clusters=gestureAnalyzer.k, init='k-means++', verbose=1).fit(dataset_to_train)
-print(kmeans.labels_)
-print(kmeans.cluster_centers_.shape)
+#print(kmeans.labels_)
+#print(kmeans.cluster_centers_.shape)
 
 for i in range(0, len(gestures)):
     gestures[i].cluster = int(kmeans.labels_[i])

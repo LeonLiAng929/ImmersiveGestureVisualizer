@@ -6,7 +6,8 @@ public class GestureAnalyser : MonoBehaviour
 {
     [SerializeField]
     public int k;  // k for k-means clustering
-
+    public bool estimationOnly = true; // whether use meanshift for estimation or clustering
+    public int kPrediction; // number of k predicted by meanshift
     public List<List<List<float>>> pythonArguments = new List<List<List<float>>>();
     public List<List<float>> pythonResult = new List<List<float>>();
     public float similarityScore = 0;
@@ -27,7 +28,7 @@ public class GestureAnalyser : MonoBehaviour
         //temporarily hardcoded to angry like a bear.
         //scratch like a cat
         //draw circle
-        gestures = xmlLoader.LoadXML("draw circle");
+        gestures = xmlLoader.LoadXML("angry like a bear");
 
         foreach (Gesture g in gestures)
         {
@@ -41,9 +42,9 @@ public class GestureAnalyser : MonoBehaviour
 
     private void Start()
     {
-        //PCA_Arrangement();
-        //PythonRunner.RunFile("Assets/Scripts/K_Means_PCA.py");
         
+        //PCA_Arrangement();
+        //PythonRunner.RunFile("Assets/Scripts/MeanShiftNormalisedRaw.py");
     }
     public void InitializeClusters_DBA(int _k)
     {
@@ -98,7 +99,7 @@ public class GestureAnalyser : MonoBehaviour
         MDS_Arrangement();
     }
 
-    public void InitializeClusters_PCA(int _k)
+    public void InitializeClusters_PCA_Kmeans(int _k)
     {
         k = _k;
         PCA_Arrangement();
@@ -158,7 +159,7 @@ public class GestureAnalyser : MonoBehaviour
         MDS_Arrangement();
     }
 
-    public void InitializeClusters_MDS(int _k)
+    public void InitializeClusters_MDS_Kmeans(int _k)
     {
         k = _k;
         MDS_Arrangement();
@@ -216,6 +217,199 @@ public class GestureAnalyser : MonoBehaviour
         }
         CalculateGlobalConsensus();
         PCA_Arrangement();
+    }
+
+    public void InitializeClusters_MDS_MeanShift()
+    {
+        estimationOnly = false;
+        MDS_Arrangement();
+        //clustering
+     
+        PythonRunner.RunFile("Assets/Scripts/MeanShiftMDS.py");
+        List<List<float>> clusterCentres = new List<List<float>>();
+        foreach (List<float> coordinate in pythonResult)
+        {
+            clusterCentres.Add(coordinate);
+        }
+
+        //Calculate the barycentre for the dataset
+        CSharp2Python(gestures);
+        PythonRunner.RunFile("Assets/Scripts/BaryCentre.py");
+        averageGesture = Python2CSharp();
+        averageGesture.SetBoundingBox();
+        averageGesture.SetCentroid();
+
+        // initialize clusters
+        foreach (Gesture g in gestures)
+        {
+            Cluster temp = TryGetCluster(g.cluster);
+            List<Gesture> gli = new List<Gesture>();
+            gli.Add(g);
+            temp.AddGesture(gli, true);
+        }
+
+        // calculate barycenter for each cluster
+
+        foreach (KeyValuePair<int, Cluster> pair in clusters)
+        {
+            if (pair.Value.GestureCount() > 1)
+            {
+                //CalculateBaryCentre(pair.Value.GetGestures());
+                //pair.Value.SetBaryCentre(Python2CSharp());
+                pair.Value.UpdateBarycentre();
+                pair.Value.UpdateConsensus();
+            }
+            else
+            {
+                pair.Value.SetBaryCentre(pair.Value.GetGestures()[0]);
+                pair.Value.UpdateConsensus();
+            }
+            pair.Value.SetBaryCentreMDS_Coord(new Vector2(clusterCentres[pair.Key][0], clusterCentres[pair.Key][1]));
+        }
+        CalculateGlobalConsensus();
+        PCA_Arrangement();
+        GestureVisualizer.instance.k = k;
+    }
+
+    public void InitializeClusters_PCA_MeanShift()
+    {
+        estimationOnly = false;
+        MDS_Arrangement();
+        //clustering
+
+        PythonRunner.RunFile("Assets/Scripts/MeanShiftPCA.py");
+        List<List<float>> clusterCentres = new List<List<float>>();
+        foreach (List<float> coordinate in pythonResult)
+        {
+            clusterCentres.Add(coordinate);
+        }
+
+        //Calculate the barycentre for the dataset
+        CSharp2Python(gestures);
+        PythonRunner.RunFile("Assets/Scripts/BaryCentre.py");
+        averageGesture = Python2CSharp();
+        averageGesture.SetBoundingBox();
+        averageGesture.SetCentroid();
+
+        // initialize clusters
+        foreach (Gesture g in gestures)
+        {
+            Cluster temp = TryGetCluster(g.cluster);
+            List<Gesture> gli = new List<Gesture>();
+            gli.Add(g);
+            temp.AddGesture(gli, true);
+        }
+
+        // calculate barycenter for each cluster
+
+        foreach (KeyValuePair<int, Cluster> pair in clusters)
+        {
+            if (pair.Value.GestureCount() > 1)
+            {
+                //CalculateBaryCentre(pair.Value.GetGestures());
+                //pair.Value.SetBaryCentre(Python2CSharp());
+                pair.Value.UpdateBarycentre();
+                pair.Value.UpdateConsensus();
+            }
+            else
+            {
+                pair.Value.SetBaryCentre(pair.Value.GetGestures()[0]);
+                pair.Value.UpdateConsensus();
+            }
+            pair.Value.SetBaryCentreMDS_Coord(new Vector2(clusterCentres[pair.Key][0], clusterCentres[pair.Key][1]));
+        }
+        CalculateGlobalConsensus();
+        MDS_Arrangement();
+        GestureVisualizer.instance.k = k;
+    }
+
+    public void InitializeClusters_Raw_MeanShift()
+    {
+        estimationOnly = false;
+
+        //clustering
+        List<Gesture> g = new List<Gesture>();
+        foreach (Gesture a in gestures)
+        {
+            g.Add(a.Resample(10));
+        }
+        CSharp2Python(g);
+
+        PythonRunner.RunFile("Assets/Scripts/MeanShiftNormalisedRaw.py");
+        List<List<float>> clusterCentres = new List<List<float>>();
+        foreach (List<float> coordinate in pythonResult)
+        {
+            clusterCentres.Add(coordinate);
+        }
+
+        //Calculate the barycentre for the dataset
+        CSharp2Python(gestures);
+        PythonRunner.RunFile("Assets/Scripts/BaryCentre.py");
+        averageGesture = Python2CSharp();
+        averageGesture.SetBoundingBox();
+        averageGesture.SetCentroid();
+
+        // initialize clusters
+        foreach (Gesture ges in gestures)
+        {
+            Cluster temp = TryGetCluster(ges.cluster);
+            List<Gesture> gli = new List<Gesture>();
+            gli.Add(ges);
+            temp.AddGesture(gli, true);
+        }
+
+        // calculate barycenter for each cluster
+
+        foreach (KeyValuePair<int, Cluster> pair in clusters)
+        {
+            if (pair.Value.GestureCount() > 1)
+            {
+                //CalculateBaryCentre(pair.Value.GetGestures());
+                //pair.Value.SetBaryCentre(Python2CSharp());
+                pair.Value.UpdateBarycentre();
+                pair.Value.UpdateConsensus();
+            }
+            else
+            {
+                pair.Value.SetBaryCentre(pair.Value.GetGestures()[0]);
+                pair.Value.UpdateConsensus();
+            }
+            pair.Value.SetBaryCentreMDS_Coord(new Vector2(clusterCentres[pair.Key][0], clusterCentres[pair.Key][1]));
+        }
+        CalculateGlobalConsensus();
+        PCA_Arrangement();
+        MDS_Arrangement();
+        GestureVisualizer.instance.k = k;
+    }
+
+    /// <summary>
+    /// Returns the number of clusters predicted by applying meanshift to gesture data dimensionally reduced by MDS
+    /// </summary>
+    public int kPredictionMDS()
+    {
+        estimationOnly = true;
+        PythonRunner.RunFile("Assets/Scripts/MeanShiftMDS.py");
+        return kPrediction;
+    }
+
+    public int kPredictionPCA()
+    {
+        estimationOnly = true;
+        PythonRunner.RunFile("Assets/Scripts/MeanShiftPCA.py");
+        return kPrediction;
+    }
+
+    public int kPredictionRaw()
+    {
+        List<Gesture> g = new List<Gesture>();
+        foreach (Gesture a in gestures)
+        {
+            g.Add(a.Resample(10));
+        }
+        CSharp2Python(g);
+        estimationOnly = true;
+        PythonRunner.RunFile("Assets/Scripts/MeanShiftNormalisedRaw.py");
+        return kPrediction;
     }
     public int GetGestureCount()
     {

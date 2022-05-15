@@ -23,4 +23,4 @@ score = dtw(g1, g2)
 
 gestureAnalyzer.similarityScore = score
 
-print(score)
+#print(score)

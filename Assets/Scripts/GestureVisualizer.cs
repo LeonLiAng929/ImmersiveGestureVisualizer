@@ -353,13 +353,20 @@ public class GestureVisualizer : MonoBehaviour
         gesVisPrefab.SetActive(true);
         GesUiPrefab.SetActive(true);
         UiPenalPrefab.SetActive(true);
-
+        clusteringRationale = ClusteringRationales.Mean_Shift_Raw;
         if (clusteringRationale == ClusteringRationales.DBA)
             GestureAnalyser.instance.InitializeClusters_DBA(k);
-        else if (clusteringRationale == ClusteringRationales.PCA)
-            GestureAnalyser.instance.InitializeClusters_PCA(k);
-        else if (clusteringRationale == ClusteringRationales.MDS)
-            GestureAnalyser.instance.InitializeClusters_MDS(k);
+        else if (clusteringRationale == ClusteringRationales.K_Means_PCA)
+            GestureAnalyser.instance.InitializeClusters_PCA_Kmeans(k);
+        else if (clusteringRationale == ClusteringRationales.K_Means_MDS)
+            GestureAnalyser.instance.InitializeClusters_MDS_Kmeans(k);
+        else if (clusteringRationale == ClusteringRationales.Mean_Shift_PCA)
+            GestureAnalyser.instance.InitializeClusters_PCA_MeanShift();
+        else if (clusteringRationale == ClusteringRationales.Mean_Shift_MDS)
+            GestureAnalyser.instance.InitializeClusters_MDS_MeanShift();
+        else if (clusteringRationale == ClusteringRationales.Mean_Shift_Raw)
+            GestureAnalyser.instance.InitializeClusters_Raw_MeanShift();
+
         List<Gesture> gestures = GestureAnalyser.instance.GetGestures();
 
         //instantiate Cluster visualizations
