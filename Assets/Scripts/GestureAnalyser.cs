@@ -18,17 +18,28 @@ public class GestureAnalyser : MonoBehaviour
     #region Singleton
     public static GestureAnalyser instance;
     #endregion
+    private IO xmlLoader = new IO();
     // Start is called before the first frame update
     void Awake()
     {
         instance = this;
-        // loading and wranglng raw data
-        IO xmlLoader = new IO();
+    }
+
+    private void Start()
+    {
+        
+        //PCA_Arrangement();
+        //PythonRunner.RunFile("Assets/Scripts/MeanShiftNormalisedRaw.py");
+    }
+
+    public void LoadData(string referentName)
+    {
+        // loads and wrangles the raw data
 
         //temporarily hardcoded to angry like a bear.
         //scratch like a cat
         //draw circle
-        gestures = xmlLoader.LoadXML("angry like a bear");
+        gestures = xmlLoader.LoadXML(referentName);
 
         foreach (Gesture g in gestures)
         {
@@ -37,14 +48,6 @@ public class GestureAnalyser : MonoBehaviour
             g.TranslateToOrigin();
             g.NormalizeHeight();
         }
-
-    }
-
-    private void Start()
-    {
-        
-        //PCA_Arrangement();
-        //PythonRunner.RunFile("Assets/Scripts/MeanShiftNormalisedRaw.py");
     }
     public void InitializeClusters_DBA(int _k)
     {
@@ -382,6 +385,18 @@ public class GestureAnalyser : MonoBehaviour
         GestureVisualizer.instance.k = k;
     }
 
+    /// <summary>
+    /// calculates the average gesture for the entire dataset
+    /// </summary>
+    public void CalculateAverageGestureForDataset()
+    {
+        CSharp2Python(gestures);
+        PythonRunner.RunFile("Assets/Scripts/BaryCentre.py");
+        averageGesture = Python2CSharp();
+        averageGesture.SetBoundingBox();
+        averageGesture.SetCentroid();
+    }
+    
     /// <summary>
     /// Returns the number of clusters predicted by applying meanshift to gesture data dimensionally reduced by MDS
     /// </summary>
