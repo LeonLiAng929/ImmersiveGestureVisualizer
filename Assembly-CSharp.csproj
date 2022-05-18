@@ -77,6 +77,7 @@
     <Compile Include="Assets\Scripts\ShowHideBoardContents.cs" />
     <Compile Include="Assets\Scripts\Features\DisplayMap.cs" />
     <Compile Include="Assets\TubeRenderer\Examples\Assets\Shared\ExampleHelpers.cs" />
+    <Compile Include="Assets\Scripts\Features\PreviewSwitcher.cs" />
     <Compile Include="Assets\Scripts\GestureTag.cs" />
     <Compile Include="Assets\Scripts\GestureGameObject.cs" />
     <Compile Include="Assets\Scripts\Features\MoveGesture.cs" />
@@ -110,6 +111,7 @@
     <Compile Include="Assets\TubeRenderer\Examples\Assets\Flower.cs" />
     <Compile Include="Assets\Scripts\Features\TrajectoryFilter.cs" />
     <Compile Include="Assets\Scripts\Obsolete\HandPrescence.cs" />
+    <Compile Include="Assets\Scripts\Features\DatasetSelection.cs" />
     <Compile Include="Assets\Scripts\Obsolete\Extensions.cs" />
     <Compile Include="Assets\Scripts\ClusterGameObject.cs" />
     <Compile Include="Assets\Scripts\TesttingScript\ChangeColor.cs" />
@@ -124,6 +126,7 @@
     <Compile Include="Assets\Scripts\Features\CancelSearch.cs" />
     <Compile Include="Assets\Scripts\Features\LookAtMe.cs" />
     <Compile Include="Assets\Scripts\BoardControl.cs" />
+    <Compile Include="Assets\Scripts\Features\DatasetPreview.cs" />
     <Compile Include="Assets\Scripts\Obsolete\DBA.cs" />
     <Compile Include="Assets\Scripts\Features\PrevRationale.cs" />
     <Compile Include="Assets\VR Beginner\Scripts\Gameplay\HandPrefab.cs" />
@@ -143,9 +146,6 @@
     <Compile Include="Assets\Scripts\Features\ShowConnection.cs" />
     <Compile Include="Assets\Scripts\TesttingScript\pressed.cs" />
     <Compile Include="Assets\Scripts\PlayerIconTracing.cs" />
-    <Compile Include="Assets\Scripts\Features\DatasetSelection.cs" />
-    <Compile Include="Assets\Scripts\Features\DatasetPreview.cs" />
-    <Compile Include="Assets\Scripts\Features\PreviewSwitcher.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Resources\7\crouch-3.xml" />

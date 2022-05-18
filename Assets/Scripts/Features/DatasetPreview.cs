@@ -20,7 +20,7 @@ public class DatasetPreview : MonoBehaviour
     private int numOfGestures;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         xRSimpleInteractable = GetComponent<XRSimpleInteractable>();
         xRSimpleInteractable.firstHoverEntered.AddListener(PreviewDataset);
