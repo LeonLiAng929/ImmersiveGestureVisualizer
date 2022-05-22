@@ -4,3 +4,4 @@ Logs/
 *.opendb
 *.log
 *.log
+shadercompiler-UnityShaderCompiler.exe*.log
