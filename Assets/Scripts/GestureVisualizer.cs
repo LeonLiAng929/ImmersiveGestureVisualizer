@@ -217,7 +217,7 @@ public class GestureVisualizer : MonoBehaviour
             uiLinkDic.Add(gestureGameObjs[i].gesture.id.ToString() + '-' + gestureGameObjs[i].gesture.trial, i);
             uiRefList[i].GetComponent<MeshRenderer>().material.color = GetColorByCluster(gestureGameObjs[i].gesture.cluster);
             gestureGameObjs[i].uiRef = uiRefList[i].GetComponent<Gesture2DObject>();
-            uiRefList[i].GetComponent<Gesture2DObject>().GesInfo.text = gestureGameObjs[i].gesture.id.ToString() + "-" + gestureGameObjs[i].gesture.trial;
+            uiRefList[i].GetComponent<Gesture2DObject>().GesInfo.text = "C"+gestureGameObjs[i].gesture.cluster.ToString()+"\n"+gestureGameObjs[i].gesture.id.ToString() + "-" + gestureGameObjs[i].gesture.trial;
         }
         startup = false;
     }
