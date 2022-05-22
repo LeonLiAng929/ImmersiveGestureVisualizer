@@ -17,11 +17,11 @@ dataset_to_train = gestureAnalyzer.pythonArguments
 #print(dataset_to_train)
 
 dataset_to_train = to_time_series_dataset(dataset_to_train)
-print(dataset_to_train.shape)
+#print(dataset_to_train.shape)
 barycentre = dtw_barycenter_averaging(dataset_to_train)
-print(barycentre.shape)
+#print(barycentre.shape)
 barycentre = barycentre.tolist()
-print(str(len(barycentre)) + ' '+ str(len(barycentre[0])))
+#print(str(len(barycentre)) + ' '+ str(len(barycentre[0])))
 gestureAnalyzer.InitializePythonResult(len(barycentre), len(barycentre[0]))
 
 for i in range(0, len(barycentre)):

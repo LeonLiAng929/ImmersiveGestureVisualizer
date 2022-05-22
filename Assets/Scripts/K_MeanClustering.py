@@ -31,12 +31,12 @@ for g in gestures:
 #print(dataset_to_train)
 
 dataset_to_train = to_time_series_dataset(dataset_to_train)
-print(dataset_to_train.shape)
+#print(dataset_to_train.shape)
 
 kmeans = TimeSeriesKMeans(n_clusters=gestureAnalyzer.k, metric="dtw", verbose=1)
 pred = kmeans.fit_predict(dataset_to_train)
 
-print(pred)
+#print(pred)
 
 for i in range(0, len(gestures)):
     gestures[i].cluster = int(pred[i])

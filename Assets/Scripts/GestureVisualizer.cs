@@ -88,7 +88,9 @@ public class GestureVisualizer : MonoBehaviour
     [HideInInspector]
     public ClusteringRationales clusteringRationale = ClusteringRationales.DBA; // 0:DBA, 1:PCA, 2:MDS
     [HideInInspector]
-    private bool startup = true;
+    public ClusteringMethods clusteringMethod = ClusteringMethods.K_Means;
+    [HideInInspector]
+    public bool startup = true;
     private Dictionary<string, int> uiLinkDic = new Dictionary<string, int>();
     [HideInInspector]
     public List<GameObject> boardRecords = new List<GameObject>();
@@ -161,8 +163,8 @@ public class GestureVisualizer : MonoBehaviour
         //Deploy.instance._DeployRig();
         //Initialize2DBoard();
         k = 1;
-        arrangementMode = 3;
-        InitializeVisualization();
+        //arrangementMode = 3;
+        //InitializeVisualization();
     }
     public void Initialize2DBoard()
     {
@@ -184,7 +186,7 @@ public class GestureVisualizer : MonoBehaviour
         }
         temp.transform.Find("Grab").localPosition = uiRefList[0].GetComponent<Transform>().localPosition - new Vector3(0.1f,0,0);
         GameObject grab = temp.transform.Find("Grab").gameObject;
-        grab.GetComponent<BoardControl>().boardInfo.text = "K=" + k.ToString() + "|Rationale:" + clusteringRationale.ToString();
+        grab.GetComponent<BoardControl>().boardInfo.text = "Method: "+clusteringMethod.ToString() + "\nK=" + k.ToString() + "|Rationale:" + clusteringRationale.ToString();
         grab.GetComponent<BoardControl>().boardInfo.gameObject.SetActive(false);
         grab.GetComponent<MeshRenderer>().material.color = clusterColorDic[0];
         grab.GetComponent<BoardSnap>().SetBoundingBox();
@@ -196,6 +198,7 @@ public class GestureVisualizer : MonoBehaviour
     public void InitLink2DBoard()
     {
         gestureGameObjs.Clear();
+        uiLinkDic.Clear();
         foreach(KeyValuePair<int, GameObject> pair in clustersObjDic)
         {
             foreach (GestureGameObject gGO in pair.Value.GetComponentsInChildren<GestureGameObject>(true))
@@ -214,7 +217,7 @@ public class GestureVisualizer : MonoBehaviour
             uiLinkDic.Add(gestureGameObjs[i].gesture.id.ToString() + '-' + gestureGameObjs[i].gesture.trial, i);
             uiRefList[i].GetComponent<MeshRenderer>().material.color = GetColorByCluster(gestureGameObjs[i].gesture.cluster);
             gestureGameObjs[i].uiRef = uiRefList[i].GetComponent<Gesture2DObject>();
-            uiRefList[i].GetComponent<Gesture2DObject>().GesInfo.text = gestureGameObjs[i].gesture.id.ToString() + "-" + gestureGameObjs[i].gesture.trial;
+            uiRefList[i].GetComponent<Gesture2DObject>().GesInfo.text = "C"+gestureGameObjs[i].gesture.cluster.ToString()+"\n"+gestureGameObjs[i].gesture.id.ToString() + "-" + gestureGameObjs[i].gesture.trial;
         }
         startup = false;
     }
@@ -354,12 +357,24 @@ public class GestureVisualizer : MonoBehaviour
         GesUiPrefab.SetActive(true);
         UiPenalPrefab.SetActive(true);
 
-        if (clusteringRationale == ClusteringRationales.DBA)
-            GestureAnalyser.instance.InitializeClusters_DBA(k);
-        else if (clusteringRationale == ClusteringRationales.PCA)
-            GestureAnalyser.instance.InitializeClusters_PCA(k);
-        else if (clusteringRationale == ClusteringRationales.MDS)
-            GestureAnalyser.instance.InitializeClusters_MDS(k);
+        if (clusteringMethod == ClusteringMethods.K_Means)
+        {
+            if (clusteringRationale == ClusteringRationales.DBA)
+                GestureAnalyser.instance.InitializeClusters_DBA(k);
+            else if (clusteringRationale == ClusteringRationales.PCA)
+                GestureAnalyser.instance.InitializeClusters_PCA_Kmeans(k);
+            else if (clusteringRationale == ClusteringRationales.MDS)
+                GestureAnalyser.instance.InitializeClusters_MDS_Kmeans(k);
+        }
+        else if (clusteringMethod == ClusteringMethods.MeanShift) {
+            if (clusteringRationale == ClusteringRationales.PCA)
+                GestureAnalyser.instance.InitializeClusters_PCA_MeanShift();
+            else if (clusteringRationale == ClusteringRationales.MDS)
+                GestureAnalyser.instance.InitializeClusters_MDS_MeanShift();
+            else if (clusteringRationale == ClusteringRationales.Raw)
+                GestureAnalyser.instance.InitializeClusters_Raw_MeanShift();
+        }
+
         List<Gesture> gestures = GestureAnalyser.instance.GetGestures();
 
         //instantiate Cluster visualizations

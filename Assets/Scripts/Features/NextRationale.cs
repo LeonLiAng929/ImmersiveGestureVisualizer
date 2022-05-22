@@ -23,20 +23,43 @@ public class NextRationale : MonoBehaviour
 
     private void Next(SelectExitEventArgs args)
     {
-        if (GestureVisualizer.instance.clusteringRationale == ClusteringRationales.DBA)
+        ClusteringRationales rationale = GestureVisualizer.instance.clusteringRationale;
+        ClusteringMethods method = GestureVisualizer.instance.clusteringMethod;
+        if (method == ClusteringMethods.K_Means)
         {
-            GestureVisualizer.instance.clusteringRationale = ClusteringRationales.PCA;
-            text.text = "Rationale: \n" + "PCA";
+            if (rationale == ClusteringRationales.DBA)
+            {
+                GestureVisualizer.instance.clusteringRationale = ClusteringRationales.PCA;
+                text.text = "Rationale: \n" + "PCA";
+            }
+            else if (rationale == ClusteringRationales.PCA)
+            {
+                GestureVisualizer.instance.clusteringRationale = ClusteringRationales.MDS;
+                text.text = "Rationale: \n" + "MDS";
+            }
+            else if (rationale == ClusteringRationales.MDS)
+            {
+                GestureVisualizer.instance.clusteringRationale = ClusteringRationales.DBA;
+                text.text = "Rationale: \n" + "DBA";
+            }
         }
-        else if(GestureVisualizer.instance.clusteringRationale == ClusteringRationales.PCA)
+        else if (method == ClusteringMethods.MeanShift)
         {
-            GestureVisualizer.instance.clusteringRationale = ClusteringRationales.MDS;
-            text.text = "Rationale: \n" + "MDS";
-        }
-        else if (GestureVisualizer.instance.clusteringRationale == ClusteringRationales.MDS)
-        {
-            GestureVisualizer.instance.clusteringRationale = ClusteringRationales.DBA;
-            text.text = "Rationale: \n" + "DBA";
+            if (rationale == ClusteringRationales.Raw)
+            {
+                GestureVisualizer.instance.clusteringRationale = ClusteringRationales.PCA;
+                text.text = "Rationale: \n" + "PCA";
+            }
+            else if (rationale == ClusteringRationales.PCA)
+            {
+                GestureVisualizer.instance.clusteringRationale = ClusteringRationales.MDS;
+                text.text = "Rationale: \n" + "MDS";
+            }
+            else if (rationale == ClusteringRationales.MDS)
+            {
+                GestureVisualizer.instance.clusteringRationale = ClusteringRationales.Raw;
+                text.text = "Rationale: \n" + "Raw";
+            }
         }
     }
 }
