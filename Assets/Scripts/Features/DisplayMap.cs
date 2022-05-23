@@ -36,6 +36,7 @@ public class DisplayMap : MonoBehaviour
         }
         else {
             //filter.gameObject.transform.position = new Vector3(Camera.main.gameObject.transform.position.x, 0.55f, Camera.main.gameObject.transform.position.z + 2);
+            UserStudy.instance.IncrementCount(Actions.OverviewMap);
             map.SetActive(!map.activeSelf);
             selectionIndicator.SetActive(!selectionIndicator.activeSelf);
             gameObject.GetComponent<MeshRenderer>().material.color = Color.white;

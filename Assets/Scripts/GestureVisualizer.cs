@@ -473,7 +473,7 @@ public class GestureVisualizer : MonoBehaviour
         gesVisPrefab.SetActive(false);
         GesUiPrefab.SetActive(false);
         UiPenalPrefab.SetActive(false);
-        AdjustClusterPosition();
+        //AdjustClusterPosition();
 
         foreach (KeyValuePair<int, GameObject> pair in clustersObjDic)
         {
@@ -523,6 +523,7 @@ public class GestureVisualizer : MonoBehaviour
             GesUiPrefab.SetActive(false);
             UiPenalPrefab.SetActive(false);
         }
+        AdjustClusterPosition();
     }
 
     public void DestroyBoardRecord(GameObject board2Delete)
@@ -564,6 +565,8 @@ public class GestureVisualizer : MonoBehaviour
     }
     public void CloseComparison()
     {
+        UserStudy.instance.IncrementCount(Actions.CloseComparison);
+
         selectedGestures[0].transform.localPosition = new Vector3(Camera.main.gameObject.transform.position.x - 0.25f, selectedGestures[0].transform.localPosition.y, Camera.main.gameObject.transform.position.z);
         selectedGestures[1].transform.localPosition = new Vector3(Camera.main.gameObject.transform.position.x + 0.25f, selectedGestures[1].transform.localPosition.y, Camera.main.gameObject.transform.position.z);
         selectedGestures[0].transform.localRotation = new Quaternion(0, 0, 0, 0);
@@ -653,6 +656,7 @@ public class GestureVisualizer : MonoBehaviour
     public void DestroyClusterObjectById(int id)
     {
         Destroy(clustersObjDic[id]);
+        clustersObjDic[id] = null;
     }
 
     public void DestroyAllClusters()

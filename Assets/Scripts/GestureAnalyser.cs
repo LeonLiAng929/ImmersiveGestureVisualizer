@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class GestureAnalyser : MonoBehaviour
 {
-    [SerializeField]
+    public string username;
+    [HideInInspector]
     public int k;  // k for k-means clustering
     public bool estimationOnly = true; // whether use meanshift for estimation or clustering
     public int kPrediction; // number of k predicted by meanshift
@@ -15,6 +16,8 @@ public class GestureAnalyser : MonoBehaviour
     private Dictionary<int,Cluster> clusters = new Dictionary<int,Cluster>();
     private Gesture averageGesture; //average gesture of the entire dataset
     private float globalConsensus;
+    [HideInInspector]
+    public string referent;
     #region Singleton
     public static GestureAnalyser instance;
     #endregion
@@ -34,6 +37,7 @@ public class GestureAnalyser : MonoBehaviour
 
     public void LoadData(string referentName)
     {
+        referent = referentName;
         // loads and wrangles the raw data
 
         //temporarily hardcoded to angry like a bear.
@@ -652,7 +656,8 @@ public class GestureAnalyser : MonoBehaviour
         for (int i =0;i<centroidCount;i++)
         {
             Gesture centroid = clusters[i].GetBaryCentre();
-            tempGesLi.Add(centroid.Resample(10));
+            if(centroid != null)
+                tempGesLi.Add(centroid.Resample(10));
         }
         CSharp2Python(tempGesLi); 
         PythonRunner.RunFile("Assets/Scripts/PCA.py");

@@ -15,9 +15,9 @@ public class GestureGameObject : MonoBehaviour
 
     private float timer = 0.0f; // the time since start() in seconds.
     private int init = 1;
-    private bool animate = false;
-    private bool swing = false;
-    private bool stacked = false;
+    public bool animate = false;
+    public bool swing = false;
+    public bool stacked = false;
     public bool selected = false;
     public bool averageGesture = false;
     public bool previoulyInAnimationMode = false;
@@ -69,7 +69,7 @@ public class GestureGameObject : MonoBehaviour
         {
             SwingConditionUpdate();
         }
-        if(ActionSwitcher.instance.GetCurrentAction() == Actions.Idle)
+        if(ActionSwitcher.instance.GetCurrentAction() == Actions.Mark)
         {
             if (previoulyInAnimationMode)
             {
@@ -115,13 +115,13 @@ public class GestureGameObject : MonoBehaviour
     public void PerformAction(SelectExitEventArgs arg)
     {
         Actions curr = ActionSwitcher.instance.GetCurrentAction();
-        if (curr == Actions.Animate){ActivateAnimate();  }
+        if (curr == Actions.Animate){ActivateAnimate(false);  }
         else if(curr == Actions.ChangeCluster){ ChangeCluster();  }
-        else if(curr == Actions.ShowSmallMultiples) { ShowSmallMultiples();  }
-        else if (curr == Actions.Slidimation) {
-            previoulyInAnimationMode = true;  ActivateSwinging(); 
+        else if(curr == Actions.SmallMultiples) { ShowSmallMultiples(false);  }
+        else if (curr == Actions.Swing) {
+            previoulyInAnimationMode = true;  ActivateSwinging(false); 
             GestureVisualizer.instance.rightController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.deviceRotation, out lastQuat); }
-        else if(curr == Actions.StackGestures) { StackGesture();}
+        else if(curr == Actions.StackGestures) { StackGesture(false);}
         else if (curr == Actions.CloseComparison) { if (arg.interactor.gameObject.name == "LeftHand Controller")
             CloseComparison(true);
             else if (arg.interactor.gameObject.name == "RightHand Controller")
@@ -129,7 +129,7 @@ public class GestureGameObject : MonoBehaviour
                 CloseComparison(false);
             }
         }
-        else if(curr == Actions.Idle)
+        else if(curr == Actions.Mark)
         {
             IdleSelect();
         }
@@ -331,7 +331,7 @@ public class GestureGameObject : MonoBehaviour
             tr.points = new Vector3[] { };
         }
     }
-    public void ActivateAnimate()
+    public void ActivateAnimate(bool calledByParent)
     {
         previoulyInAnimationMode = true;
         if (animate)
@@ -363,6 +363,8 @@ public class GestureGameObject : MonoBehaviour
                 GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
             }
             animate = true;
+            if (!calledByParent && gameObject.name != "Preview") 
+                UserStudy.instance.IncrementCount(Actions.Animate);
             if (gameObject.name != "Preview")
             {
                 timeIndicator.SetActive(true);
@@ -457,7 +459,7 @@ public class GestureGameObject : MonoBehaviour
         }
         lastQuat = currQuat;
     }
-    public void ActivateSwinging()
+    public void ActivateSwinging(bool calledByParent) //if this action is invoked by its cluster, then do not count the action twice for user study.
     {
         if (swing)
         {
@@ -493,6 +495,8 @@ public class GestureGameObject : MonoBehaviour
                 mr.material.color = temp;
             }
             swing = true;
+            if(!calledByParent)
+                UserStudy.instance.IncrementCount(Actions.Swing);
             if (!averageGesture)
             {
                 uiRef.SlidimationIndicator.SetActive(true);
@@ -563,11 +567,14 @@ public class GestureGameObject : MonoBehaviour
             }
         }
     }
-    public void ShowSmallMultiples()
+    public void ShowSmallMultiples(bool calledByParent)
     {
         GameObject multiples = GetComponent<Transform>().Find("SmallMultiples").gameObject;
         bool isActive = !multiples.activeSelf;
         multiples.SetActive(isActive);
+        if (isActive && !calledByParent)
+            UserStudy.instance.IncrementCount(Actions.SmallMultiples);
+
         if (!averageGesture)
         {
             uiRef.SmallmultiplesIndicator.SetActive(isActive);
@@ -580,7 +587,7 @@ public class GestureGameObject : MonoBehaviour
         bool isActive = !tracers.activeSelf;
         tracers.SetActive(isActive);
     }
-    public void StackGesture()
+    public void StackGesture(bool calledByParent)
     {
         stacked = true;
         if (!averageGesture)
@@ -601,6 +608,8 @@ public class GestureGameObject : MonoBehaviour
             }
         }
         GestureVisualizer.instance.PrepareStack();
+        if (!calledByParent)
+            UserStudy.instance.IncrementCount(Actions.StackGestures);
     }
 
     public bool IsStacked()

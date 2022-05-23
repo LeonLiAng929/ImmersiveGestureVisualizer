@@ -67,57 +67,91 @@ public class IO
         }
         return gestures;
     }
-    /*
-    private static void ReadXML()
+  
+
+    public void WriteFeatureCount()
     {
+        string filename = Application.dataPath + "/FeatureCount.csv";
+        int[] count = UserStudy.instance.featureCount;
+        if (!File.Exists(filename)) 
+        {
+            TextWriter tww = new StreamWriter(filename, false);
+
+            string header = "";
+            
+            for(int i =0;i<count.Length;i++)
+            {
+                header += "," + ((Actions)i).ToString();
+            }
+
+            header = "Username,Referent" + header;
+            tww.WriteLine(header);
+            tww.Close();
+        }
+        TextWriter tw = new StreamWriter(filename, true);
+        string content = GestureAnalyser.instance.username+","+GestureAnalyser.instance.referent;
+        for (int i = 0; i < count.Length; i++)
+        {
+            content += "," + count[i].ToString();
+        }
+        tw.WriteLine(content);
+        tw.Close();
+    }
+
+    public void WriteUserResult()
+    {
+        string filename = Application.dataPath + "/UserRefinedCluster.csv";
+        if (!File.Exists(filename))
+        {
+            TextWriter tww = new StreamWriter(filename, false);
+
+            string header = "Username,Referent";
+
+            for (int i = 1; i < 31; i++)
+            {
+                for (int j = 1; j < 4; j++)
+                {
+                    header += "," + "P"+i.ToString() + "-T"+j.ToString();
+                }
+            }
+
+            
+            tww.WriteLine(header);
+            tww.Close();
+        }
+
+        GestureVisualizer gestureVisualizer = GestureVisualizer.instance;
+        string content = "";
+        content += GestureAnalyser.instance.username;
+        content += ",";
+        content += GestureAnalyser.instance.referent;
+        content += ",";
+        List<GestureGameObject> gestureGameObjects = gestureVisualizer.gestureGameObjs;
+        Dictionary<string, int> clusteringResultDic = new Dictionary<string, int>();
+        foreach(GestureGameObject gGO in gestureGameObjects)
+        {
+            string key = gGO.gesture.id.ToString() + "-" + gGO.gesture.trial.ToString();
+            int cluster = gGO.gesture.cluster;
+            clusteringResultDic.Add(key, cluster);
+        }
+        TextWriter tw = new StreamWriter(filename, true);
+        
         for (int i = 1; i < 31; i++)
         {
-            string fileName = Path.Combine(Application.dataPath + "/Resources/"+i.ToString()+"/angry like a bear-1.xml");
-        
-            DataTable newTable = new DataTable();
-            newTable.ReadXmlSchema(fileName);
-            newTable.ReadXml(fileName);
-
-            // Print out values in the table.
-            PrintValues(newTable, "New table " + i.ToString());
-        }
-    }
-
-    private static DataTable CreateTestTable(string tableName)
-    {
-        // Create a test DataTable with two columns and a few rows.
-        DataTable table = new DataTable(tableName);
-        DataColumn column = new DataColumn("id", typeof(System.Int32));
-        column.AutoIncrement = true;
-        table.Columns.Add(column);
-
-        column = new DataColumn("item", typeof(System.String));
-        table.Columns.Add(column);
-
-        // Add ten rows.
-        DataRow row;
-        for (int i = 0; i <= 9; i++)
-        {
-            row = table.NewRow();
-            row["item"] = "item " + i;
-            table.Rows.Add(row);
-        }
-
-        table.AcceptChanges();
-        return table;
-    }
-
-    private static void PrintValues(DataTable table, string label)
-    {
-        Debug.Log(label);
-        foreach (DataRow row in table.Rows)
-        {
-            foreach (DataColumn column in table.Columns)
+            for(int j = 1; j < 4; j++)
             {
-                Debug.Log(row[column]);
+                string k = i.ToString() + "-" + j.ToString();
+                if (clusteringResultDic.ContainsKey(k))
+                    content += "," + clusteringResultDic[k].ToString();
+                else
+                {
+                    content += ","; 
+                }
             }
-            Debug.Log("");
         }
+        tw.WriteLine(content);
+        tw.Close();
     }
-    */
+
+
 }

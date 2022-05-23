@@ -71,8 +71,8 @@ public class ClusterGameObject : MonoBehaviour
         else if (curr == Actions.UnfoldCluster) { UnfoldCluster(); }
         else if (curr == Actions.ChangeCluster) { ChangeCluster(); }
         else if (curr == Actions.Animate) { ActivateAnimate(); }
-        else if (curr == Actions.ShowSmallMultiples) { ShowSmallMultiples(); }
-        else if (curr == Actions.Slidimation) { SwingAll(); }
+        else if (curr == Actions.SmallMultiples) { ShowSmallMultiples(); }
+        else if (curr == Actions.Swing) { SwingAll(); }
     }
 
     public void DisplayConnection()
@@ -92,10 +92,14 @@ public class ClusterGameObject : MonoBehaviour
         List<GestureGameObject> gestures = new List<GestureGameObject>(clusterGameObj.GetComponentsInChildren<GestureGameObject>(true));
         foreach (GestureGameObject gGO in gestures)
         {
-            gGO.ActivateSwinging();
+            gGO.ActivateSwinging(true);
+        }
+        if (baryCentreVis.gameObject.GetComponent<GestureGameObject>().swing)
+        {
+            UserStudy.instance.IncrementCount(Actions.Swing);
         }
     }
-    public void ShowSmallMultiples()
+    public void  ShowSmallMultiples()
     {
         GameObject clusterGameObj = GestureVisualizer.instance.GetClusterGameObjectById(clusterID);
         //GestureGameObject averageGes = clusterGameObj.GetComponent<Transform>().Find("AverageGesture").gameObject.GetComponent<GestureGameObject>();
@@ -104,7 +108,11 @@ public class ClusterGameObject : MonoBehaviour
         //gestures.Remove(averageGes);
         foreach(GestureGameObject gGO in gestures)
         {
-            gGO.ShowSmallMultiples();
+            gGO.ShowSmallMultiples(true);
+        }
+        if (baryCentreVis.Find("SmallMultiples").gameObject.activeSelf)
+        {
+            UserStudy.instance.IncrementCount(Actions.SmallMultiples);
         }
     }
     public void ActivateAnimate()
@@ -114,7 +122,11 @@ public class ClusterGameObject : MonoBehaviour
         List<GestureGameObject> gestures = new List<GestureGameObject>(clusterGameObj.GetComponentsInChildren<GestureGameObject>(true));
         foreach (GestureGameObject gGO in gestures)
         {
-            gGO.ActivateAnimate();
+            gGO.ActivateAnimate(true);
+        }
+        if (baryCentreVis.gameObject.GetComponent<GestureGameObject>().animate)
+        {
+            UserStudy.instance.IncrementCount(Actions.Animate);
         }
     }
 
@@ -194,13 +206,15 @@ public class ClusterGameObject : MonoBehaviour
         GestureVisualizer.instance.AdjustClusterPosition();
         //ChangeArrangement.instance._Rearragne();
         //GestureVisualizer.instance.EmptySelected();   Disabled to show where the newly assigned gestures are in the new cluster.
+        UserStudy.instance.IncrementCount(Actions.ChangeCluster);
     }
     public void StackAll()
     {
         foreach (GestureGameObject gGO in gameObject.transform.parent.gameObject.GetComponentsInChildren<GestureGameObject>(true))
         {
-            gGO.StackGesture();
+            gGO.StackGesture(true);
         }
+        UserStudy.instance.IncrementCount(Actions.StackGestures);
     }
 
     public void UnfoldCluster()
@@ -212,6 +226,7 @@ public class ClusterGameObject : MonoBehaviour
             {
                 gGO.gameObject.SetActive(unfold);
             }
+            UserStudy.instance.IncrementCount(Actions.UnfoldCluster);
         }
     }
 
