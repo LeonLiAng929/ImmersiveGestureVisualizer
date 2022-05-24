@@ -170,6 +170,10 @@ public class DatasetPreview : MonoBehaviour
     }
     public void LoadDatasetInScene(SelectExitEventArgs args)
     {
+
+        FadeScreen.instance.FadeOut();
+    
+
         GestureAnalyser gestureAnalyser = GestureAnalyser.instance;
         gestureAnalyser.LoadData(referentName);
         GestureVisualizer gestureVisualizer = GestureVisualizer.instance;
@@ -180,10 +184,14 @@ public class DatasetPreview : MonoBehaviour
         gestureVisualizer.clusteringMethod = ClusteringMethods.K_Means;
         gestureVisualizer.DestroyAllClusters();
         gestureVisualizer.startup = true;
-        gestureVisualizer.InitializeVisualization();
+        
+        
+        StartCoroutine(gestureVisualizer.InitializeVisualization());
 
         gestureVisualizer.clusteringMethod = prevMethod;
         gestureVisualizer.clusteringRationale = prevRationale;
+
+
     }
 
     public void PreviewDataset(HoverEnterEventArgs args)

@@ -1127,6 +1127,7 @@ MonoBehaviour:
   offsetY: 0.01
   focus: 0
   tagSize: {x: 0.2, y: 0.2, z: 0.2}
+  textTag: {fileID: 0}
   TrajectoryFileter: 1
   featuretagPrefab: {fileID: 7504907593663313336, guid: 70082100461b89c4a9574f7bc4d27cbc,
     type: 3}
@@ -1323,6 +1324,102 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 62162675}
   m_Mesh: {fileID: 1570908115}
+--- !u!1 &86542800
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 86542801}
+  - component: {fileID: 86542804}
+  - component: {fileID: 86542803}
+  - component: {fileID: 86542802}
+  m_Layer: 0
+  m_Name: Fade
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &86542801
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 86542800}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.015}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1667828640}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &86542802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 86542800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc648d8aaf31ba14baec19f853a2d7d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 3
+  fadeColor: {r: 0, g: 0, b: 0, a: 1}
+--- !u!23 &86542803
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 86542800}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 98f3e1204f57eea4a83cb6a366318692, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &86542804
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 86542800}
+  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &89774631
 GameObject:
   m_ObjectHideFlags: 0
@@ -1519,6 +1616,7 @@ MonoBehaviour:
   offsetY: 0.01
   focus: 0
   tagSize: {x: 0.2, y: 0.2, z: 0.2}
+  textTag: {fileID: 0}
   TrajectoryFileter: 1
   featuretagPrefab: {fileID: 7504907593663313336, guid: 70082100461b89c4a9574f7bc4d27cbc,
     type: 3}
@@ -2155,6 +2253,7 @@ MonoBehaviour:
   offsetY: 0.1
   focus: 1
   tagSize: {x: 0.05, y: 0.05, z: 0.05}
+  textTag: {fileID: 0}
   TrajectoryFileter: 0
   featuretagPrefab: {fileID: 7504907593663313336, guid: 8331cec399829f349b46317a5f271210,
     type: 3}
@@ -2927,6 +3026,7 @@ MonoBehaviour:
   offsetY: 0.1
   focus: 1
   tagSize: {x: 0.05, y: 0.05, z: 0.05}
+  textTag: {fileID: 0}
   TrajectoryFileter: 0
   featuretagPrefab: {fileID: 7504907593663313336, guid: 8331cec399829f349b46317a5f271210,
     type: 3}
@@ -3848,6 +3948,7 @@ MonoBehaviour:
   offsetY: 0.1
   focus: 1
   tagSize: {x: 0.05, y: 0.05, z: 0.05}
+  textTag: {fileID: 0}
   TrajectoryFileter: 0
   featuretagPrefab: {fileID: 7504907593663313336, guid: 8331cec399829f349b46317a5f271210,
     type: 3}
@@ -4630,6 +4731,7 @@ MonoBehaviour:
   offsetY: 0.1
   focus: 1
   tagSize: {x: 0.05, y: 0.05, z: 0.05}
+  textTag: {fileID: 0}
   TrajectoryFileter: 0
   featuretagPrefab: {fileID: 7504907593663313336, guid: 8331cec399829f349b46317a5f271210,
     type: 3}
@@ -4975,6 +5077,7 @@ MonoBehaviour:
   offsetY: 0.01
   focus: 0
   tagSize: {x: 0.2, y: 0.2, z: 0.2}
+  textTag: {fileID: 0}
   TrajectoryFileter: 1
   featuretagPrefab: {fileID: 7504907593663313336, guid: 70082100461b89c4a9574f7bc4d27cbc,
     type: 3}
@@ -5322,6 +5425,7 @@ MonoBehaviour:
   offsetY: 0.1
   focus: 1
   tagSize: {x: 0.05, y: 0.05, z: 0.05}
+  textTag: {fileID: 0}
   TrajectoryFileter: 0
   featuretagPrefab: {fileID: 7504907593663313336, guid: 8331cec399829f349b46317a5f271210,
     type: 3}
@@ -5701,6 +5805,7 @@ MonoBehaviour:
   offsetY: 0.01
   focus: 0
   tagSize: {x: 0.2, y: 0.2, z: 0.2}
+  textTag: {fileID: 0}
   TrajectoryFileter: 1
   featuretagPrefab: {fileID: 7504907593663313336, guid: 70082100461b89c4a9574f7bc4d27cbc,
     type: 3}
@@ -7026,6 +7131,7 @@ MonoBehaviour:
   offsetY: 0.01
   focus: 0
   tagSize: {x: 0.2, y: 0.2, z: 0.2}
+  textTag: {fileID: 0}
   TrajectoryFileter: 1
   featuretagPrefab: {fileID: 7504907593663313336, guid: 70082100461b89c4a9574f7bc4d27cbc,
     type: 3}
@@ -7759,6 +7865,7 @@ MonoBehaviour:
   offsetY: 0.01
   focus: 0
   tagSize: {x: 0.2, y: 0.2, z: 0.2}
+  textTag: {fileID: 0}
   TrajectoryFileter: 1
   featuretagPrefab: {fileID: 7504907593663313336, guid: 70082100461b89c4a9574f7bc4d27cbc,
     type: 3}
@@ -8078,6 +8185,7 @@ MonoBehaviour:
   offsetY: 0.1
   focus: 1
   tagSize: {x: 0.05, y: 0.05, z: 0.05}
+  textTag: {fileID: 0}
   TrajectoryFileter: 0
   featuretagPrefab: {fileID: 7504907593663313336, guid: 8331cec399829f349b46317a5f271210,
     type: 3}
@@ -10055,6 +10163,7 @@ MonoBehaviour:
   offsetY: 0.1
   focus: 1
   tagSize: {x: 0.05, y: 0.05, z: 0.05}
+  textTag: {fileID: 0}
   TrajectoryFileter: 0
   featuretagPrefab: {fileID: 7504907593663313336, guid: 8331cec399829f349b46317a5f271210,
     type: 3}
@@ -12305,6 +12414,7 @@ MonoBehaviour:
   offsetY: 0.01
   focus: 0
   tagSize: {x: 0.2, y: 0.2, z: 0.2}
+  textTag: {fileID: 0}
   TrajectoryFileter: 1
   featuretagPrefab: {fileID: 7504907593663313336, guid: 70082100461b89c4a9574f7bc4d27cbc,
     type: 3}
@@ -14930,6 +15040,7 @@ MonoBehaviour:
   offsetY: 0.1
   focus: 1
   tagSize: {x: 0.05, y: 0.05, z: 0.05}
+  textTag: {fileID: 0}
   TrajectoryFileter: 0
   featuretagPrefab: {fileID: 7504907593663313336, guid: 8331cec399829f349b46317a5f271210,
     type: 3}
@@ -15159,6 +15270,7 @@ MonoBehaviour:
   offsetY: 0.01
   focus: 0
   tagSize: {x: 0.2, y: 0.2, z: 0.2}
+  textTag: {fileID: 0}
   TrajectoryFileter: 1
   featuretagPrefab: {fileID: 7504907593663313336, guid: 70082100461b89c4a9574f7bc4d27cbc,
     type: 3}
@@ -15314,6 +15426,7 @@ MonoBehaviour:
   offsetY: 1.2
   focus: 1
   tagSize: {x: 0.01, y: 0.01, z: 0.01}
+  textTag: {fileID: 0}
   featuretagPrefab: {fileID: 7504907593663313336, guid: b8c14ec034b00af4dab7e61b4fe70808,
     type: 3}
 --- !u!4 &1264182588 stripped
@@ -15784,6 +15897,7 @@ MonoBehaviour:
   offsetY: 0.01
   focus: 0
   tagSize: {x: 0.2, y: 0.2, z: 0.2}
+  textTag: {fileID: 0}
   TrajectoryFileter: 1
   featuretagPrefab: {fileID: 7504907593663313336, guid: 70082100461b89c4a9574f7bc4d27cbc,
     type: 3}
@@ -16550,6 +16664,7 @@ MonoBehaviour:
   offsetY: 0.1
   focus: 1
   tagSize: {x: 0.05, y: 0.05, z: 0.05}
+  textTag: {fileID: 0}
   TrajectoryFileter: 0
   featuretagPrefab: {fileID: 7504907593663313336, guid: 8331cec399829f349b46317a5f271210,
     type: 3}
@@ -16785,6 +16900,7 @@ MonoBehaviour:
   offsetY: -0.12
   focus: 1
   tagSize: {x: 0.1, y: 0.1, z: 0.1}
+  textTag: {fileID: 0}
   TrajectoryFileter: 0
   featuretagPrefab: {fileID: 7504907593663313336, guid: 8331cec399829f349b46317a5f271210,
     type: 3}
@@ -17148,6 +17264,7 @@ MonoBehaviour:
   offsetY: 0.01
   focus: 0
   tagSize: {x: 0.2, y: 0.2, z: 0.2}
+  textTag: {fileID: 0}
   TrajectoryFileter: 1
   featuretagPrefab: {fileID: 7504907593663313336, guid: 70082100461b89c4a9574f7bc4d27cbc,
     type: 3}
@@ -18565,6 +18682,7 @@ MonoBehaviour:
   offsetY: 0.7
   focus: 0
   tagSize: {x: 0.01, y: 0.01, z: 0.01}
+  textTag: {fileID: 0}
   featuretagPrefab: {fileID: 7504907593663313336, guid: b8c14ec034b00af4dab7e61b4fe70808,
     type: 3}
 --- !u!1 &1514740830
@@ -18888,6 +19006,7 @@ MonoBehaviour:
   offsetY: 0.01
   focus: 0
   tagSize: {x: 0.2, y: 0.2, z: 0.2}
+  textTag: {fileID: 0}
   TrajectoryFileter: 1
   featuretagPrefab: {fileID: 7504907593663313336, guid: 70082100461b89c4a9574f7bc4d27cbc,
     type: 3}
@@ -19372,6 +19491,7 @@ MonoBehaviour:
   offsetY: 0.01
   focus: 0
   tagSize: {x: 0.2, y: 0.2, z: 0.2}
+  textTag: {fileID: 0}
   TrajectoryFileter: 1
   featuretagPrefab: {fileID: 7504907593663313336, guid: 70082100461b89c4a9574f7bc4d27cbc,
     type: 3}
@@ -19896,6 +20016,7 @@ MonoBehaviour:
   offsetY: 0.1
   focus: 1
   tagSize: {x: 0.05, y: 0.05, z: 0.05}
+  textTag: {fileID: 0}
   TrajectoryFileter: 0
   featuretagPrefab: {fileID: 7504907593663313336, guid: 8331cec399829f349b46317a5f271210,
     type: 3}
@@ -20156,6 +20277,7 @@ MonoBehaviour:
   offsetY: 0.01
   focus: 0
   tagSize: {x: 0.2, y: 0.2, z: 0.2}
+  textTag: {fileID: 0}
   TrajectoryFileter: 1
   featuretagPrefab: {fileID: 7504907593663313336, guid: 70082100461b89c4a9574f7bc4d27cbc,
     type: 3}
@@ -20650,6 +20772,7 @@ MonoBehaviour:
   offsetY: 0.05
   focus: 1
   tagSize: {x: 0.1, y: 0.1, z: 0.1}
+  textTag: {fileID: 0}
   TrajectoryFileter: 0
   featuretagPrefab: {fileID: 7504907593663313336, guid: 8331cec399829f349b46317a5f271210,
     type: 3}
@@ -21622,6 +21745,7 @@ MonoBehaviour:
   offsetY: 0.1
   focus: 1
   tagSize: {x: 0.05, y: 0.05, z: 0.05}
+  textTag: {fileID: 0}
   TrajectoryFileter: 0
   featuretagPrefab: {fileID: 7504907593663313336, guid: 8331cec399829f349b46317a5f271210,
     type: 3}
@@ -22047,9 +22171,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1667828636}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 86542801}
   m_Father: {fileID: 592709826}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -23068,6 +23193,7 @@ MonoBehaviour:
   offsetY: 0.01
   focus: 0
   tagSize: {x: 0.2, y: 0.2, z: 0.2}
+  textTag: {fileID: 0}
   TrajectoryFileter: 1
   featuretagPrefab: {fileID: 7504907593663313336, guid: 70082100461b89c4a9574f7bc4d27cbc,
     type: 3}
@@ -23422,6 +23548,7 @@ MonoBehaviour:
   offsetY: 0.1
   focus: 1
   tagSize: {x: 0.05, y: 0.05, z: 0.05}
+  textTag: {fileID: 0}
   TrajectoryFileter: 0
   featuretagPrefab: {fileID: 7504907593663313336, guid: 8331cec399829f349b46317a5f271210,
     type: 3}
@@ -24309,6 +24436,7 @@ MonoBehaviour:
   offsetY: 0.1
   focus: 1
   tagSize: {x: 0.05, y: 0.05, z: 0.05}
+  textTag: {fileID: 0}
   TrajectoryFileter: 0
   featuretagPrefab: {fileID: 7504907593663313336, guid: 8331cec399829f349b46317a5f271210,
     type: 3}
@@ -24540,6 +24668,7 @@ MonoBehaviour:
   offsetY: 0.01
   focus: 0
   tagSize: {x: 0.2, y: 0.2, z: 0.2}
+  textTag: {fileID: 0}
   TrajectoryFileter: 1
   featuretagPrefab: {fileID: 7504907593663313336, guid: 70082100461b89c4a9574f7bc4d27cbc,
     type: 3}
@@ -25427,6 +25556,7 @@ MonoBehaviour:
   offsetY: 0.01
   focus: 0
   tagSize: {x: 0.2, y: 0.2, z: 0.2}
+  textTag: {fileID: 0}
   TrajectoryFileter: 1
   featuretagPrefab: {fileID: 7504907593663313336, guid: 70082100461b89c4a9574f7bc4d27cbc,
     type: 3}
@@ -26015,6 +26145,7 @@ MonoBehaviour:
   offsetY: 0.01
   focus: 0
   tagSize: {x: 0.2, y: 0.2, z: 0.2}
+  textTag: {fileID: 0}
   TrajectoryFileter: 1
   featuretagPrefab: {fileID: 7504907593663313336, guid: 70082100461b89c4a9574f7bc4d27cbc,
     type: 3}
@@ -26404,6 +26535,7 @@ MonoBehaviour:
   offsetY: 0.01
   focus: 0
   tagSize: {x: 0.2, y: 0.2, z: 0.2}
+  textTag: {fileID: 0}
   TrajectoryFileter: 1
   featuretagPrefab: {fileID: 7504907593663313336, guid: 70082100461b89c4a9574f7bc4d27cbc,
     type: 3}
@@ -26616,6 +26748,7 @@ MonoBehaviour:
   offsetY: 0.1
   focus: 1
   tagSize: {x: 0.05, y: 0.05, z: 0.05}
+  textTag: {fileID: 0}
   TrajectoryFileter: 0
   featuretagPrefab: {fileID: 7504907593663313336, guid: 8331cec399829f349b46317a5f271210,
     type: 3}
@@ -27184,6 +27317,7 @@ MonoBehaviour:
   offsetY: 0.01
   focus: 0
   tagSize: {x: 0.2, y: 0.2, z: 0.2}
+  textTag: {fileID: 0}
   TrajectoryFileter: 1
   featuretagPrefab: {fileID: 7504907593663313336, guid: 70082100461b89c4a9574f7bc4d27cbc,
     type: 3}
@@ -27600,6 +27734,7 @@ MonoBehaviour:
   offsetY: 0.01
   focus: 0
   tagSize: {x: 0.2, y: 0.2, z: 0.2}
+  textTag: {fileID: 0}
   TrajectoryFileter: 1
   featuretagPrefab: {fileID: 7504907593663313336, guid: 70082100461b89c4a9574f7bc4d27cbc,
     type: 3}
@@ -27990,6 +28125,7 @@ MonoBehaviour:
   offsetY: 0.01
   focus: 0
   tagSize: {x: 0.2, y: 0.2, z: 0.2}
+  textTag: {fileID: 0}
   TrajectoryFileter: 1
   featuretagPrefab: {fileID: 7504907593663313336, guid: 70082100461b89c4a9574f7bc4d27cbc,
     type: 3}
