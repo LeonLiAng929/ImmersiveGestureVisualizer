@@ -47,6 +47,7 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\ResetFeatureCount.cs" />
      <Compile Include="Assets\Scripts\K_MeanClustering.cs" />
      <Compile Include="Assets\Scripts\Features\Revolving.cs" />
      <Compile Include="Assets\TubeRenderer\Examples\Assets\Shared\CameraMan.cs" />
@@ -68,6 +69,7 @@
      <Compile Include="Assets\Scripts\ShowHideBoardContents.cs" />
      <Compile Include="Assets\Scripts\Features\DisplayMap.cs" />
      <Compile Include="Assets\TubeRenderer\Examples\Assets\Shared\ExampleHelpers.cs" />
+     <Compile Include="Assets\Scripts\EndUserStudySession.cs" />
      <Compile Include="Assets\Scripts\Features\PreviewSwitcher.cs" />
      <Compile Include="Assets\Scripts\GestureTag.cs" />
      <Compile Include="Assets\Scripts\GestureGameObject.cs" />
@@ -138,8 +140,6 @@
      <Compile Include="Assets\Scripts\Features\ShowConnection.cs" />
      <Compile Include="Assets\Scripts\TesttingScript\pressed.cs" />
      <Compile Include="Assets\Scripts\PlayerIconTracing.cs" />
-     <Compile Include="Assets\Scripts\ResetFeatureCount.cs" />
-     <Compile Include="Assets\Scripts\EndUserStudySession.cs" />
      <None Include="Assets\Resources\7\crouch-3.xml" />
      <None Include="Assets\Resources\3\fly like a bird-3.xml" />
      <None Include="Assets\Resources\3\applaud-1.xml" />

@@ -163,7 +163,7 @@ public class GestureVisualizer : MonoBehaviour
         //Deploy.instance._DeployRig();
         //Initialize2DBoard();
         k = 1;
-        //arrangementMode = 3;
+        arrangementMode = 3;
         //InitializeVisualization();
     }
     public void Initialize2DBoard()
@@ -246,7 +246,7 @@ public class GestureVisualizer : MonoBehaviour
             uiref.gameObject.GetComponent<MeshRenderer>().material.color = GetColorByCluster(gestureGameObjs[i].gesture.cluster);
             gestureGameObjs[i].uiRef = uiref;
             uiref.Initialize2DGesture();
-            uiref.GesInfo.text = gestureGameObjs[i].gesture.id.ToString() + "-" + gestureGameObjs[i].gesture.trial;
+            uiref.GesInfo.text = "C" + gestureGameObjs[i].gesture.cluster.ToString() + "\n" + gestureGameObjs[i].gesture.id.ToString() + "-" + gestureGameObjs[i].gesture.trial;
         }
         // re-link gestures to old boards
         foreach (GameObject board in boardRecords)
@@ -656,7 +656,7 @@ public class GestureVisualizer : MonoBehaviour
     public void DestroyClusterObjectById(int id)
     {
         Destroy(clustersObjDic[id]);
-        clustersObjDic[id] = null;
+        clustersObjDic.Remove(id);
     }
 
     public void DestroyAllClusters()

@@ -144,15 +144,30 @@ public class GestureGameObject : MonoBehaviour
             {
                 if (!averageGesture)
                 {
-                    uiRef.ComparisonIndicator.SetActive(false);
-                    GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+                    try
+                    {
+                        uiRef.ComparisonIndicator.SetActive(false);
+                        GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+                    }
+                    catch(MissingReferenceException)
+                    {
+                        
+                    }
+                    
                 }
                 selected = false;
                 if (selectionList.Contains(gameObject))
                 {
                     if (!averageGesture)
                     {
-                        uiRef.GetComponent<MeshRenderer>().material.color = GestureVisualizer.instance.UpdateGlowingFieldColour(gameObject);
+                        try
+                        {
+                            uiRef.GetComponent<MeshRenderer>().material.color = GestureVisualizer.instance.UpdateGlowingFieldColour(gameObject);
+                        }
+                        catch (MissingReferenceException)
+                        {
+
+                        }
                     }
                     selectionList.Remove(gameObject);
                     if (lefthand)
@@ -165,8 +180,15 @@ public class GestureGameObject : MonoBehaviour
             {
                 if (!averageGesture)
                 {
-                    uiRef.ComparisonIndicator.SetActive(true);
-                    GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+                    try
+                    {
+                        uiRef.ComparisonIndicator.SetActive(true);
+                        GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+                    }
+                    catch (MissingReferenceException)
+                    {
+
+                    }
                 }
                 selected = true;
                 if (!selectionList.Contains(gameObject))
@@ -232,13 +254,17 @@ public class GestureGameObject : MonoBehaviour
         Transform[] transforms = GetComponent<Transform>().Find("Trajectory").Find("Skeleton").GetComponentsInChildren<Transform>();
         if (!averageGesture)
         {
-            Transform[] twoDSkeletonTrans = uiRef.TwoDModel.GetComponentsInChildren<Transform>();
-            for (int i = 1; i < gesture.poses[0].num_of_joints + 1; i++)
+            try
             {
-                Vector3 pos = gesture.poses[0].joints[i - 1].ToVector();
-                
+                Transform[] twoDSkeletonTrans = uiRef.TwoDModel.GetComponentsInChildren<Transform>();
+                for (int i = 1; i < gesture.poses[0].num_of_joints + 1; i++)
+                {
+                    Vector3 pos = gesture.poses[0].joints[i - 1].ToVector();
+
                     twoDSkeletonTrans[i].localPosition = pos - new Vector3(0, 0, pos.z);
+                }
             }
+            catch (MissingReferenceException) { }
         }
         ResetTrajectories();
         for (int i = 1; i < gesture.poses[0].num_of_joints + 1; i++)
@@ -273,7 +299,11 @@ public class GestureGameObject : MonoBehaviour
         Transform[] twoDSkeletonTrans = null;
         if (!averageGesture)
         {
-            twoDSkeletonTrans = uiRef.TwoDModel.GetComponentsInChildren<Transform>();
+            try
+            {
+                twoDSkeletonTrans = uiRef.TwoDModel.GetComponentsInChildren<Transform>();
+            }
+            catch (MissingReferenceException) { }
         }
 
         int jointCount = gesture.poses[0].num_of_joints;
@@ -338,8 +368,12 @@ public class GestureGameObject : MonoBehaviour
         {
             if (!averageGesture && gameObject.name != "Preview")
             {
-                uiRef.AnimationIndicator.SetActive(false);
-                GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+                try
+                {
+                    uiRef.AnimationIndicator.SetActive(false);
+                    GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+                }
+                catch (MissingReferenceException) { }
             }
             animate = false;
             /*if (GetComponent<Transform>().Find("SmallMultiples").gameObject.activeSelf)
@@ -359,8 +393,12 @@ public class GestureGameObject : MonoBehaviour
         {
             if (!averageGesture && gameObject.name != "Preview")
             {
-                uiRef.AnimationIndicator.SetActive(true);
-                GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+                try
+                {
+                    uiRef.AnimationIndicator.SetActive(true);
+                    GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+                }
+                catch (MissingReferenceException) { }
             }
             animate = true;
             if (!calledByParent && gameObject.name != "Preview") 
@@ -389,8 +427,12 @@ public class GestureGameObject : MonoBehaviour
         Transform[] twoDSkeletonTrans = null;
         if (!averageGesture)
         {
-            twoDSkeletonTrans = uiRef.TwoDModel.GetComponentsInChildren<Transform>();
-            
+            try
+            {
+                twoDSkeletonTrans = uiRef.TwoDModel.GetComponentsInChildren<Transform>();
+            }
+            catch (MissingReferenceException) { }
+
         }
         for (int i = 1; i < jointCount+1; i++)
         {
@@ -477,8 +519,12 @@ public class GestureGameObject : MonoBehaviour
             swing = false;
             if (!averageGesture)
             {
-                uiRef.SlidimationIndicator.SetActive(false);
-                GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+                try
+                {
+                    uiRef.SlidimationIndicator.SetActive(false);
+                    GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+                }
+                catch (MissingReferenceException) { }
             }
         }
         else
@@ -499,8 +545,12 @@ public class GestureGameObject : MonoBehaviour
                 UserStudy.instance.IncrementCount(Actions.Swing);
             if (!averageGesture)
             {
-                uiRef.SlidimationIndicator.SetActive(true);
-                GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+                try
+                {
+                    uiRef.SlidimationIndicator.SetActive(true);
+                    GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+                }
+                catch (MissingReferenceException) { }
             }
         }
     }
@@ -519,7 +569,11 @@ public class GestureGameObject : MonoBehaviour
                     {
                         if (selectionList.Contains(gGO.gameObject))
                         {
-                            uiRef.GetComponent<MeshRenderer>().material.color = GestureVisualizer.instance.UpdateGlowingFieldColour(gGO.gameObject);
+                            try
+                            {
+                                uiRef.GetComponent<MeshRenderer>().material.color = GestureVisualizer.instance.UpdateGlowingFieldColour(gGO.gameObject);
+                            }
+                            catch (MissingReferenceException) { }
                             selectionList.Remove(gGO.gameObject);
                             gGO.selected = false;
                         }
@@ -528,9 +582,13 @@ public class GestureGameObject : MonoBehaviour
             }
             else
             {
-                uiRef.ChangingClusterIndicator.SetActive(false);
-                GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
-                uiRef.GetComponent<MeshRenderer>().material.color = GestureVisualizer.instance.UpdateGlowingFieldColour(gameObject);
+                try
+                {
+                    uiRef.ChangingClusterIndicator.SetActive(false);
+                    GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+                    uiRef.GetComponent<MeshRenderer>().material.color = GestureVisualizer.instance.UpdateGlowingFieldColour(gameObject);
+                }
+                catch (MissingReferenceException) { }
                 if (selectionList.Contains(gameObject))
                     selectionList.Remove(gameObject);
             }
@@ -559,9 +617,13 @@ public class GestureGameObject : MonoBehaviour
             }
             else
             {
-                uiRef.ChangingClusterIndicator.SetActive(true);
-                GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
-                uiRef.GetComponent<MeshRenderer>().material.color = Color.white;
+                try
+                {
+                    uiRef.ChangingClusterIndicator.SetActive(true);
+                    GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+                    uiRef.GetComponent<MeshRenderer>().material.color = Color.white;
+                }
+                catch (MissingReferenceException) { }
                 if (!selectionList.Contains(gameObject))
                     selectionList.Add(gameObject);
             }
@@ -577,8 +639,12 @@ public class GestureGameObject : MonoBehaviour
 
         if (!averageGesture)
         {
-            uiRef.SmallmultiplesIndicator.SetActive(isActive);
-            GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+            try
+            {
+                uiRef.SmallmultiplesIndicator.SetActive(isActive);
+                GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+            }
+            catch (MissingReferenceException) { }
         }
     }
     public void ShowTracer()
@@ -592,8 +658,12 @@ public class GestureGameObject : MonoBehaviour
         stacked = true;
         if (!averageGesture)
         {
-            uiRef.StackingIndicator.SetActive(true);
-            GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+            try
+            {
+                uiRef.StackingIndicator.SetActive(true);
+                GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+            }
+            catch (MissingReferenceException) { }
         }
         List<GameObject> stackedList = GestureVisualizer.instance.stackedObjects;
         if (!stackedList.Contains(gameObject))
@@ -629,8 +699,12 @@ public class GestureGameObject : MonoBehaviour
         gameObject.transform.localPosition = initPos;
         if (!averageGesture)
         {
-            uiRef.StackingIndicator.SetActive(false);
-            GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+            try
+            {
+                uiRef.StackingIndicator.SetActive(false);
+                GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+            }
+            catch (MissingReferenceException) { }
         }
         else
         {
@@ -642,8 +716,12 @@ public class GestureGameObject : MonoBehaviour
         selected = false;
         if (!averageGesture)
         {
-            uiRef.ComparisonIndicator.SetActive(false);
-            GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+            try
+            {
+                uiRef.ComparisonIndicator.SetActive(false);
+                GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+            }
+            catch (MissingReferenceException) { }
         }
         gameObject.transform.localPosition = initPos;
         if (GestureVisualizer.instance.arrangementMode == 2)
@@ -657,8 +735,12 @@ public class GestureGameObject : MonoBehaviour
         arrow.SetActive(!arrow.activeSelf);
         if (!averageGesture)
         {
-            uiRef.arrow.SetActive(arrow.activeSelf);
-            GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+            try
+            {
+                uiRef.arrow.SetActive(arrow.activeSelf);
+                GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+            }
+            catch (MissingReferenceException) { }
         }
     }
 }

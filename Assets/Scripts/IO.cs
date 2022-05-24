@@ -125,7 +125,6 @@ public class IO
         content += GestureAnalyser.instance.username;
         content += ",";
         content += GestureAnalyser.instance.referent;
-        content += ",";
         List<GestureGameObject> gestureGameObjects = gestureVisualizer.gestureGameObjs;
         Dictionary<string, int> clusteringResultDic = new Dictionary<string, int>();
         foreach(GestureGameObject gGO in gestureGameObjects)

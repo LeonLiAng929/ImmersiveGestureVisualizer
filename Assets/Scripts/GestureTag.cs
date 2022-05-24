@@ -56,7 +56,15 @@ public class GestureTag : XRTag
                "Global Consensus: " + gesture.GetGlobalSimilarity().ToString() + "\n" +
                "Local Consensus: " + gesture.GetLocalSimilarity().ToString();
 
-            textTag.GetComponent<TextMeshPro>().text = tag2Display;
+            try
+            {
+                textTag.GetComponent<TextMeshPro>().text = tag2Display;
+            }
+            catch(UnassignedReferenceException)
+            {
+                //Debug.Log(gameObject.name);
+            }
+            //transform.Find("GestureTagPrefab(Clone)").GetComponent<TextMeshPro>().text = tag2Display;
         }
     }
 

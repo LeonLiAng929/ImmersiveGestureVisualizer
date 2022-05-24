@@ -161,22 +161,26 @@ public class ClusterGameObject : MonoBehaviour
             Cluster original = GestureAnalyser.instance.GetClusterByID(clusterObj.clusterID);
             original.RemoveGesture(gestureLi);
         }
+        List<int> freeIDs = GestureVisualizer.instance.freeId;
         foreach (GameObject originalClusterObject in originalClusterObjs)
         {
             ClusterGameObject clusterObj = originalClusterObject.GetComponentInChildren<ClusterGameObject>();
-            Cluster original = GestureAnalyser.instance.GetClusterByID(clusterObj.clusterID);
-            if (original.GestureCount() >0)
+            if (!freeIDs.Contains(clusterObj.clusterID))
             {
-                //ClusterGameObject clusterObj = originalClusterObject.GetComponentInChildren<ClusterGameObject>();
-                Destroy(clusterObj.baryCentreVis.gameObject);
-                GestureVisualizer.instance.InstantiateAverageGestureVis(originalClusterObject, clusterObj.clusterID);
-                //clusterObj.UpdateClusterVisualizationScale();
-                ClusterTag ctag = originalClusterObject.GetComponentInChildren<ClusterTag>(true);
-                ctag.UpdateTag();
-                GestureTag[] gestureTags = originalClusterObject.GetComponentsInChildren<GestureTag>(true);
-                foreach(GestureTag gtag in gestureTags)
+                Cluster original = GestureAnalyser.instance.GetClusterByID(clusterObj.clusterID);
+                if (original.GestureCount() > 0)
                 {
-                    gtag.UpdateTag();
+                    //ClusterGameObject clusterObj = originalClusterObject.GetComponentInChildren<ClusterGameObject>();
+                    Destroy(clusterObj.baryCentreVis.gameObject);
+                    GestureVisualizer.instance.InstantiateAverageGestureVis(originalClusterObject, clusterObj.clusterID);
+                    //clusterObj.UpdateClusterVisualizationScale();
+                    ClusterTag ctag = originalClusterObject.GetComponentInChildren<ClusterTag>(true);
+                    ctag.UpdateTag();
+                    GestureTag[] gestureTags = originalClusterObject.GetComponentsInChildren<GestureTag>(true);
+                    foreach (GestureTag gtag in gestureTags)
+                    {
+                        gtag.UpdateTag();
+                    }
                 }
             }
         }
@@ -185,16 +189,7 @@ public class ClusterGameObject : MonoBehaviour
             Destroy(baryCentreVis.gameObject);
         }
         GestureVisualizer.instance.InstantiateAverageGestureVis(gameObject.transform.parent.gameObject, clusterID);
-        /*
-        foreach (GameObject g in originalClusterObjs)
-        {
-            if (g != null)
-            {
-                ClusterGameObject clusterObj = g.GetComponentInChildren<ClusterGameObject>();
-                clusterObj.UpdateClusterVisualizationScale();
-            }
-        }
-        UpdateClusterVisualizationScale();*/
+
         ClusterTag clusterTag = GetComponentInChildren<ClusterTag>(true);
         clusterTag.UpdateTag();
         GestureTag[] gTags = this.transform.parent.GetComponentsInChildren<GestureTag>(true);
