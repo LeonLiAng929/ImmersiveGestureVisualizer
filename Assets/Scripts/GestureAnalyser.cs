@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class GestureAnalyser : MonoBehaviour
 {
-    [SerializeField]
+    public string username;
+    [HideInInspector]
     public int k;  // k for k-means clustering
     public bool estimationOnly = true; // whether use meanshift for estimation or clustering
     public int kPrediction; // number of k predicted by meanshift
@@ -15,6 +16,8 @@ public class GestureAnalyser : MonoBehaviour
     private Dictionary<int,Cluster> clusters = new Dictionary<int,Cluster>();
     private Gesture averageGesture; //average gesture of the entire dataset
     private float globalConsensus;
+    [HideInInspector]
+    public string referent;
     #region Singleton
     public static GestureAnalyser instance;
     #endregion
@@ -34,6 +37,7 @@ public class GestureAnalyser : MonoBehaviour
 
     public void LoadData(string referentName)
     {
+        referent = referentName;
         // loads and wrangles the raw data
 
         //temporarily hardcoded to angry like a bear.
@@ -277,7 +281,7 @@ public class GestureAnalyser : MonoBehaviour
     public void InitializeClusters_PCA_MeanShift()
     {
         estimationOnly = false;
-        MDS_Arrangement();
+        PCA_Arrangement();
         //clustering
 
         PythonRunner.RunFile("Assets/Scripts/MeanShiftPCA.py");
@@ -441,6 +445,11 @@ public class GestureAnalyser : MonoBehaviour
             clusters.Add(id, tempCluster);
             return clusters[id];
         }
+    }
+
+    public void RemoveClusterByID(int id)
+    {
+        clusters.Remove(id);
     }
     public Cluster GetClusterByID(int id)
     {
@@ -648,11 +657,16 @@ public class GestureAnalyser : MonoBehaviour
             tempGesLi.Add(g.Resample(10));
         }
         // get centroids
-        int centroidCount = clusters.Count;
+        List<int> freeIDs = GestureVisualizer.instance.freeId;
+        int centroidCount = clusters.Count + freeIDs.Count;
         for (int i =0;i<centroidCount;i++)
         {
-            Gesture centroid = clusters[i].GetBaryCentre();
-            tempGesLi.Add(centroid.Resample(10));
+            if (!freeIDs.Contains(i))
+            {
+                Gesture centroid = clusters[i].GetBaryCentre();
+                if (centroid != null)
+                    tempGesLi.Add(centroid.Resample(10));
+            }
         }
         CSharp2Python(tempGesLi); 
         PythonRunner.RunFile("Assets/Scripts/PCA.py");
@@ -663,11 +677,19 @@ public class GestureAnalyser : MonoBehaviour
         {
             gestures[i].PCA_Coordinate = new Vector2(pythonResult[i][0], pythonResult[i][1]);
         }
+        int index = 0;
         for (int i = 0; i < centroidCount; i++)
         {
-            Gesture centroid = clusters[i].GetBaryCentre();
-            centroid.PCA_Coordinate = new Vector2(pythonResult[i + gestureCount][0], pythonResult[i + gestureCount][1]);
-            clusters[i].SetBaryCentre(centroid);
+            if (!freeIDs.Contains(i))
+            {
+                Gesture centroid = clusters[i].GetBaryCentre();
+                if (centroid != null)
+                {
+                    centroid.PCA_Coordinate = new Vector2(pythonResult[index + gestureCount][0], pythonResult[index + gestureCount][1]);
+                    clusters[i].SetBaryCentre(centroid);
+                    index += 1;
+                }
+            }
         }
     }
 
@@ -679,11 +701,16 @@ public class GestureAnalyser : MonoBehaviour
             tempGesLi.Add(g.Resample(10));
         }
         // get centroids
-        int centroidCount = clusters.Count;
+        List<int> freeIDs = GestureVisualizer.instance.freeId;
+        int centroidCount = clusters.Count + freeIDs.Count;
         for (int i = 0; i < centroidCount; i++)
         {
-            Gesture centroid = clusters[i].GetBaryCentre();
-            tempGesLi.Add(centroid.Resample(10));
+            if (!freeIDs.Contains(i))
+            {
+                Gesture centroid = clusters[i].GetBaryCentre();
+                if (centroid != null)
+                    tempGesLi.Add(centroid.Resample(10));
+            }
         }
         CSharp2Python(tempGesLi);
         PythonRunner.RunFile("Assets/Scripts/MDS.py");
@@ -694,11 +721,19 @@ public class GestureAnalyser : MonoBehaviour
         {
             gestures[i].MDS_Coordinate = new Vector2(pythonResult[i][0], pythonResult[i][1]);
         }
+        int index = 0;
         for (int i = 0; i < centroidCount; i++)
         {
-            Gesture centroid = clusters[i].GetBaryCentre();
-            centroid.MDS_Coordinate = new Vector2(pythonResult[i + gestureCount][0], pythonResult[i + gestureCount][1]);
-            clusters[i].SetBaryCentre(centroid);
+            if (!freeIDs.Contains(i))
+            {
+                Gesture centroid = clusters[i].GetBaryCentre();
+                if (centroid != null)
+                {
+                    centroid.MDS_Coordinate = new Vector2(pythonResult[index + gestureCount][0], pythonResult[index + gestureCount][1]);
+                    clusters[i].SetBaryCentre(centroid);
+                    index += 1;
+                }
+            }
         }
     }
 }

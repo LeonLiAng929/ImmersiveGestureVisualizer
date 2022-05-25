@@ -25,6 +25,8 @@ public class TrajectoryFilter : MonoBehaviour
 
     private void Filter(SelectExitEventArgs arg)
     {
+        UserStudy.instance.IncrementCount(Actions.TrajectoryFilter);
+
         if (shown)
         {
             shown = false;

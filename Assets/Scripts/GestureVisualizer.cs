@@ -163,7 +163,7 @@ public class GestureVisualizer : MonoBehaviour
         //Deploy.instance._DeployRig();
         //Initialize2DBoard();
         k = 1;
-        //arrangementMode = 3;
+        arrangementMode = 3;
         //InitializeVisualization();
     }
     public void Initialize2DBoard()
@@ -246,7 +246,7 @@ public class GestureVisualizer : MonoBehaviour
             uiref.gameObject.GetComponent<MeshRenderer>().material.color = GetColorByCluster(gestureGameObjs[i].gesture.cluster);
             gestureGameObjs[i].uiRef = uiref;
             uiref.Initialize2DGesture();
-            uiref.GesInfo.text = gestureGameObjs[i].gesture.id.ToString() + "-" + gestureGameObjs[i].gesture.trial;
+            uiref.GesInfo.text = "C" + gestureGameObjs[i].gesture.cluster.ToString() + "\n" + gestureGameObjs[i].gesture.id.ToString() + "-" + gestureGameObjs[i].gesture.trial;
         }
         // re-link gestures to old boards
         foreach (GameObject board in boardRecords)
@@ -349,7 +349,7 @@ public class GestureVisualizer : MonoBehaviour
         
         return clustersObjDic[id];
     }
-    public void InitializeVisualization()
+    public IEnumerator InitializeVisualization()
     {
         skeletonModel.SetActive(true);
         trajectoryPrefab.SetActive(true);
@@ -365,6 +365,7 @@ public class GestureVisualizer : MonoBehaviour
                 GestureAnalyser.instance.InitializeClusters_PCA_Kmeans(k);
             else if (clusteringRationale == ClusteringRationales.MDS)
                 GestureAnalyser.instance.InitializeClusters_MDS_Kmeans(k);
+            yield return null;
         }
         else if (clusteringMethod == ClusteringMethods.MeanShift) {
             if (clusteringRationale == ClusteringRationales.PCA)
@@ -373,6 +374,7 @@ public class GestureVisualizer : MonoBehaviour
                 GestureAnalyser.instance.InitializeClusters_MDS_MeanShift();
             else if (clusteringRationale == ClusteringRationales.Raw)
                 GestureAnalyser.instance.InitializeClusters_Raw_MeanShift();
+            yield return null;
         }
 
         List<Gesture> gestures = GestureAnalyser.instance.GetGestures();
@@ -395,7 +397,9 @@ public class GestureVisualizer : MonoBehaviour
             temp.a = (float)0.3;
             clusterTrans.gameObject.GetComponent<MeshRenderer>().material.color = temp;
             clustersObjDic.Add(pair.Key, newClusterObj);
+            yield return null;
         }
+        
 
         //float y = 0;
 
@@ -431,14 +435,16 @@ public class GestureVisualizer : MonoBehaviour
             }
             newGesVisTrans.GetComponent<Transform>().Find("SmallMultiples").gameObject.SetActive(false);
             //y = y + float.Parse("1.5");
+            yield return null;
         }
-
 
         // instantiate barycentre visualization for each cluster
         foreach (KeyValuePair<int, GameObject> p in clustersObjDic)
         {
             InstantiateAverageGestureVis(p.Value, p.Key);
+            yield return null;
         }
+
 
         // arrange initial position for gestures under each cluster
         foreach (KeyValuePair<int, GameObject> pair in clustersObjDic)
@@ -452,7 +458,10 @@ public class GestureVisualizer : MonoBehaviour
                     gGO.gameObject.SetActive(false);
                 }
             }
+            yield return null;
         }
+
+
 
         /*ArrangeLocationForGestures();
 
@@ -473,7 +482,7 @@ public class GestureVisualizer : MonoBehaviour
         gesVisPrefab.SetActive(false);
         GesUiPrefab.SetActive(false);
         UiPenalPrefab.SetActive(false);
-        AdjustClusterPosition();
+        //AdjustClusterPosition();
 
         foreach (KeyValuePair<int, GameObject> pair in clustersObjDic)
         {
@@ -489,9 +498,8 @@ public class GestureVisualizer : MonoBehaviour
                     //gGO.gameObject.AddComponent<ShowConnection>();
                 }
             }
+            yield return null;
         }
-        
-        
         /*if (Deploy.instance.IsDeploying())
         {
             foreach (KeyValuePair<int, GameObject> pair in GestureVisualizer.instance.clustersObjDic)
@@ -503,7 +511,7 @@ public class GestureVisualizer : MonoBehaviour
                 }
             }
         }*/
-        
+
         if (startup)
         {
             GesUiPrefab.SetActive(true);
@@ -523,6 +531,10 @@ public class GestureVisualizer : MonoBehaviour
             GesUiPrefab.SetActive(false);
             UiPenalPrefab.SetActive(false);
         }
+        yield return null;
+        AdjustClusterPosition();
+        yield return null;
+        FadeScreen.instance.FadeIn();
     }
 
     public void DestroyBoardRecord(GameObject board2Delete)
@@ -564,6 +576,8 @@ public class GestureVisualizer : MonoBehaviour
     }
     public void CloseComparison()
     {
+        UserStudy.instance.IncrementCount(Actions.CloseComparison);
+
         selectedGestures[0].transform.localPosition = new Vector3(Camera.main.gameObject.transform.position.x - 0.25f, selectedGestures[0].transform.localPosition.y, Camera.main.gameObject.transform.position.z);
         selectedGestures[1].transform.localPosition = new Vector3(Camera.main.gameObject.transform.position.x + 0.25f, selectedGestures[1].transform.localPosition.y, Camera.main.gameObject.transform.position.z);
         selectedGestures[0].transform.localRotation = new Quaternion(0, 0, 0, 0);
@@ -653,6 +667,7 @@ public class GestureVisualizer : MonoBehaviour
     public void DestroyClusterObjectById(int id)
     {
         Destroy(clustersObjDic[id]);
+        clustersObjDic.Remove(id);
     }
 
     public void DestroyAllClusters()

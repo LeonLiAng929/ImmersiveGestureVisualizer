@@ -73,6 +73,7 @@ public class Cluster
             GestureVisualizer.instance.DestroyClusterObjectById(clusterID);
             baryCentre = null;
             consensus = -1;
+            GestureAnalyser.instance.RemoveClusterByID(clusterID);
 
         }
         GestureAnalyser.instance.PCA_Arrangement();

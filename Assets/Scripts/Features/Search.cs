@@ -20,6 +20,8 @@ public class Search : MonoBehaviour
 
     public void ConfirmSearch(SelectExitEventArgs arg)
     {
+        UserStudy.instance.IncrementCount(Actions.Search);
+
         selectionIndicator.SetActive(true);
 
         List<Gesture> gestures = GestureAnalyser.instance.PrepareGestureForSearch();

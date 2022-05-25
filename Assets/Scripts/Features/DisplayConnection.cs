@@ -21,7 +21,8 @@ public class DisplayConnection : MonoBehaviour
         selectionIndicator.SetActive(!selectionIndicator.activeSelf);
         foreach (KeyValuePair<int, GameObject> pair in GestureVisualizer.instance.GetClusterObjs())
         {
-            pair.Value.transform.Find("ClusterVisualization").GetComponent<ClusterGameObject>().DisplayConnection();
+            if(pair.Value != null)
+                pair.Value.transform.Find("ClusterVisualization").GetComponent<ClusterGameObject>().DisplayConnection();
         }
     }
     // Update is called once per frame
