@@ -195,6 +195,12 @@ public class Gesture
 
     public void NormalizeTimestamp()
     {
+       
+        try
+        {
+            var benchm = poses[0].timestamp;
+        }
+        catch (System.ArgumentOutOfRangeException) { Debug.Log(gestureType + id.ToString() +" " +trial.ToString()); }
         var benchmark = poses[0].timestamp;
         foreach (Pose pose in poses)
         {

@@ -135,6 +135,7 @@
     <Compile Include="Assets\Scripts\Features\Deploy.cs" />
     <Compile Include="Assets\Scripts\Gesture2DObject.cs" />
     <Compile Include="Assets\Scripts\Features\UserStudy.cs" />
+    <Compile Include="Assets\Scripts\FadeScreen.cs" />
     <Compile Include="Assets\Scripts\Features\DisplayTrajectoryFilter.cs" />
     <Compile Include="Assets\Scripts\NewLookAt.cs" />
     <Compile Include="Assets\Scripts\Features\IncrementCluster.cs" />
@@ -149,7 +150,6 @@
     <Compile Include="Assets\Scripts\Features\ShowConnection.cs" />
     <Compile Include="Assets\Scripts\TesttingScript\pressed.cs" />
     <Compile Include="Assets\Scripts\PlayerIconTracing.cs" />
-    <Compile Include="Assets\Scripts\FadeScreen.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Resources\7\crouch-3.xml" />
@@ -1451,7 +1451,7 @@
     <None Include="Assets\Resources\16\slice carrots-2.xml" />
     <None Include="Assets\Resources\15\turn around-3.xml" />
     <None Include="Assets\Resources\9\slice carrots-1.xml" />
-    <None Include="Assets\Resources\11\throw ball-1.xml" />
+    <None Include="Assets\Resources\11\(broken)throwball-1.xml" />
     <None Include="Assets\Resources\19\turn around-3.xml" />
     <None Include="Assets\Resources\25\slice carrots-2.xml" />
     <None Include="Assets\Resources\21\hands up-1.xml" />

@@ -5909,7 +5909,7 @@ GameObject:
   - component: {fileID: 452078232}
   - component: {fileID: 452078231}
   m_Layer: 0
-  m_Name: ScratchLikeACat
+  m_Name: ThrowBall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6010,7 +6010,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2af019447300f274ea73fb483ccafc11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  referentName: scratch like a cat
+  referentName: throw ball
   curr: 0
   prefab: {fileID: 1373805408}
   previewRepr: {fileID: 0}
@@ -9454,7 +9454,7 @@ GameObject:
   - component: {fileID: 788182974}
   - component: {fileID: 788182973}
   m_Layer: 0
-  m_Name: AngryLikeABear
+  m_Name: Crouch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9555,7 +9555,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2af019447300f274ea73fb483ccafc11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  referentName: angry like a bear
+  referentName: crouch
   curr: 1
   prefab: {fileID: 1373805408}
   previewRepr: {fileID: 0}
