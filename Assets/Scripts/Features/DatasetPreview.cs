@@ -18,6 +18,7 @@ public class DatasetPreview : MonoBehaviour
     private int counter = 0;
     private float prevTimestamp;
     private int numOfGestures;
+    private bool needReassign = false;
 
     // Start is called before the first frame update
     void Awake()
@@ -28,19 +29,44 @@ public class DatasetPreview : MonoBehaviour
         xRSimpleInteractable.selectExited.AddListener(LoadDatasetInScene);
 
         GestureAnalyser gestureAnalyser = GestureAnalyser.instance;
-        gestureAnalyser.LoadData(referentName);
-        numOfGestures = gestureAnalyser.GetGestureCount();
-        gestureAnalyser.CalculateAverageGestureForDataset();
-        averageGesture = gestureAnalyser.GetGlobalAverageGesture();
-
-        InstantiatePreview();
-
-        if (!curr)
+        try
         {
-            gameObject.SetActive(false);
+            gestureAnalyser.LoadData(referentName);
+            numOfGestures = gestureAnalyser.GetGestureCount();
+            gestureAnalyser.CalculateAverageGestureForDataset();
+            averageGesture = gestureAnalyser.GetGlobalAverageGesture();
+
+            InstantiatePreview();
+
+            if (!curr)
+            {
+                gameObject.SetActive(false);
+            }
+        }
+        catch (System.NullReferenceException)
+        {
+            needReassign = true;
         }
     }
 
+    private void Start()
+    {
+        if (needReassign)
+        {
+            GestureAnalyser gestureAnalyser = GestureAnalyser.instance;
+            gestureAnalyser.LoadData(referentName);
+            numOfGestures = gestureAnalyser.GetGestureCount();
+            gestureAnalyser.CalculateAverageGestureForDataset();
+            averageGesture = gestureAnalyser.GetGlobalAverageGesture();
+
+            InstantiatePreview();
+
+            if (!curr)
+            {
+                gameObject.SetActive(false);
+            }
+        }
+    }
     // Update is called once per frame
     void Update()
     {
