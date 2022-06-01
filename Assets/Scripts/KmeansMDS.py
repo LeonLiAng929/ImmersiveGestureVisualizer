@@ -13,7 +13,7 @@ import clr
 #print(dir(clr))
 import UnityEngine
 
-gestureAnalyzer = UnityEngine.Object.FindObjectOfType(clr.GestureAnalyser)
+gestureAnalyzer = UnityEngine.Object.FindObjectOfType(clr.Experiment)
 gestures = gestureAnalyzer.GetGestures()
 
 dataset_to_train = []
@@ -36,7 +36,7 @@ kmeans = KMeans(n_clusters=gestureAnalyzer.k, init='k-means++', verbose=1).fit(d
 for i in range(0, len(gestures)):
     gestures[i].cluster = int(kmeans.labels_[i])
 
-gestureAnalyzer.InitializePythonResult(len(kmeans.cluster_centers_), len(kmeans.cluster_centers_[0]))
+"""gestureAnalyzer.InitializePythonResult(len(kmeans.cluster_centers_), len(kmeans.cluster_centers_[0]))
 for i in range(0, len(kmeans.cluster_centers_)):
     for j in range(0, len(kmeans.cluster_centers_[i])):
-         gestureAnalyzer.LogPythonResult(i,j,kmeans.cluster_centers_[i][j])
+         gestureAnalyzer.LogPythonResult(i,j,kmeans.cluster_centers_[i][j])"""

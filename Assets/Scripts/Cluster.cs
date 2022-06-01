@@ -29,7 +29,7 @@ public class Cluster
                 gestures.Add(g);
             }
         }
-        if (!init)
+        /*if (!init)
         {
             if (gestures.Count > 1)
             {
@@ -43,7 +43,7 @@ public class Cluster
             }
             GestureAnalyser.instance.PCA_Arrangement();
             GestureAnalyser.instance.MDS_Arrangement();
-        }
+        }*/
     }
 
     public void RemoveGesture(List<Gesture> gLi)

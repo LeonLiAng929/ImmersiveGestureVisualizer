@@ -13,7 +13,7 @@ import clr
 #print(dir(clr))
 import UnityEngine
 
-gestureAnalyzer = UnityEngine.Object.FindObjectOfType(clr.GestureAnalyser)
+gestureAnalyzer = UnityEngine.Object.FindObjectOfType(clr.Experiment)
 gestures = gestureAnalyzer.GetGestures()
 
 dataset_to_train = []

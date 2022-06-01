@@ -7,10 +7,13 @@ public class GestureAnalyser : MonoBehaviour
     public string username;
     [HideInInspector]
     public int k;  // k for k-means clustering
+    [HideInInspector]
     public bool estimationOnly = true; // whether use meanshift for estimation or clustering
+    [HideInInspector]
     public int kPrediction; // number of k predicted by meanshift
     public List<List<List<float>>> pythonArguments = new List<List<List<float>>>();
     public List<List<float>> pythonResult = new List<List<float>>();
+    [HideInInspector]
     public float similarityScore = 0;
     private List<Gesture> gestures = new List<Gesture>();
     private Dictionary<int,Cluster> clusters = new Dictionary<int,Cluster>();

@@ -14,7 +14,7 @@ import clr
 #print(dir(clr))
 import UnityEngine
 
-gestureAnalyzer = UnityEngine.Object.FindObjectOfType(clr.GestureAnalyser)
+gestureAnalyzer = UnityEngine.Object.FindObjectOfType(clr.Experiment)
 dataset_to_train = gestureAnalyzer.pythonArguments
 gestures = gestureAnalyzer.GetGestures()
 num_of_joints = gestures[0].poses[0].num_of_joints
