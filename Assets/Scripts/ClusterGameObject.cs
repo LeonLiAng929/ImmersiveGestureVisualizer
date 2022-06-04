@@ -221,8 +221,8 @@ public class ClusterGameObject : MonoBehaviour
             {
                 gGO.gameObject.SetActive(unfold);
             }
-            UserStudy.instance.IncrementCount(Actions.UnfoldCluster);
         }
+        UserStudy.instance.IncrementCount(Actions.UnfoldCluster);
     }
 
     public void InstantiateInCircle(List<GestureGameObject> gestureObjs, Vector3 location)
