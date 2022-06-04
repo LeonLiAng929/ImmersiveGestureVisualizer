@@ -61,6 +61,8 @@ public class IO
                     temp.SetBoundingBox();
                     temp.SetCentroid();
                     temp.NormalizeTimestamp();
+                    temp.TranslateToOrigin();
+                    temp.NormalizeHeight();
                     gestures.Add(temp);
                 }
             }
@@ -117,6 +119,8 @@ public class IO
                 temp.SetBoundingBox();
                 temp.SetCentroid();
                 temp.NormalizeTimestamp();
+                temp.TranslateToOrigin();
+                temp.NormalizeHeight();
                 gestures.Add(temp);
             }
         }

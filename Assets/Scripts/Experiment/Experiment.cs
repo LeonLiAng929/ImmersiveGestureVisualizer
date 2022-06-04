@@ -42,6 +42,40 @@ public class Experiment : MonoBehaviour
     /// The new formula becomes: Cr = (Σ(N,i=1),Σ(N,j=i+1)[E(L(gi),L(gj))])/(0.5N(N-1)), where L denotes the label of a gesture, E represents 
     /// a function that takes in labels of 2 gestures and returns 1 if the labels are the same, 0 if they are not. 
     /// 
+    /// ====================================================================================================================================
+    /// =================================================REFINED EXPERIMENT=================================================================
+    /// The expriment aims to find out which conbination of clustering methods and rationales makes more sense.
+    /// Compare methods and rationales raised in our paper with the original method (K-means + DBA) in GestureMap
+    /// 
+    /// 
+    /// /// Steps of the Expriment:
+    /// 1. Load gesture data for all referents (15 referents in total)
+    /// 2. Perform the following comparisons
+    /// 
+    /// Pairs of Comparisons: 
+    /// 1. K-means+PCA (k=15), K-means+MDS (k=15), K-means+DBA(k=15)
+    /// 2. mean-shift + PCA (k=i) --> if i!=15 -> K-means+PCA (k=i), K-means+MDS (k=i), K-means+DBA(k=i)
+    /// 3. mean-shift + MDS (k=j) --> if j!=15 -> K-means+PCA (k=j), K-means+MDS (k=j), K-means+DBA(k=j)
+    /// 4. mean-shift + Raw (k=l) --? if i!=15 -> K-means+PCA (k=l), K-means+MDS (k=l), K-means+DBA(k=l)
+    /// 15 clusterings in total.
+    /// 
+    /// For each clustering above, we record 
+    /// 1. the consensus for each resulting group
+    /// 2. how many referents each cluster contains
+    /// 3. how many gestures belongs to each referent presented in each cluster
+    /// 4. the overall consensus for the entire dataset.
+    /// 
+    /// To calculate the within-cluster consensus, we simplified the consensus equation of the Dissimilarity-Consensus approach for
+    /// Non-repeated Elicitation. The original function is Cr = (Σ(N,i=1),Σ(N,j=i+1)[∆(gi,gj) <= τ])/(0.5N(N-1)), where N denotes the 
+    /// number of gestures in the cluster, τ denotes the tolerance value, ∆ denotes a similarity function such as DTW.
+    /// In our simplified approach, to determine whether 2 gestures are similar, we compare the referent labels of each pair of gestures
+    /// instead of comparing the similarity score with the tolerance. 
+    /// The new formula becomes: Cr = (Σ(N,i=1),Σ(N,j=i+1)[E(L(gi),L(gj))])/(0.5N(N-1)), where L denotes the label of a gesture, E represents 
+    /// a function that takes in labels of 2 gestures and returns 1 if the labels are the same, 0 if they are not. 
+    /// 
+    /// 
+    /// To calculate the overal consensus, we simply count the number of gesture pairs that have the same label, then divide it by the 
+    /// sum of number of gesture pairs in each cluster.
     /// </summary>
 
     [HideInInspector]
@@ -67,6 +101,8 @@ public class Experiment : MonoBehaviour
         /// Each record contains summarised info about a cluster.
         /// </summary>
         public float consensus;
+        public float matchedPairs = 0;
+        public float totalPairs = 0;
         public List<Tuple<string,int>> referents = new List<Tuple<string, int>>();
     }
 
@@ -74,11 +110,12 @@ public class Experiment : MonoBehaviour
     void Start()
     {
         LoadAllData();
+        //gestures= xmlLoader.LoadXML("angry like a bear");
         PCA_Arrangement();
         MDS_Arrangement();
 
         repetition = 1;
-        LaunchExperiment();
+        LaunchRefinedExperiment();
         Debug.Log("Experiment Finished!");
     }
 
@@ -215,6 +252,83 @@ public class Experiment : MonoBehaviour
         }
     }
 
+    public void LaunchRefinedExperiment()
+    {
+        int rep = repetition;
+        const int startingNumberOfCluster = 15;
+        int resultingNumberOfClusters = -1;
+        while (rep != 0)
+        {
+            rep -= 1;
+            // 1. K-means+DBA (k=15) 
+            InitializeClusters_DBA(startingNumberOfCluster);
+            RegisterOutput(CollectClusteringOutputs(), "K-means", "DBA", startingNumberOfCluster);
+            clusters.Clear();
+            InitializeClusters_PCA_Kmeans(startingNumberOfCluster);
+            RegisterOutput(CollectClusteringOutputs(), "K-means", "PCA", startingNumberOfCluster);
+            clusters.Clear();
+            InitializeClusters_MDS_Kmeans(startingNumberOfCluster);
+            RegisterOutput(CollectClusteringOutputs(), "K-means", "MDS", startingNumberOfCluster);
+
+
+            clusters.Clear();
+            InitializeClusters_Raw_MeanShift();
+            resultingNumberOfClusters = clusters.Count;
+            RegisterOutput(CollectClusteringOutputs(), "MeanShift", "Raw", resultingNumberOfClusters);
+            if (resultingNumberOfClusters != startingNumberOfCluster)
+            {
+                clusters.Clear();
+                InitializeClusters_DBA(resultingNumberOfClusters);
+                RegisterOutput(CollectClusteringOutputs(), "K-means", "DBA", resultingNumberOfClusters);
+                clusters.Clear();
+                InitializeClusters_PCA_Kmeans(resultingNumberOfClusters);
+                RegisterOutput(CollectClusteringOutputs(), "K-means", "PCA", resultingNumberOfClusters);
+                clusters.Clear();
+                InitializeClusters_MDS_Kmeans(resultingNumberOfClusters);
+                RegisterOutput(CollectClusteringOutputs(), "K-means", "MDS", resultingNumberOfClusters);
+
+            }
+
+
+            clusters.Clear();
+            InitializeClusters_PCA_MeanShift();
+            resultingNumberOfClusters = clusters.Count;
+            RegisterOutput(CollectClusteringOutputs(), "MeanShift", "PCA", resultingNumberOfClusters);
+            if (resultingNumberOfClusters != startingNumberOfCluster)
+            {
+                clusters.Clear();
+                InitializeClusters_DBA(resultingNumberOfClusters);
+                RegisterOutput(CollectClusteringOutputs(), "K-means", "DBA", resultingNumberOfClusters);
+                clusters.Clear();
+                InitializeClusters_PCA_Kmeans(resultingNumberOfClusters);
+                RegisterOutput(CollectClusteringOutputs(), "K-means", "PCA", resultingNumberOfClusters);
+                clusters.Clear();
+                InitializeClusters_MDS_Kmeans(resultingNumberOfClusters);
+                RegisterOutput(CollectClusteringOutputs(), "K-means", "MDS", resultingNumberOfClusters);
+
+            }
+
+
+            clusters.Clear();
+            InitializeClusters_MDS_MeanShift();
+            resultingNumberOfClusters = clusters.Count;
+            RegisterOutput(CollectClusteringOutputs(), "MeanShift", "MDS", resultingNumberOfClusters);
+            if (resultingNumberOfClusters != startingNumberOfCluster)
+            {
+                clusters.Clear();
+                InitializeClusters_DBA(resultingNumberOfClusters);
+                RegisterOutput(CollectClusteringOutputs(), "K-means", "DBA", resultingNumberOfClusters);
+                clusters.Clear();
+                InitializeClusters_PCA_Kmeans(resultingNumberOfClusters);
+                RegisterOutput(CollectClusteringOutputs(), "K-means", "PCA", resultingNumberOfClusters);
+                clusters.Clear();
+                InitializeClusters_MDS_Kmeans(resultingNumberOfClusters);
+                RegisterOutput(CollectClusteringOutputs(), "K-means", "MDS", resultingNumberOfClusters);
+
+            }
+        }
+    }
+
     public List<Record> CollectClusteringOutputs()
     {
         List<Record> records = new List<Record>();
@@ -228,12 +342,12 @@ public class Experiment : MonoBehaviour
     }
     public void RegisterOutput(List<Record> output, string method, string rationale, int k)
     {
-        string filename = Application.dataPath + "/Scripts/Experiment/ExperimentResult.csv";
+        string filename = Application.dataPath + "/Scripts/Experiment/RefinedExperimentResult.csv";
         if (!File.Exists(filename))
         {
             TextWriter tww = new StreamWriter(filename, false);
 
-            string header = "Round#,Method,Rationale,k,ClusterConsensus,ClusterDetail";
+            string header = "Round#,Method,Rationale,k,OverallConsensus,ClusterConsensus,ClusterDetail";
 
             tww.WriteLine(header);
             tww.Close();
@@ -248,8 +362,13 @@ public class Experiment : MonoBehaviour
         content += ",";
         content += k.ToString();
 
+        float correctPairs = 0;
+        float totalPairs = 0;
+        string temp = "";
         foreach (Record r in output)
         {
+            correctPairs += r.matchedPairs;
+            totalPairs += r.totalPairs;
             string cell = ",";
             cell += r.consensus.ToString();
             string tuples = "";
@@ -258,8 +377,11 @@ public class Experiment : MonoBehaviour
                 tuples += t.ToString() + ",";
             }
             cell += "," + string.Format("{0}", "\"" + tuples + "\"");
-            content += cell;
+            temp += cell;
         }
+
+        content += ","+(correctPairs / totalPairs).ToString();
+        content += temp;
         TextWriter tw = new StreamWriter(filename, true);
 
         tw.WriteLine(content);
@@ -269,13 +391,13 @@ public class Experiment : MonoBehaviour
     {
         gestures = xmlLoader.LoadAllXML();
 
-        foreach (Gesture g in gestures)
+        /*foreach (Gesture g in gestures)
         {
             g.SetBoundingBox();
             g.SetCentroid();
             g.TranslateToOrigin();
             g.NormalizeHeight();
-        }
+        }*/
     }
  
     public Record WithinClusterDataProcessing(Cluster c)
@@ -285,7 +407,7 @@ public class Experiment : MonoBehaviour
         {
             Dictionary<string, int> count = new Dictionary<string, int>(); // count of gestures in each refent presented in this cluster
             int numOfGestures = c.GestureCount();
-            int similarPairs = 0;
+            float similarPairs = 0;
             for (int i = 0; i < numOfGestures - 1; i++)
             {
                 string key = gestures[i].gestureType;
@@ -317,6 +439,8 @@ public class Experiment : MonoBehaviour
             float consensus = similarPairs / (0.5f * numOfGestures * (numOfGestures - 1));
             Record r = new Record();
             r.consensus = consensus;
+            r.matchedPairs = similarPairs;
+            r.totalPairs = numOfGestures * (numOfGestures - 1)/2;
             List<Tuple<string, int>> referents = new List<Tuple<string, int>>();
             foreach (KeyValuePair<string, int> pair in count)
             {
@@ -330,9 +454,11 @@ public class Experiment : MonoBehaviour
         {
             Record r = new Record();
             r.consensus = -1;
+            r.matchedPairs = 0;
+            r.totalPairs = 0;
             var li = new List<Tuple<string, int>>();
             li.Add(new Tuple<string, int>(gestures[0].gestureType, 1));
-            r.referents = new List<Tuple<string, int>>();
+            r.referents = li;
             return r;
         }
     }
