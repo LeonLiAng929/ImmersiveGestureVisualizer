@@ -43,6 +43,11 @@ public class TrajectoryTR : MonoBehaviour
 
     public void DrawTrajectory(List<Color> colorSet)
     {
+        foreach(TubeRenderer tr in trajectoryRenderers)
+        {
+            Destroy(tr.gameObject);
+        }
+        trajectoryRenderers.Clear();
         int joints_count = gesture.poses[0].num_of_joints;
         for (int j = 0; j < joints_count; j++)
         {
