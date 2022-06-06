@@ -155,6 +155,7 @@ public class ClusterGameObject : MonoBehaviour
             }
         }
         c.AddGesture(gestureLi);
+        
         foreach (GameObject originalClusterObject in originalClusterObjs)
         {
             ClusterGameObject clusterObj = originalClusterObject.GetComponentInChildren<ClusterGameObject>();
@@ -193,10 +194,13 @@ public class ClusterGameObject : MonoBehaviour
         ClusterTag clusterTag = GetComponentInChildren<ClusterTag>(true);
         clusterTag.UpdateTag();
         GestureTag[] gTags = this.transform.parent.GetComponentsInChildren<GestureTag>(true);
-
         foreach (GestureTag gtag in gTags)
         {
             gtag.UpdateTag();
+        }
+        foreach (GameObject gGO in selectedGestures)
+        {
+            gGO.GetComponent<GestureGameObject>().uiRef.UpdateGesInfo();
         }
         GestureVisualizer.instance.AdjustClusterPosition();
         //ChangeArrangement.instance._Rearragne();

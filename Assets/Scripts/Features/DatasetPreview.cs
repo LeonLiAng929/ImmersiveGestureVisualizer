@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +6,12 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class DatasetPreview : MonoBehaviour
 {
     public string referentName;
+    public string displayName;
+    public bool userStudyData; 
+    public bool trainingData;
     public bool curr = false;
+    [SerializeField]
+    public List<string> userStudyReferents = new List<string>();
     protected XRSimpleInteractable xRSimpleInteractable;
     public Gesture averageGesture;
     public GameObject prefab;
@@ -54,7 +60,14 @@ public class DatasetPreview : MonoBehaviour
         if (needReassign)
         {
             GestureAnalyser gestureAnalyser = GestureAnalyser.instance;
-            gestureAnalyser.LoadData(referentName);
+            if (userStudyData)
+            {
+                gestureAnalyser.LoadUserStudyData(userStudyReferents);
+            }
+            else
+            {
+                gestureAnalyser.LoadData(referentName);
+            }
             numOfGestures = gestureAnalyser.GetGestureCount();
             gestureAnalyser.CalculateAverageGestureForDataset();
             averageGesture = gestureAnalyser.GetGlobalAverageGesture();
@@ -174,7 +187,7 @@ public class DatasetPreview : MonoBehaviour
             transforms[i].transform.localPosition = pos - new Vector3(0, 0, pos.z);
         }
 
-        previewRepr.transform.Find("GestureInfo").gameObject.GetComponent<TextMesh>().text = "Referent: " + referentName + "\n Number of gestures: "
+        previewRepr.transform.Find("GestureInfo").gameObject.GetComponent<TextMesh>().text = "Referent: " + displayName + "\n Number of gestures: "
             + numOfGestures.ToString();
         prefab.SetActive(false);
     }
@@ -201,19 +214,36 @@ public class DatasetPreview : MonoBehaviour
     
 
         GestureAnalyser gestureAnalyser = GestureAnalyser.instance;
-        gestureAnalyser.LoadData(referentName);
+        if (userStudyData) { gestureAnalyser.LoadUserStudyData(userStudyReferents); }
+        else
+        {
+            gestureAnalyser.LoadData(referentName);
+        }
         GestureVisualizer gestureVisualizer = GestureVisualizer.instance;
         ClusteringMethods prevMethod = gestureVisualizer.clusteringMethod;
         ClusteringRationales prevRationale = gestureVisualizer.clusteringRationale;
-        gestureVisualizer.k = 1;
-        gestureVisualizer.clusteringRationale = ClusteringRationales.DBA;
-        gestureVisualizer.clusteringMethod = ClusteringMethods.K_Means;
-        gestureVisualizer.DestroyAllClusters();
-        gestureVisualizer.startup = true;
-        
-        
-        StartCoroutine(gestureVisualizer.InitializeVisualization());
+        if (trainingData)
+        {
+            gestureVisualizer.k = 5;
+            gestureVisualizer.clusteringRationale = ClusteringRationales.DBA;
+            gestureVisualizer.clusteringMethod = ClusteringMethods.K_Means;
+            gestureVisualizer.DestroyAllClusters();
+            gestureVisualizer.startup = true;
 
+
+            StartCoroutine(gestureVisualizer.InitializeVisualization(true));
+        }
+        else
+        {
+            gestureVisualizer.k = 1;
+            gestureVisualizer.clusteringRationale = ClusteringRationales.DBA;
+            gestureVisualizer.clusteringMethod = ClusteringMethods.K_Means;
+            gestureVisualizer.DestroyAllClusters();
+            gestureVisualizer.startup = true;
+
+
+            StartCoroutine(gestureVisualizer.InitializeVisualization());
+        }
         gestureVisualizer.clusteringMethod = prevMethod;
         gestureVisualizer.clusteringRationale = prevRationale;
 

@@ -134,4 +134,10 @@ public class Gesture2DObject : MonoBehaviour
 
         xRSimpleInteractable.selectExited.RemoveAllListeners();
     }
+
+    public void UpdateGesInfo()
+    {
+        GesInfo.text = "C" + gGO.gesture.cluster.ToString() + "\n" + gGO.gesture.id.ToString() + "-" + gGO.gesture.trial;
+        Debug.Log(gGO.gesture.cluster);
+    }
 }

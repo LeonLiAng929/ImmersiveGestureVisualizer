@@ -5,12 +5,14 @@ using System.Xml;
 using System.IO;
 using System.Xml.Linq; //Needed for XDocument
 using System.Data;
+using System.Linq;
+
 public class IO
 {
     public XDocument xmlDoc; //create Xdocument. Will be used later to read XML file 
     public IEnumerable<XElement> items; //Create an Ienumerable list. Will be used to store XML Items.
 
-    public List<Gesture> LoadXML(string fileName)
+    public List<Gesture> LoadXML(string fileName, bool hideLabel=false)
     {
        List<Gesture> gestures = new List<Gesture>();   
        for (int i = 1; i < 31; i++)
@@ -37,7 +39,14 @@ public class IO
                     Gesture temp = new Gesture();
 
                     XmlNode gesture_node = gestureDataXml.SelectSingleNode("BodyGesture");
-                    temp.gestureType = gesture_node.Attributes["Name"].Value;
+                    if (hideLabel)
+                    {
+                        temp.gestureType = "Unknown";
+                    }
+                    else
+                    {
+                        temp.gestureType = gesture_node.Attributes["Name"].Value;
+                    }
                     temp.id = i;
                     temp.trial = name[name.IndexOf('-') + 1];
                     temp.num_of_poses = int.Parse(gesture_node.Attributes["Postures"].Value);
@@ -71,7 +80,7 @@ public class IO
 
     public void WriteFeatureCount()
     {
-        string filename = Application.dataPath + "/FeatureCount.csv";
+        string filename = Application.dataPath + "/UserStudy/FeatureCount.csv";
         int[] count = UserStudy.instance.featureCount;
         if (!File.Exists(filename)) 
         {
@@ -100,7 +109,7 @@ public class IO
 
     public void WriteUserResult()
     {
-        string filename = Application.dataPath + "/UserRefinedCluster.csv";
+        string filename = Application.dataPath + "/UserStudy/UserRefinedCluster.csv";
         if (!File.Exists(filename))
         {
             TextWriter tww = new StreamWriter(filename, false);
@@ -150,6 +159,17 @@ public class IO
         }
         tw.WriteLine(content);
         tw.Close();
+    }
+
+    public List<string> GetTrainingData()
+    {
+        string filename = Application.dataPath + "/UserStudy/TrainingClusters.csv";
+        TextReader tr = new StreamReader(filename, false);
+        tr.ReadLine();
+        List<string> values = tr.ReadLine().Split(new string[] { "," }, System.StringSplitOptions.RemoveEmptyEntries).ToList();
+        values.RemoveAt(0);
+        tr.Close();
+        return values;
     }
 
 

@@ -28,6 +28,7 @@ public class GestureGameObject : MonoBehaviour
     public Vector3 sizeB4Stack;
     public Quaternion lastQuat;
     public GameObject arrow;
+    public bool inComparison = false;
     int rotate = 0;
     int currPoseIndex = 0;
     // Update is called once per frame
@@ -115,21 +116,55 @@ public class GestureGameObject : MonoBehaviour
     public void PerformAction(SelectExitEventArgs arg)
     {
         Actions curr = ActionSwitcher.instance.GetCurrentAction();
-        if (curr == Actions.Animate){ActivateAnimate(false);  }
-        else if(curr == Actions.ChangeCluster){ ChangeCluster();  }
-        else if(curr == Actions.SmallMultiples) { ShowSmallMultiples(false);  }
-        else if (curr == Actions.Swing) {
-            previoulyInAnimationMode = true;  ActivateSwinging(false); 
-            GestureVisualizer.instance.rightController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.deviceRotation, out lastQuat); }
-        else if(curr == Actions.StackGestures) { StackGesture(false);}
-        else if (curr == Actions.CloseComparison) { if (arg.interactor.gameObject.name == "LeftHand Controller")
-            CloseComparison(true);
+        if (curr == Actions.Animate)
+        {
+            if (inComparison)
+            {
+                for (int i = 0; i < 2; i++)
+                {
+                    GestureVisualizer.instance.selectedGestures[i].GetComponent<GestureGameObject>().ActivateAnimate(false);
+                }
+            }
+            else { ActivateAnimate(false); }
+        }
+        else if (curr == Actions.ChangeCluster) { ChangeCluster(); }
+        else if (curr == Actions.SmallMultiples) {
+            if (inComparison)
+            {
+                for (int i = 0; i < 2; i++)
+                { GestureVisualizer.instance.selectedGestures[i].GetComponent<GestureGameObject>().ShowSmallMultiples(false); }
+            }
+            else
+            {
+                ShowSmallMultiples(false);
+            } }
+        else if (curr == Actions.Swing)
+        {
+            if (inComparison)
+            {
+                for (int i = 0; i < 2; i++)
+                { GestureVisualizer.instance.selectedGestures[i].GetComponent<GestureGameObject>().previoulyInAnimationMode = true;
+                    GestureVisualizer.instance.selectedGestures[i].GetComponent<GestureGameObject>().ActivateSwinging(false);
+                    GestureVisualizer.instance.rightController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.deviceRotation, out GestureVisualizer.instance.selectedGestures[i].GetComponent<GestureGameObject>().lastQuat);
+                }
+            }
+            else
+            {
+                previoulyInAnimationMode = true; ActivateSwinging(false);
+                GestureVisualizer.instance.rightController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.deviceRotation, out lastQuat);
+            }
+        }
+        else if (curr == Actions.StackGestures) { StackGesture(false); }
+        else if (curr == Actions.CloseComparison)
+        {
+            if (arg.interactor.gameObject.name == "LeftHand Controller")
+                CloseComparison(true);
             else if (arg.interactor.gameObject.name == "RightHand Controller")
             {
                 CloseComparison(false);
             }
         }
-        else if(curr == Actions.Mark)
+        else if (curr == Actions.Mark)
         {
             IdleSelect();
         }
@@ -142,6 +177,7 @@ public class GestureGameObject : MonoBehaviour
             List<GameObject> selectionList = GestureVisualizer.instance.selectedGestures;
             if (selected)
             {
+                inComparison = false;
                 if (!averageGesture)
                 {
                     try
@@ -178,6 +214,7 @@ public class GestureGameObject : MonoBehaviour
             }
             else
             {
+                inComparison = true;
                 if (!averageGesture)
                 {
                     try

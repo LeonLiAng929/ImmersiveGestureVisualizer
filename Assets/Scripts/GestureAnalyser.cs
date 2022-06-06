@@ -30,7 +30,7 @@ public class GestureAnalyser : MonoBehaviour
 
     private void Start()
     {
-        
+        xmlLoader.GetTrainingData();
         //PCA_Arrangement();
         //PythonRunner.RunFile("Assets/Scripts/MeanShiftNormalisedRaw.py");
     }
@@ -40,7 +40,7 @@ public class GestureAnalyser : MonoBehaviour
         referent = referentName;
         // loads and wrangles the raw data
 
-        //temporarily hardcoded to angry like a bear.
+        //angry like a bear.
         //scratch like a cat
         //draw circle
         gestures = xmlLoader.LoadXML(referentName);
@@ -52,6 +52,83 @@ public class GestureAnalyser : MonoBehaviour
             g.TranslateToOrigin();
             g.NormalizeHeight();
         }
+    }
+
+    public void LoadUserStudyData(List<string> referentName)
+    {
+        referent = "";
+        foreach (string referentN in referentName)
+        {
+            referent += referentN + "|";
+        }
+
+        // loads and wrangles the raw data
+
+        //angry like a bear.
+        //scratch like a cat
+        //draw circle
+        gestures.Clear();
+        foreach (string referentN in referentName)
+        {
+            gestures.AddRange(xmlLoader.LoadXML(referentN, true));
+            Debug.Log(referentN);
+        }
+        
+
+        foreach (Gesture g in gestures)
+        {
+            g.SetBoundingBox();
+            g.SetCentroid();
+            g.TranslateToOrigin();
+            g.NormalizeHeight();
+        }
+    }
+    public void InitializeTrainingClusters(int _k)
+    {
+        k = _k;
+
+        //Calculate the barycentre for the dataset
+        CSharp2Python(gestures);
+        PythonRunner.RunFile("Assets/Scripts/BaryCentre.py");
+        averageGesture = Python2CSharp();
+        averageGesture.SetBoundingBox();
+        averageGesture.SetCentroid();
+
+        //assign clusters
+        List<string> clustersID = xmlLoader.GetTrainingData();
+        for (int i = 0; i < gestures.Count; i++)
+        {
+            gestures[i].cluster = int.Parse(clustersID[i]);
+        }
+        // initialize clusters
+        foreach (Gesture g in gestures)
+        {
+            Cluster temp = TryGetCluster(g.cluster);
+            List<Gesture> gli = new List<Gesture>();
+            gli.Add(g);
+            temp.AddGesture(gli, true);
+        }
+
+        // calculate barycenter for each cluster
+
+        foreach (KeyValuePair<int, Cluster> pair in clusters)
+        {
+            if (pair.Value.GestureCount() > 1)
+            {
+                //CalculateBaryCentre(pair.Value.GetGestures());
+                //pair.Value.SetBaryCentre(Python2CSharp());
+                pair.Value.UpdateBarycentre();
+                pair.Value.UpdateConsensus();
+            }
+            else
+            {
+                pair.Value.SetBaryCentre(pair.Value.GetGestures()[0]);
+                pair.Value.UpdateConsensus();
+            }
+        }
+        CalculateGlobalConsensus();
+        PCA_Arrangement();
+        MDS_Arrangement();
     }
     public void InitializeClusters_DBA(int _k)
     {

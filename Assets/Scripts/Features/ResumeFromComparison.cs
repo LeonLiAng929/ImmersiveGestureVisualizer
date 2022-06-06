@@ -7,7 +7,7 @@ public class ResumeFromComparison : MonoBehaviour
 {
     private Color init;
     private XRSimpleInteractable xRSimpleInteractable;
-    private bool comparison = true;
+    private bool comparison = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -40,6 +40,7 @@ public class ResumeFromComparison : MonoBehaviour
             foreach (GameObject g in GestureVisualizer.instance.selectedGestures)
             {
                 g.GetComponent<GestureGameObject>().RevertComparing();
+                g.GetComponent<GestureGameObject>().inComparison = false;
             }
             GestureVisualizer.instance.EmptySelected();
         }

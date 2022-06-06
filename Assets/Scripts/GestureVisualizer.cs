@@ -268,24 +268,28 @@ public class GestureVisualizer : MonoBehaviour
         string key = reference.gGO.gesture.id.ToString() + '-' + reference.gGO.gesture.trial;
         foreach (GameObject board in boardRecords)
         {
-            Gesture2DObject[] oldUiRefList = board.GetComponentsInChildren<Gesture2DObject>(true);
-            Gesture2DObject uiref = oldUiRefList[uiLinkDic[key]];
-            if(uiref.AnimationIndicator.activeSelf != reference.AnimationIndicator.activeSelf)
-                uiref.AnimationIndicator.SetActive(reference.AnimationIndicator.activeSelf);
-            if (uiref.ChangingClusterIndicator.activeSelf != reference.ChangingClusterIndicator.activeSelf)
-                uiref.ChangingClusterIndicator.SetActive(reference.ChangingClusterIndicator.activeSelf);
-            if (uiref.ComparisonIndicator.activeSelf != reference.ComparisonIndicator.activeSelf)
-                uiref.ComparisonIndicator.SetActive(reference.ComparisonIndicator.activeSelf);
-            if (uiref.HeatmapIndicator.activeSelf != reference.HeatmapIndicator.activeSelf)
-                uiref.HeatmapIndicator.SetActive(reference.HeatmapIndicator.activeSelf);
-            if (uiref.SlidimationIndicator.activeSelf != reference.SlidimationIndicator.activeSelf)
-                uiref.SlidimationIndicator.SetActive(reference.SlidimationIndicator.activeSelf);
-            if (uiref.SmallmultiplesIndicator.activeSelf != reference.SmallmultiplesIndicator.activeSelf)
-                uiref.SmallmultiplesIndicator.SetActive(reference.SmallmultiplesIndicator.activeSelf);
-            if (uiref.StackingIndicator.activeSelf != reference.StackingIndicator.activeSelf)
-                uiref.StackingIndicator.SetActive(reference.StackingIndicator.activeSelf);
-            if (uiref.arrow.activeSelf != reference.arrow.activeSelf)
-                uiref.arrow.SetActive(reference.arrow.activeSelf);
+            try
+            {
+                Gesture2DObject[] oldUiRefList = board.GetComponentsInChildren<Gesture2DObject>(true);
+                Gesture2DObject uiref = oldUiRefList[uiLinkDic[key]];
+                if (uiref.AnimationIndicator.activeSelf != reference.AnimationIndicator.activeSelf)
+                    uiref.AnimationIndicator.SetActive(reference.AnimationIndicator.activeSelf);
+                if (uiref.ChangingClusterIndicator.activeSelf != reference.ChangingClusterIndicator.activeSelf)
+                    uiref.ChangingClusterIndicator.SetActive(reference.ChangingClusterIndicator.activeSelf);
+                if (uiref.ComparisonIndicator.activeSelf != reference.ComparisonIndicator.activeSelf)
+                    uiref.ComparisonIndicator.SetActive(reference.ComparisonIndicator.activeSelf);
+                if (uiref.HeatmapIndicator.activeSelf != reference.HeatmapIndicator.activeSelf)
+                    uiref.HeatmapIndicator.SetActive(reference.HeatmapIndicator.activeSelf);
+                if (uiref.SlidimationIndicator.activeSelf != reference.SlidimationIndicator.activeSelf)
+                    uiref.SlidimationIndicator.SetActive(reference.SlidimationIndicator.activeSelf);
+                if (uiref.SmallmultiplesIndicator.activeSelf != reference.SmallmultiplesIndicator.activeSelf)
+                    uiref.SmallmultiplesIndicator.SetActive(reference.SmallmultiplesIndicator.activeSelf);
+                if (uiref.StackingIndicator.activeSelf != reference.StackingIndicator.activeSelf)
+                    uiref.StackingIndicator.SetActive(reference.StackingIndicator.activeSelf);
+                if (uiref.arrow.activeSelf != reference.arrow.activeSelf)
+                    uiref.arrow.SetActive(reference.arrow.activeSelf);
+            }
+            catch (System.IndexOutOfRangeException) { }
         }
     }
 
@@ -349,7 +353,7 @@ public class GestureVisualizer : MonoBehaviour
         
         return clustersObjDic[id];
     }
-    public IEnumerator InitializeVisualization()
+    public IEnumerator InitializeVisualization(bool training=false)
     {
         skeletonModel.SetActive(true);
         trajectoryPrefab.SetActive(true);
@@ -357,24 +361,32 @@ public class GestureVisualizer : MonoBehaviour
         GesUiPrefab.SetActive(true);
         UiPenalPrefab.SetActive(true);
 
-        if (clusteringMethod == ClusteringMethods.K_Means)
-        {
-            if (clusteringRationale == ClusteringRationales.DBA)
-                GestureAnalyser.instance.InitializeClusters_DBA(k);
-            else if (clusteringRationale == ClusteringRationales.PCA)
-                GestureAnalyser.instance.InitializeClusters_PCA_Kmeans(k);
-            else if (clusteringRationale == ClusteringRationales.MDS)
-                GestureAnalyser.instance.InitializeClusters_MDS_Kmeans(k);
-            yield return null;
+        if (training) {
+            k = 5;
+            GestureAnalyser.instance.InitializeTrainingClusters(k);
         }
-        else if (clusteringMethod == ClusteringMethods.MeanShift) {
-            if (clusteringRationale == ClusteringRationales.PCA)
-                GestureAnalyser.instance.InitializeClusters_PCA_MeanShift();
-            else if (clusteringRationale == ClusteringRationales.MDS)
-                GestureAnalyser.instance.InitializeClusters_MDS_MeanShift();
-            else if (clusteringRationale == ClusteringRationales.Raw)
-                GestureAnalyser.instance.InitializeClusters_Raw_MeanShift();
-            yield return null;
+        else
+        {
+            if (clusteringMethod == ClusteringMethods.K_Means)
+            {
+                if (clusteringRationale == ClusteringRationales.DBA)
+                    GestureAnalyser.instance.InitializeClusters_DBA(k);
+                else if (clusteringRationale == ClusteringRationales.PCA)
+                    GestureAnalyser.instance.InitializeClusters_PCA_Kmeans(k);
+                else if (clusteringRationale == ClusteringRationales.MDS)
+                    GestureAnalyser.instance.InitializeClusters_MDS_Kmeans(k);
+                yield return null;
+            }
+            else if (clusteringMethod == ClusteringMethods.MeanShift)
+            {
+                if (clusteringRationale == ClusteringRationales.PCA)
+                    GestureAnalyser.instance.InitializeClusters_PCA_MeanShift();
+                else if (clusteringRationale == ClusteringRationales.MDS)
+                    GestureAnalyser.instance.InitializeClusters_MDS_MeanShift();
+                else if (clusteringRationale == ClusteringRationales.Raw)
+                    GestureAnalyser.instance.InitializeClusters_Raw_MeanShift();
+                yield return null;
+            }
         }
 
         List<Gesture> gestures = GestureAnalyser.instance.GetGestures();
