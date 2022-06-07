@@ -24,7 +24,7 @@ public class GestureTag : XRTag
             string tag2Display =
                "Gesture Type: " + gesture.gestureType.ToString() + "\n" +
                "UserID: " + gesture.id.ToString() + "\n" +
-               "Trial: " + gesture.trial.ToString() + "\n" +
+               //"Trial: " + gesture.trial.ToString() + "\n" +
                "Cluster: " + gesture.cluster.ToString() + "\n" +
                "Number of Poses: " + gesture.num_of_poses.ToString() + "\n" +
                "Global Consensus: " + gesture.GetGlobalSimilarity().ToString() + "\n" +
@@ -50,7 +50,7 @@ public class GestureTag : XRTag
             string tag2Display =
                "Gesture Type: " + gesture.gestureType.ToString() + "\n" +
                "UserID: " + gesture.id.ToString() + "\n" +
-               "Trial: " + gesture.trial.ToString() + "\n" +
+               //"Trial: " + gesture.trial.ToString() + "\n" +
                "Cluster: " + gesture.cluster.ToString() + "\n" +
                "Number of Poses: " + gesture.num_of_poses.ToString() + "\n" +
                "Global Consensus: " + gesture.GetGlobalSimilarity().ToString() + "\n" +

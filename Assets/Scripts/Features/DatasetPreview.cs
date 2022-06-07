@@ -35,23 +35,46 @@ public class DatasetPreview : MonoBehaviour
         xRSimpleInteractable.selectExited.AddListener(LoadDatasetInScene);
 
         GestureAnalyser gestureAnalyser = GestureAnalyser.instance;
-        try
-        {
-            gestureAnalyser.LoadData(referentName);
-            numOfGestures = gestureAnalyser.GetGestureCount();
-            gestureAnalyser.CalculateAverageGestureForDataset();
-            averageGesture = gestureAnalyser.GetGlobalAverageGesture();
-
-            InstantiatePreview();
-
-            if (!curr)
+        if (userStudyData) {
+            try
             {
-                gameObject.SetActive(false);
+                gestureAnalyser.LoadUserStudyData(userStudyReferents);
+                numOfGestures = gestureAnalyser.GetGestureCount();
+                gestureAnalyser.CalculateAverageGestureForDataset();
+                averageGesture = gestureAnalyser.GetGlobalAverageGesture();
+
+                InstantiatePreview();
+
+                if (!curr)
+                {
+                    gameObject.SetActive(false);
+                }
+            }
+            catch (System.NullReferenceException)
+            {
+                needReassign = true;
             }
         }
-        catch (System.NullReferenceException)
+        else
         {
-            needReassign = true;
+            try
+            {
+                gestureAnalyser.LoadData(referentName);
+                numOfGestures = gestureAnalyser.GetGestureCount();
+                gestureAnalyser.CalculateAverageGestureForDataset();
+                averageGesture = gestureAnalyser.GetGlobalAverageGesture();
+
+                InstantiatePreview();
+
+                if (!curr)
+                {
+                    gameObject.SetActive(false);
+                }
+            }
+            catch (System.NullReferenceException)
+            {
+                needReassign = true;
+            }
         }
     }
 
