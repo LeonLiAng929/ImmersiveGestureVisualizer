@@ -58,10 +58,10 @@ public class GestureVisualizer : MonoBehaviour
     public List<int> freeId = new List<int>();
 
     // for close Comparison
-    [HideInInspector]
-    public bool leftHandSelected = false;
-    [HideInInspector]
-    public bool rightHandSelected = false;
+    //[HideInInspector]
+    //public bool leftHandSelected = false;
+    //[HideInInspector]
+    //public bool rightHandSelected = false;
 
     // for search
     [HideInInspector]
@@ -589,20 +589,33 @@ public class GestureVisualizer : MonoBehaviour
     public void CloseComparison()
     {
         UserStudy.instance.IncrementCount(Actions.CloseComparison);
+        Vector3 forward = Camera.main.gameObject.transform.forward;
+        Vector3 camCord = Camera.main.gameObject.transform.position;
+        for (int i = 0; i < selectedGestures.Count; i++)
+        {
+            selectedGestures[i].transform.position = camCord + forward + new Vector3(0.5f * i, -camCord.y, 0);
+            selectedGestures[i].transform.localPosition = new Vector3(selectedGestures[i].transform.localPosition.x, 0, selectedGestures[i].transform.localPosition.z);
 
-        selectedGestures[0].transform.localPosition = new Vector3(Camera.main.gameObject.transform.position.x - 0.25f, selectedGestures[0].transform.localPosition.y, Camera.main.gameObject.transform.position.z);
-        selectedGestures[1].transform.localPosition = new Vector3(Camera.main.gameObject.transform.position.x + 0.25f, selectedGestures[1].transform.localPosition.y, Camera.main.gameObject.transform.position.z);
-        selectedGestures[0].transform.localRotation = new Quaternion(0, 0, 0, 0);
-        selectedGestures[1].transform.localRotation = new Quaternion(0, 0, 0, 0);
+            selectedGestures[i].transform.localRotation = new Quaternion(0, 0, 0, 0);
+            GestureGameObject gGO = selectedGestures[i].GetComponent<GestureGameObject>();
+            if (gGO.averageGesture)
+            {
+                selectedGestures[i].transform.localScale = new Vector3(1, 1, 1);
+            }
+        }
+
         foreach (KeyValuePair<int, GameObject> pair in clustersObjDic)
         {
             foreach (GestureGameObject gGO in pair.Value.GetComponentsInChildren<GestureGameObject>())
             {
                 gGO.gameObject.SetActive(false);
             }
+            pair.Value.transform.Find("ClusterVisualization").gameObject.SetActive(false);
         }
-        selectedGestures[0].gameObject.SetActive(true);
-        selectedGestures[1].gameObject.SetActive(true);
+        foreach (GameObject g in selectedGestures)
+        {
+            g.SetActive(true);
+        }     
     }
     public void AdjustClusterPosition()
     {

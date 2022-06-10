@@ -30,7 +30,7 @@ public class ActionSwitcher : MonoBehaviour
         xRSimpleInteractable.selectExited.AddListener(SwitchAction);
         init = gameObject.GetComponent<MeshRenderer>().material.color;
         transform.Find("SelectionIndicator").gameObject.SetActive(false);
-        currentlyActive = (Actions.Mark);
+        currentlyActive = (Actions.Idle);
     }
 
     // for the old Menu system
@@ -83,7 +83,7 @@ public class ActionSwitcher : MonoBehaviour
             {
                 //aswr.gameObject.GetComponent<MeshRenderer>().material.color = aswr.init;
                 aswr.selectionIndicator.SetActive(false);
-                currentlyActive = Actions.Mark;
+                currentlyActive = Actions.Idle;
                 
             }
             Debug.Log(currentlyActive);

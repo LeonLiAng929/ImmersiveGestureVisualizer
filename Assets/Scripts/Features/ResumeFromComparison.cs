@@ -35,12 +35,16 @@ public class ResumeFromComparison : MonoBehaviour
                     gGO.gameObject.SetActive(true);
                 }
             }
-            GestureVisualizer.instance.leftHandSelected = false;
-            GestureVisualizer.instance.rightHandSelected = false;
+            //GestureVisualizer.instance.leftHandSelected = false;
+            //GestureVisualizer.instance.rightHandSelected = false;
             foreach (GameObject g in GestureVisualizer.instance.selectedGestures)
             {
                 g.GetComponent<GestureGameObject>().RevertComparing();
                 g.GetComponent<GestureGameObject>().inComparison = false;
+            }
+            foreach (KeyValuePair<int, GameObject> pair in GestureVisualizer.instance.GetClusterObjs())
+            {
+                pair.Value.transform.Find("ClusterVisualization").gameObject.SetActive(true);
             }
             GestureVisualizer.instance.EmptySelected();
         }

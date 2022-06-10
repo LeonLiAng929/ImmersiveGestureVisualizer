@@ -115,12 +115,13 @@ public class Gesture2DObject : MonoBehaviour
         else if (curr == Actions.StackGestures) { gGO.StackGesture(false); }
         else if (curr == Actions.CloseComparison)
         {
-            if (arg.interactor.gameObject.name == "LeftHand Controller")
+            /*if (arg.interactor.gameObject.name == "LeftHand Controller")
                 gGO.CloseComparison(true);
             else if (arg.interactor.gameObject.name == "RightHand Controller")
             {
                 gGO.CloseComparison(false);
-            }
+            }*/
+            gGO.CloseComparison();
         }
         else if (curr == Actions.Mark)
         {
