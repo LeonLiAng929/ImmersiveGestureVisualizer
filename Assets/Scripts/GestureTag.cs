@@ -24,7 +24,7 @@ public class GestureTag : XRTag
             string tag2Display =
                "Gesture Type: " + gesture.gestureType.ToString() + "\n" +
                "UserID: " + gesture.id.ToString() + "\n" +
-               "Trial: " + gesture.trial.ToString() + "\n" +
+               "Trial: " + gesture.trial.ToString() + "\n" +  //comment it out for user study
                "Cluster: " + gesture.cluster.ToString() + "\n" +
                "Number of Poses: " + gesture.num_of_poses.ToString() + "\n" +
                "Global Consensus: " + gesture.GetGlobalSimilarity().ToString() + "\n" +
@@ -50,13 +50,21 @@ public class GestureTag : XRTag
             string tag2Display =
                "Gesture Type: " + gesture.gestureType.ToString() + "\n" +
                "UserID: " + gesture.id.ToString() + "\n" +
-               "Trial: " + gesture.trial.ToString() + "\n" +
+               //"Trial: " + gesture.trial.ToString() + "\n" +
                "Cluster: " + gesture.cluster.ToString() + "\n" +
                "Number of Poses: " + gesture.num_of_poses.ToString() + "\n" +
                "Global Consensus: " + gesture.GetGlobalSimilarity().ToString() + "\n" +
                "Local Consensus: " + gesture.GetLocalSimilarity().ToString();
 
-            textTag.GetComponent<TextMeshPro>().text = tag2Display;
+            try
+            {
+                textTag.GetComponent<TextMeshPro>().text = tag2Display;
+            }
+            catch(UnassignedReferenceException)
+            {
+                //Debug.Log(gameObject.name);
+            }
+            //transform.Find("GestureTagPrefab(Clone)").GetComponent<TextMeshPro>().text = tag2Display;
         }
     }
 

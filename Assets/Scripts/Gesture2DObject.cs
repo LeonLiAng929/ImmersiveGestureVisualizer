@@ -86,7 +86,7 @@ public class Gesture2DObject : MonoBehaviour
             preview.localPosition = transform.localPosition;
             preview.localScale = transform.localScale;
             preview.localRotation = transform.localRotation;
-            preview.GetComponent<GestureGameObject>().ActivateAnimate();
+            preview.GetComponent<GestureGameObject>().ActivateAnimate(false);
             preview.Rotate(new Vector3(0, 0, 1));
             gameObject.SetActive(false);
         }
@@ -104,25 +104,26 @@ public class Gesture2DObject : MonoBehaviour
     public void PerformAction(SelectExitEventArgs arg)
     {
         Actions curr = ActionSwitcher.instance.GetCurrentAction();
-        if (curr == Actions.Animate) { gGO.ActivateAnimate(); }
+        if (curr == Actions.Animate) { gGO.ActivateAnimate(false); }
         else if (curr == Actions.ChangeCluster) { gGO.ChangeCluster(); }
-        else if (curr == Actions.ShowSmallMultiples) { gGO.ShowSmallMultiples(); }
-        else if (curr == Actions.Slidimation)
+        else if (curr == Actions.SmallMultiples) { gGO.ShowSmallMultiples(false); }
+        else if (curr == Actions.Swing)
         {
-            gGO.ActivateSwinging();
+            gGO.ActivateSwinging(false);
             GestureVisualizer.instance.rightController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.deviceRotation, out gGO.lastQuat);
         }
-        else if (curr == Actions.StackGestures) { gGO.StackGesture(); }
+        else if (curr == Actions.StackGestures) { gGO.StackGesture(false); }
         else if (curr == Actions.CloseComparison)
         {
-            if (arg.interactor.gameObject.name == "LeftHand Controller")
+            /*if (arg.interactor.gameObject.name == "LeftHand Controller")
                 gGO.CloseComparison(true);
             else if (arg.interactor.gameObject.name == "RightHand Controller")
             {
                 gGO.CloseComparison(false);
-            }
+            }*/
+            gGO.CloseComparison();
         }
-        else if (curr == Actions.Idle)
+        else if (curr == Actions.Mark)
         {
             //arrow.SetActive(!arrow.activeSelf);
             gGO.IdleSelect();
@@ -133,5 +134,11 @@ public class Gesture2DObject : MonoBehaviour
     {
 
         xRSimpleInteractable.selectExited.RemoveAllListeners();
+    }
+
+    public void UpdateGesInfo()
+    {
+        GesInfo.text = "C" + gGO.gesture.cluster.ToString() + "\n" + gGO.gesture.id.ToString() + "-" + gGO.gesture.trial;
+        Debug.Log(gGO.gesture.cluster);
     }
 }

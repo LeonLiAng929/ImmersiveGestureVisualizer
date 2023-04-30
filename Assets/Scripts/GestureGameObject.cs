@@ -15,9 +15,9 @@ public class GestureGameObject : MonoBehaviour
 
     private float timer = 0.0f; // the time since start() in seconds.
     private int init = 1;
-    private bool animate = false;
-    private bool swing = false;
-    private bool stacked = false;
+    public bool animate = false;
+    public bool swing = false;
+    public bool stacked = false;
     public bool selected = false;
     public bool averageGesture = false;
     public bool previoulyInAnimationMode = false;
@@ -28,8 +28,11 @@ public class GestureGameObject : MonoBehaviour
     public Vector3 sizeB4Stack;
     public Quaternion lastQuat;
     public GameObject arrow;
-    int rotate = 0;
-    int currPoseIndex = 0;
+    public bool inComparison = false;
+    public int rotate = 0;
+    public int currPoseIndex = 0;
+
+    public Vector3 initSize;
     // Update is called once per frame
 
     // a skeleton to link the animation and the slidimation with the small-multiples
@@ -115,82 +118,143 @@ public class GestureGameObject : MonoBehaviour
     public void PerformAction(SelectExitEventArgs arg)
     {
         Actions curr = ActionSwitcher.instance.GetCurrentAction();
-        if (curr == Actions.Animate){ActivateAnimate();  }
-        else if(curr == Actions.ChangeCluster){ ChangeCluster();  }
-        else if(curr == Actions.ShowSmallMultiples) { ShowSmallMultiples();  }
-        else if (curr == Actions.Slidimation) {
-            previoulyInAnimationMode = true;  ActivateSwinging(); 
-            GestureVisualizer.instance.rightController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.deviceRotation, out lastQuat); }
-        else if(curr == Actions.StackGestures) { StackGesture();}
-        else if (curr == Actions.CloseComparison) { if (arg.interactor.gameObject.name == "LeftHand Controller")
-            CloseComparison(true);
+        if (curr == Actions.Animate)
+        {
+            if (inComparison)
+            {
+                foreach(GameObject gO in GestureVisualizer.instance.selectedGestures)
+                {
+                    gO.GetComponent<GestureGameObject>().ActivateAnimate(false);
+                }
+            }
+            else { ActivateAnimate(false); }
+        }
+        else if (curr == Actions.ChangeCluster) { ChangeCluster(); }
+        else if (curr == Actions.SmallMultiples) {
+            if (inComparison)
+            {
+                foreach (GameObject gO in GestureVisualizer.instance.selectedGestures)
+                {
+                    gO.GetComponent<GestureGameObject>().ShowSmallMultiples(false);
+                }
+            }
+            else
+            {
+                ShowSmallMultiples(false);
+            } }
+        else if (curr == Actions.Swing)
+        {
+            if (inComparison)
+            {
+                foreach (GameObject gO in GestureVisualizer.instance.selectedGestures)
+                { gO.GetComponent<GestureGameObject>().previoulyInAnimationMode = true;
+                    gO.GetComponent<GestureGameObject>().ActivateSwinging(false);
+                    GestureVisualizer.instance.rightController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.deviceRotation, out gO.GetComponent<GestureGameObject>().lastQuat);
+                }
+            }
+            else
+            {
+                previoulyInAnimationMode = true; ActivateSwinging(false);
+                GestureVisualizer.instance.rightController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.deviceRotation, out lastQuat);
+            }
+        }
+        else if (curr == Actions.StackGestures) { StackGesture(false); }
+        else if (curr == Actions.CloseComparison)
+        {
+            /*if (arg.interactor.gameObject.name == "LeftHand Controller")
+                CloseComparison(true);
             else if (arg.interactor.gameObject.name == "RightHand Controller")
             {
                 CloseComparison(false);
-            }
+            }*/
+            CloseComparison();
         }
-        else if(curr == Actions.Idle)
+        else if (curr == Actions.Mark)
         {
             IdleSelect();
         }
     }
 
-    public void CloseComparison(bool lefthand)
+    public void CloseComparison()
     {
-        if ((lefthand && !GestureVisualizer.instance.leftHandSelected) || (!lefthand && !GestureVisualizer.instance.rightHandSelected))
+        //if ((lefthand && !GestureVisualizer.instance.leftHandSelected) || (!lefthand && !GestureVisualizer.instance.rightHandSelected))
+        List<GameObject> selectionList = GestureVisualizer.instance.selectedGestures;
+        if (selected)
         {
-            List<GameObject> selectionList = GestureVisualizer.instance.selectedGestures;
-            if (selected)
+            inComparison = false;
+            if (!averageGesture)
+            {
+                try
+                {
+                    uiRef.ComparisonIndicator.SetActive(false);
+                    //GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+                }
+                catch (MissingReferenceException)
+                { }
+            }
+            selected = false;
+            if (selectionList.Contains(gameObject))
             {
                 if (!averageGesture)
                 {
-                    uiRef.ComparisonIndicator.SetActive(false);
-                    GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
-                }
-                selected = false;
-                if (selectionList.Contains(gameObject))
-                {
-                    if (!averageGesture)
+                    try
                     {
                         uiRef.GetComponent<MeshRenderer>().material.color = GestureVisualizer.instance.UpdateGlowingFieldColour(gameObject);
                     }
-                    selectionList.Remove(gameObject);
-                    if (lefthand)
-                        GestureVisualizer.instance.leftHandSelected = false;
-                    else
-                        GestureVisualizer.instance.rightHandSelected = false;
-                }
-            }
-            else
-            {
-                if (!averageGesture)
-                {
-                    uiRef.ComparisonIndicator.SetActive(true);
-                    GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
-                }
-                selected = true;
-                if (!selectionList.Contains(gameObject))
-                {
-                    selectionList.Add(gameObject);
-                    if (lefthand)
+                    catch (MissingReferenceException)
                     {
-                        gameObject.transform.Find("GlowingField").GetComponent<MeshRenderer>().material.color = Color.white;
-                        GestureVisualizer.instance.leftHandSelected = true;
-                    }
-                    else
-                    {
-                        gameObject.transform.Find("GlowingField").GetComponent<MeshRenderer>().material.color = Color.black;
-                        GestureVisualizer.instance.rightHandSelected = true;
-                    }
-                }
 
-            }
-            initPos = gameObject.transform.localPosition;
-            if (GestureVisualizer.instance.rightHandSelected && GestureVisualizer.instance.leftHandSelected)
-            {
-                GestureVisualizer.instance.CloseComparison();
+                    }
+                }
+                selectionList.Remove(gameObject);
+                /*if (lefthand)
+                    GestureVisualizer.instance.leftHandSelected = false;
+                else
+                    GestureVisualizer.instance.rightHandSelected = false;*/
             }
         }
+        else
+        {
+            inComparison = true;
+            if (!averageGesture)
+            {
+                try
+                {
+                    uiRef.ComparisonIndicator.SetActive(true);
+                    //GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+                }
+                catch (MissingReferenceException)
+                {
+
+                }
+            }
+            selected = true;
+            if (!selectionList.Contains(gameObject))
+            {
+                selectionList.Add(gameObject);
+                gameObject.transform.Find("GlowingField").GetComponent<MeshRenderer>().material.color = Color.white;
+                /*if (lefthand)
+                {
+                    gameObject.transform.Find("GlowingField").GetComponent<MeshRenderer>().material.color = Color.white;
+                    GestureVisualizer.instance.leftHandSelected = true;
+                }
+                else
+                {
+                    gameObject.transform.Find("GlowingField").GetComponent<MeshRenderer>().material.color = Color.black;
+                    GestureVisualizer.instance.rightHandSelected = true;
+                }*/
+            }
+
+        }
+        initPos = gameObject.transform.localPosition;
+        if (averageGesture)
+        {
+            initSize = gameObject.transform.localScale;
+        }
+        /*if (GestureVisualizer.instance.rightHandSelected && GestureVisualizer.instance.leftHandSelected)
+        {
+            GestureVisualizer.instance.CloseComparison();
+        }*/
     }
 
     public void AnimationConditionUpdate()
@@ -232,13 +296,17 @@ public class GestureGameObject : MonoBehaviour
         Transform[] transforms = GetComponent<Transform>().Find("Trajectory").Find("Skeleton").GetComponentsInChildren<Transform>();
         if (!averageGesture)
         {
-            Transform[] twoDSkeletonTrans = uiRef.TwoDModel.GetComponentsInChildren<Transform>();
-            for (int i = 1; i < gesture.poses[0].num_of_joints + 1; i++)
+            try
             {
-                Vector3 pos = gesture.poses[0].joints[i - 1].ToVector();
-                
+                Transform[] twoDSkeletonTrans = uiRef.TwoDModel.GetComponentsInChildren<Transform>();
+                for (int i = 1; i < gesture.poses[0].num_of_joints + 1; i++)
+                {
+                    Vector3 pos = gesture.poses[0].joints[i - 1].ToVector();
+
                     twoDSkeletonTrans[i].localPosition = pos - new Vector3(0, 0, pos.z);
+                }
             }
+            catch (MissingReferenceException) { }
         }
         ResetTrajectories();
         for (int i = 1; i < gesture.poses[0].num_of_joints + 1; i++)
@@ -273,7 +341,11 @@ public class GestureGameObject : MonoBehaviour
         Transform[] twoDSkeletonTrans = null;
         if (!averageGesture)
         {
-            twoDSkeletonTrans = uiRef.TwoDModel.GetComponentsInChildren<Transform>();
+            try
+            {
+                twoDSkeletonTrans = uiRef.TwoDModel.GetComponentsInChildren<Transform>();
+            }
+            catch (MissingReferenceException) { }
         }
 
         int jointCount = gesture.poses[0].num_of_joints;
@@ -315,12 +387,15 @@ public class GestureGameObject : MonoBehaviour
     public void UpdateTrajectoryByType(string type, Vector3 joint)
     {
         TubeRenderer tr = gameObject.transform.Find("Trajectory").Find("LineRanderers").Find(type).GetComponent<TubeRenderer>();
-        Vector3[] old = tr.points;
-        Vector3[] update = new Vector3[] { joint };
-        Vector3[] newPoints = new Vector3[old.Length + update.Length];
-        old.CopyTo(newPoints, 0);
-        update.CopyTo(newPoints, old.Length);
-        tr.points = newPoints;
+        if (tr.gameObject.activeSelf)
+        {
+            Vector3[] old = tr.points;
+            Vector3[] update = new Vector3[] { joint };
+            Vector3[] newPoints = new Vector3[old.Length + update.Length];
+            old.CopyTo(newPoints, 0);
+            update.CopyTo(newPoints, old.Length);
+            tr.points = newPoints;
+        }
     }
 
     public void ResetTrajectories()
@@ -331,15 +406,19 @@ public class GestureGameObject : MonoBehaviour
             tr.points = new Vector3[] { };
         }
     }
-    public void ActivateAnimate()
+    public void ActivateAnimate(bool calledByParent)
     {
         previoulyInAnimationMode = true;
         if (animate)
         {
             if (!averageGesture && gameObject.name != "Preview")
             {
-                uiRef.AnimationIndicator.SetActive(false);
-                GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+                try
+                {
+                    uiRef.AnimationIndicator.SetActive(false);
+                    //GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+                }
+                catch (MissingReferenceException) { }
             }
             animate = false;
             /*if (GetComponent<Transform>().Find("SmallMultiples").gameObject.activeSelf)
@@ -359,10 +438,16 @@ public class GestureGameObject : MonoBehaviour
         {
             if (!averageGesture && gameObject.name != "Preview")
             {
-                uiRef.AnimationIndicator.SetActive(true);
-                GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+                try
+                {
+                    uiRef.AnimationIndicator.SetActive(true);
+                    //GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+                }
+                catch (MissingReferenceException) { }
             }
             animate = true;
+            if (!calledByParent && gameObject.name != "Preview") 
+                UserStudy.instance.IncrementCount(Actions.Animate);
             if (gameObject.name != "Preview")
             {
                 timeIndicator.SetActive(true);
@@ -387,8 +472,12 @@ public class GestureGameObject : MonoBehaviour
         Transform[] twoDSkeletonTrans = null;
         if (!averageGesture)
         {
-            twoDSkeletonTrans = uiRef.TwoDModel.GetComponentsInChildren<Transform>();
-            
+            try
+            {
+                twoDSkeletonTrans = uiRef.TwoDModel.GetComponentsInChildren<Transform>();
+            }
+            catch (MissingReferenceException) { }
+
         }
         for (int i = 1; i < jointCount+1; i++)
         {
@@ -457,7 +546,7 @@ public class GestureGameObject : MonoBehaviour
         }
         lastQuat = currQuat;
     }
-    public void ActivateSwinging()
+    public void ActivateSwinging(bool calledByParent) //if this action is invoked by its cluster, then do not count the action twice for user study.
     {
         if (swing)
         {
@@ -475,8 +564,12 @@ public class GestureGameObject : MonoBehaviour
             swing = false;
             if (!averageGesture)
             {
-                uiRef.SlidimationIndicator.SetActive(false);
-                GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+                try
+                {
+                    uiRef.SlidimationIndicator.SetActive(false);
+                    //GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+                }
+                catch (MissingReferenceException) { }
             }
         }
         else
@@ -493,10 +586,16 @@ public class GestureGameObject : MonoBehaviour
                 mr.material.color = temp;
             }
             swing = true;
+            if(!calledByParent)
+                UserStudy.instance.IncrementCount(Actions.Swing);
             if (!averageGesture)
             {
-                uiRef.SlidimationIndicator.SetActive(true);
-                GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+                try
+                {
+                    uiRef.SlidimationIndicator.SetActive(true);
+                    //GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+                }
+                catch (MissingReferenceException) { }
             }
         }
     }
@@ -515,7 +614,11 @@ public class GestureGameObject : MonoBehaviour
                     {
                         if (selectionList.Contains(gGO.gameObject))
                         {
-                            uiRef.GetComponent<MeshRenderer>().material.color = GestureVisualizer.instance.UpdateGlowingFieldColour(gGO.gameObject);
+                            try
+                            {
+                                uiRef.GetComponent<MeshRenderer>().material.color = GestureVisualizer.instance.UpdateGlowingFieldColour(gGO.gameObject);
+                            }
+                            catch (MissingReferenceException) { }
                             selectionList.Remove(gGO.gameObject);
                             gGO.selected = false;
                         }
@@ -524,9 +627,13 @@ public class GestureGameObject : MonoBehaviour
             }
             else
             {
-                uiRef.ChangingClusterIndicator.SetActive(false);
-                GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
-                uiRef.GetComponent<MeshRenderer>().material.color = GestureVisualizer.instance.UpdateGlowingFieldColour(gameObject);
+                try
+                {
+                    uiRef.ChangingClusterIndicator.SetActive(false);
+                    //GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+                    uiRef.GetComponent<MeshRenderer>().material.color = GestureVisualizer.instance.UpdateGlowingFieldColour(gameObject);
+                }
+                catch (MissingReferenceException) { }
                 if (selectionList.Contains(gameObject))
                     selectionList.Remove(gameObject);
             }
@@ -555,23 +662,34 @@ public class GestureGameObject : MonoBehaviour
             }
             else
             {
-                uiRef.ChangingClusterIndicator.SetActive(true);
-                GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
-                uiRef.GetComponent<MeshRenderer>().material.color = Color.white;
+                try
+                {
+                    uiRef.ChangingClusterIndicator.SetActive(true);
+                    //GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+                    uiRef.GetComponent<MeshRenderer>().material.color = Color.white;
+                }
+                catch (MissingReferenceException) { }
                 if (!selectionList.Contains(gameObject))
                     selectionList.Add(gameObject);
             }
         }
     }
-    public void ShowSmallMultiples()
+    public void ShowSmallMultiples(bool calledByParent)
     {
         GameObject multiples = GetComponent<Transform>().Find("SmallMultiples").gameObject;
         bool isActive = !multiples.activeSelf;
         multiples.SetActive(isActive);
+        if (isActive && !calledByParent)
+            UserStudy.instance.IncrementCount(Actions.SmallMultiples);
+
         if (!averageGesture)
         {
-            uiRef.SmallmultiplesIndicator.SetActive(isActive);
-            GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+            try
+            {
+                uiRef.SmallmultiplesIndicator.SetActive(isActive);
+                //GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+            }
+            catch (MissingReferenceException) { }
         }
     }
     public void ShowTracer()
@@ -580,13 +698,17 @@ public class GestureGameObject : MonoBehaviour
         bool isActive = !tracers.activeSelf;
         tracers.SetActive(isActive);
     }
-    public void StackGesture()
+    public void StackGesture(bool calledByParent)
     {
         stacked = true;
         if (!averageGesture)
         {
-            uiRef.StackingIndicator.SetActive(true);
-            GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+            try
+            {
+                uiRef.StackingIndicator.SetActive(true);
+                //GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+            }
+            catch (MissingReferenceException) { }
         }
         List<GameObject> stackedList = GestureVisualizer.instance.stackedObjects;
         if (!stackedList.Contains(gameObject))
@@ -601,6 +723,8 @@ public class GestureGameObject : MonoBehaviour
             }
         }
         GestureVisualizer.instance.PrepareStack();
+        if (!calledByParent)
+            UserStudy.instance.IncrementCount(Actions.StackGestures);
     }
 
     public bool IsStacked()
@@ -620,8 +744,12 @@ public class GestureGameObject : MonoBehaviour
         gameObject.transform.localPosition = initPos;
         if (!averageGesture)
         {
-            uiRef.StackingIndicator.SetActive(false);
-            GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+            try
+            {
+                uiRef.StackingIndicator.SetActive(false);
+                //GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+            }
+            catch (MissingReferenceException) { }
         }
         else
         {
@@ -633,8 +761,16 @@ public class GestureGameObject : MonoBehaviour
         selected = false;
         if (!averageGesture)
         {
-            uiRef.ComparisonIndicator.SetActive(false);
-            GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+            try
+            {
+                uiRef.ComparisonIndicator.SetActive(false);
+                //GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+            }
+            catch (MissingReferenceException) { }
+        }
+        else
+        {
+            gameObject.transform.localScale = initSize;
         }
         gameObject.transform.localPosition = initPos;
         if (GestureVisualizer.instance.arrangementMode == 2)
@@ -648,8 +784,12 @@ public class GestureGameObject : MonoBehaviour
         arrow.SetActive(!arrow.activeSelf);
         if (!averageGesture)
         {
-            uiRef.arrow.SetActive(arrow.activeSelf);
-            GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+            try
+            {
+                uiRef.arrow.SetActive(arrow.activeSelf);
+                GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+            }
+            catch (MissingReferenceException) { }
         }
     }
 }

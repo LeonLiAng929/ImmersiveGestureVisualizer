@@ -29,6 +29,8 @@ public class StackingHeatMap : MonoBehaviour
         List<GameObject> stackedGes = GestureVisualizer.instance.stackedObjects;
         if (!on)
         {
+            UserStudy.instance.IncrementCount(Actions.HeatMap);
+
             on = true;
             foreach (GameObject obj in stackedGes)
             {

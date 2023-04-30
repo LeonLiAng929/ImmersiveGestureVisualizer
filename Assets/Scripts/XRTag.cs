@@ -13,7 +13,7 @@ public class XRTag : MonoBehaviour
     protected Vector3 tagSize = new Vector3(1, 1, 1);
     protected Transform user;
     protected XRSimpleInteractable simpleInteractable;
-    protected GameObject textTag;
+    public GameObject textTag;
     // Start is called before the first frame update
     void Start()
     {

@@ -66,7 +66,7 @@ public class ActionSwitcher : MonoBehaviour
         {
             foreach (ActionSwitcher aswr in gameObject.transform.parent.GetComponentsInChildren<ActionSwitcher>())
             {
-                aswr.gameObject.GetComponent<MeshRenderer>().material.color = aswr.init;
+                //aswr.gameObject.GetComponent<MeshRenderer>().material.color = aswr.init;
                 aswr.selectionIndicator.SetActive(false);
 
             }
@@ -81,7 +81,7 @@ public class ActionSwitcher : MonoBehaviour
         {
             foreach (ActionSwitcher aswr in gameObject.transform.parent.GetComponentsInChildren<ActionSwitcher>())
             {
-                aswr.gameObject.GetComponent<MeshRenderer>().material.color = aswr.init;
+                //aswr.gameObject.GetComponent<MeshRenderer>().material.color = aswr.init;
                 aswr.selectionIndicator.SetActive(false);
                 currentlyActive = Actions.Idle;
                 

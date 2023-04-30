@@ -41,12 +41,15 @@ public class ChangeArrangement : MonoBehaviour
             GestureVisualizer.instance.arrangementMode = 0;
             GestureVisualizer.instance.AdjustClusterPosition();
 
+            UserStudy.instance.IncrementCount(Actions.LocalArrangement);
         }
         else if (mode == 1){
             mode = 0;
             gameObject.GetComponent<MeshRenderer>().material = global;
             GestureVisualizer.instance.arrangementMode = 1;
             GestureVisualizer.instance.AdjustClusterPosition();
+
+            UserStudy.instance.IncrementCount(Actions.GlobalArrangement);
         }
         else if ( mode == 2)
         {
@@ -54,6 +57,8 @@ public class ChangeArrangement : MonoBehaviour
             gameObject.GetComponent<MeshRenderer>().material = lineUp;
             GestureVisualizer.instance.arrangementMode = 2;
             GestureVisualizer.instance.AdjustClusterPosition();
+
+            UserStudy.instance.IncrementCount(Actions.Line_Up_Arrangement);
         }
         else if (mode == 3)
         {
@@ -61,6 +66,8 @@ public class ChangeArrangement : MonoBehaviour
             gameObject.GetComponent<MeshRenderer>().material = PCA;
             GestureVisualizer.instance.arrangementMode = 3;
             GestureVisualizer.instance.AdjustClusterPosition();
+
+            UserStudy.instance.IncrementCount(Actions.PCA_Arrangement);
         }
         else if (mode == 4)
         {
@@ -68,6 +75,8 @@ public class ChangeArrangement : MonoBehaviour
             gameObject.GetComponent<MeshRenderer>().material = MDS;
             GestureVisualizer.instance.arrangementMode = 4;
             GestureVisualizer.instance.AdjustClusterPosition();
+
+            UserStudy.instance.IncrementCount(Actions.MDS_Arrangement);
         }
     }
 }

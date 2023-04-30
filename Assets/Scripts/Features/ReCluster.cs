@@ -16,6 +16,7 @@ public class ReCluster : MonoBehaviour
         instance = this;
         xRSimpleInteractable = GetComponent<XRSimpleInteractable>();
         xRSimpleInteractable.selectExited.AddListener(Recluster);
+        
 
     }
 
@@ -27,9 +28,13 @@ public class ReCluster : MonoBehaviour
 
     private void Recluster(SelectExitEventArgs args)
     {
+        FadeScreen.instance.FadeOut();
         reclusterOngoing = true;
         GestureVisualizer.instance.DestroyAllClusters();
-        GestureVisualizer.instance.InitializeVisualization();
+      
+      
+        StartCoroutine(GestureVisualizer.instance.InitializeVisualization());
+        //FadeScreen.instance.FadeIn();
         reclusterOngoing = false;
     }
 }
