@@ -137,14 +137,20 @@ public class GestureVisualizer : MonoBehaviour
         //InitializeClusterColor();
 
         //Generate trajectory colors and assign them to trajectory filter
+        trajectoryColorSet = TrajectoryColorSetting.instance.colors;
         TrajectoryFilter[] filters = TrajectoryFilterGameObject.GetComponentsInChildren<TrajectoryFilter>(true);
-        for (int j = 0; j < GestureAnalyser.instance.GetGestures()[0].poses[0].num_of_joints; j++)
+        for(int j = 0; j < trajectoryColorSet.Count; j++)
+        {
+            filters[j].gameObject.GetComponent<MeshRenderer>().material.color = trajectoryColorSet[j];
+            filters[j].init = trajectoryColorSet[j];
+        }
+        /*for (int j = 0; j < GestureAnalyser.instance.GetGestures()[0].poses[0].num_of_joints; j++)
         {
             Color c = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
             trajectoryColorSet.Add(c);
             filters[j].gameObject.GetComponent<MeshRenderer>().material.color = c;
             filters[j].init = c;
-        }
+        }*/
 
 
         // initialize colors for user proposed trajectories
@@ -248,7 +254,7 @@ public class GestureVisualizer : MonoBehaviour
             uiref.Initialize2DGesture();
             uiref.GesInfo.text = "C" + gestureGameObjs[i].gesture.cluster.ToString() + "\n" + gestureGameObjs[i].gesture.id.ToString() + "-" + gestureGameObjs[i].gesture.trial;
         }
-        // re-link gestures to old boards
+        // re-link gestures to old boards, commented out for user study
         foreach (GameObject board in boardRecords)
         {
             Gesture2DObject[] oldUiRefList = board.GetComponentsInChildren<Gesture2DObject>(true);
@@ -260,6 +266,7 @@ public class GestureVisualizer : MonoBehaviour
                 //uiref.GesInfo.text = gestureGameObjects[i].gesture.id.ToString() + "-" + gestureGameObjects[i].gesture.trial;
             }
         }
+        // commented out for user study
 
     }
 
@@ -295,6 +302,11 @@ public class GestureVisualizer : MonoBehaviour
 
     public void InitializeClusterColor()
     {
+        List<Color> colorList = ClusterColorSetting.Instance.colors;
+       /* for(int j = 0; j < colorList.Count; j++)
+        {
+            clusterColorDic.Add(j, colorList[j]);
+        }*/
         for (int i = 0; i < k; i++)
         {
             if (!clusterColorDic.ContainsKey(i))
@@ -304,7 +316,10 @@ public class GestureVisualizer : MonoBehaviour
                 {
                     rand = Random.ColorHSV(0f, 1f, 1f, 1f, 0.25f, 1f);
                 }
-                clusterColorDic.Add(i, rand);
+                if(i<colorList.Count)
+                    clusterColorDic.Add(i, colorList[i]);
+                else
+                    clusterColorDic.Add(i, rand);
             }
         }
     }

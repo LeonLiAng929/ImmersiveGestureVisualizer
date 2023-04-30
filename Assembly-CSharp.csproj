@@ -53,7 +53,7 @@
     <UnityVersion>2020.3.22f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
+    <Analyzer Include="C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\ResetFeatureCount.cs" />
@@ -87,6 +87,7 @@
     <Compile Include="Assets\Scripts\Map.cs" />
     <Compile Include="Assets\Scripts\Delete2DBoard.cs" />
     <Compile Include="Assets\TubeRenderer\Examples\Assets\Digestion.cs" />
+    <Compile Include="Assets\Scripts\Features\ConfirmComparison.cs" />
     <Compile Include="Assets\Scripts\XRTag.cs" />
     <Compile Include="Assets\Scripts\GlowingField.cs" />
     <Compile Include="Assets\Scripts\VatavuDataWrangling\Joint.cs" />
@@ -113,6 +114,7 @@
     <Compile Include="Assets\TubeRenderer\Examples\Assets\Flower.cs" />
     <Compile Include="Assets\Scripts\Features\TrajectoryFilter.cs" />
     <Compile Include="Assets\Scripts\Obsolete\HandPrescence.cs" />
+    <Compile Include="Assets\Scripts\TrajectoryColorSetting.cs" />
     <Compile Include="Assets\Scripts\Features\DatasetSelection.cs" />
     <Compile Include="Assets\Scripts\Obsolete\Extensions.cs" />
     <Compile Include="Assets\Scripts\ClusterGameObject.cs" />
@@ -150,7 +152,7 @@
     <Compile Include="Assets\Scripts\Features\ShowConnection.cs" />
     <Compile Include="Assets\Scripts\TesttingScript\pressed.cs" />
     <Compile Include="Assets\Scripts\PlayerIconTracing.cs" />
-    <Compile Include="Assets\Scripts\Features\ConfirmComparison.cs" />
+    <Compile Include="Assets\Scripts\ClusterColorSetting.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Resources\7\crouch-3.xml" />

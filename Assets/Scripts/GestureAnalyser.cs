@@ -71,7 +71,7 @@ public class GestureAnalyser : MonoBehaviour
         foreach (string referentN in referentName)
         {
             gestures.AddRange(xmlLoader.LoadXML(referentN, true));
-            Debug.Log(referentN);
+            //Debug.Log(referentN);
         }
         
 

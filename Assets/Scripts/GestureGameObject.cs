@@ -187,7 +187,7 @@ public class GestureGameObject : MonoBehaviour
                 try
                 {
                     uiRef.ComparisonIndicator.SetActive(false);
-                    GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+                    //GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
                 }
                 catch (MissingReferenceException)
                 { }
@@ -221,7 +221,7 @@ public class GestureGameObject : MonoBehaviour
                 try
                 {
                     uiRef.ComparisonIndicator.SetActive(true);
-                    GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+                    //GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
                 }
                 catch (MissingReferenceException)
                 {
@@ -416,7 +416,7 @@ public class GestureGameObject : MonoBehaviour
                 try
                 {
                     uiRef.AnimationIndicator.SetActive(false);
-                    GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+                    //GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
                 }
                 catch (MissingReferenceException) { }
             }
@@ -441,7 +441,7 @@ public class GestureGameObject : MonoBehaviour
                 try
                 {
                     uiRef.AnimationIndicator.SetActive(true);
-                    GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+                    //GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
                 }
                 catch (MissingReferenceException) { }
             }
@@ -567,7 +567,7 @@ public class GestureGameObject : MonoBehaviour
                 try
                 {
                     uiRef.SlidimationIndicator.SetActive(false);
-                    GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+                    //GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
                 }
                 catch (MissingReferenceException) { }
             }
@@ -593,7 +593,7 @@ public class GestureGameObject : MonoBehaviour
                 try
                 {
                     uiRef.SlidimationIndicator.SetActive(true);
-                    GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+                    //GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
                 }
                 catch (MissingReferenceException) { }
             }
@@ -630,7 +630,7 @@ public class GestureGameObject : MonoBehaviour
                 try
                 {
                     uiRef.ChangingClusterIndicator.SetActive(false);
-                    GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+                    //GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
                     uiRef.GetComponent<MeshRenderer>().material.color = GestureVisualizer.instance.UpdateGlowingFieldColour(gameObject);
                 }
                 catch (MissingReferenceException) { }
@@ -665,7 +665,7 @@ public class GestureGameObject : MonoBehaviour
                 try
                 {
                     uiRef.ChangingClusterIndicator.SetActive(true);
-                    GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+                    //GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
                     uiRef.GetComponent<MeshRenderer>().material.color = Color.white;
                 }
                 catch (MissingReferenceException) { }
@@ -687,7 +687,7 @@ public class GestureGameObject : MonoBehaviour
             try
             {
                 uiRef.SmallmultiplesIndicator.SetActive(isActive);
-                GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+                //GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
             }
             catch (MissingReferenceException) { }
         }
@@ -706,7 +706,7 @@ public class GestureGameObject : MonoBehaviour
             try
             {
                 uiRef.StackingIndicator.SetActive(true);
-                GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+                //GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
             }
             catch (MissingReferenceException) { }
         }
@@ -747,7 +747,7 @@ public class GestureGameObject : MonoBehaviour
             try
             {
                 uiRef.StackingIndicator.SetActive(false);
-                GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+                //GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
             }
             catch (MissingReferenceException) { }
         }
@@ -764,7 +764,7 @@ public class GestureGameObject : MonoBehaviour
             try
             {
                 uiRef.ComparisonIndicator.SetActive(false);
-                GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
+                //GestureVisualizer.instance.oldBoardIndicatorUpdate(uiRef);
             }
             catch (MissingReferenceException) { }
         }
