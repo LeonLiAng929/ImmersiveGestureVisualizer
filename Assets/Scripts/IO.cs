@@ -4,7 +4,6 @@ using UnityEngine;
 using System.Xml; 
 using System.IO;
 using System.Xml.Linq; //Needed for XDocument
-using System.Data;
 using System.Linq;
 using System;
 
@@ -283,4 +282,103 @@ public class IO
         }
     }
 
+    /// <summary>
+    /// Parse gesture file to list of handposes. For Haoming's data
+    /// </summary>
+    /// <param name="text">csv text</param>
+    /// <returns></returns>
+    public void LoadHandGesture()
+    {
+        // read and wrangle
+        string sourceDirectory = Application.dataPath + "/Resources/" + "Haoming/";
+        var txtFiles = Directory.EnumerateFiles(sourceDirectory, "*.csv");
+        foreach (string currFile in txtFiles)
+        {
+            string uid = currFile.Substring(sourceDirectory.Length + 12);
+            uid = uid.Substring(0, uid.Length - 4);
+            string fileName = currFile.Substring(sourceDirectory.Length);
+            fileName = fileName.Substring(0, fileName.Length - 4);
+            TextAsset controllerGesture = Resources.Load<TextAsset>("Haoming/"+fileName);
+            string text = controllerGesture.text;
+            List<string> lines = text.Split('\n').ToList();
+            List<string> legends = lines[0].Split(',').ToList();
+            lines.RemoveAt(0);
+            lines.RemoveAt(lines.Count - 1);
+            var wrangledLines = lines.Select(r => r.Split(',')).ToList();
+            //Time	Gesture	Hand	Pos_X	Pos_Y	Pos_Z	Rot_X	Rot_Y	Rot_Z	Rot_W
+            for (int i = 1; i < 10; i++)
+            {
+                Gesture handGes = new Gesture();
+                //var right = wrangledLines.Where(r => r[1] == i.ToString() && r[2]=="Left").ToList();
+                var right = wrangledLines.Where(r => r[1] == i.ToString()).ToList();
+                handGes.num_of_poses = right.Count;
+                handGes.trial = '1';
+                handGes.id = int.Parse(uid);
+                handGes.gestureType = i.ToString();
+                
+                foreach (string[] row in right)
+                {
+                    var points = row.ToList(); 
+                    Pose handPose = new Pose();
+                    handPose.timestamp = Double.Parse(points[0]);
+                    points.RemoveAt(0);
+                    points.RemoveAt(0);
+      
+                    if (points.Count != 8)
+                        continue;
+                    handPose.num_of_joints = 1;
+                    //for (int j = 1; j < points.Count; j += 3)
+                    //{
+                    Joint joint = new Joint();
+                    joint.jointType = points[0];
+                    joint.x = float.Parse(points[1].Trim());
+                    joint.y = float.Parse(points[2].Trim());
+                    joint.z = float.Parse(points[3].Trim());
+                    handPose.joints.Add(joint);
+                    //}
+                    handGes.poses.Add(handPose);
+                }
+                if (handGes.poses.Count > 0)
+                {
+                    handGes.SetBoundingBox();
+                    handGes.SetCentroid();
+                    handGes.NormalizeTimestamp();
+                    handGes.TranslateToOrigin();
+                    handGes.NormalizeHeight();
+                }
+                //handGes = handGes.Resample((int)handGes.poses[handGes.poses.Count-1].timestamp * 30); // resample the data to 30 fps
+                
+                //write
+                string filename = Application.dataPath +"/Resources/" + "Haoming/Wrangled/Participant_" + uid+"_Gesture_"+handGes.gestureType+".csv";
+
+                if (!File.Exists(filename))
+                {
+                    TextWriter tww = new StreamWriter(filename, false);
+
+                    string header = "Time,Gesture,Hand,Pos_X,Pos_Y,Pos_Z";
+
+                    tww.WriteLine(header);
+                    tww.Close();
+                }
+                TextWriter tw = new StreamWriter(filename, true);
+                foreach (Pose p in handGes.poses)
+                {
+                    string content = p.timestamp.ToString() + ","+handGes.gestureType;
+                    foreach (Joint joint in p.joints)
+                    {
+                        content += ",";
+                        content += joint.jointType;
+                        content += ",";
+                        content += joint.x.ToString();
+                        content += ",";
+                        content += joint.y.ToString();
+                        content += ",";
+                        content += joint.z.ToString();
+                    }
+                    tw.WriteLine(content);
+                }
+                tw.Close();
+            }
+        }
+    }
 }

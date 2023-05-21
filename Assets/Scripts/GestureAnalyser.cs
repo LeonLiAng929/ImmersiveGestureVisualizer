@@ -63,10 +63,6 @@ public class GestureAnalyser : MonoBehaviour
         }
 
         // loads and wrangles the raw data
-
-        //angry like a bear.
-        //scratch like a cat
-        //draw circle
         gestures.Clear();
         foreach (string referentN in referentName)
         {
